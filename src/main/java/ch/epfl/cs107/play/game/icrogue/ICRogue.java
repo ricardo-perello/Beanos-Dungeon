@@ -73,7 +73,7 @@ public class ICRogue extends AreaGame {
 
     @Override
     public String getTitle() {
-        return "Beano's Dungeon";
+        return "Beanos' Dungeon";
     } /*returns the title of our game */
 
     protected void switchArea() {
