@@ -90,22 +90,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                     }
                 }
                 else if (spriteName.equals("zelda/player.staff_water")){
-                    if(orientation.equals(Orientation.DOWN)){
-                        sprite=new Sprite(spriteName, .75f,1.5f,this,
-                                new RegionOfInterest(40,0,16,32), new Vector(.15f,-.15f));
-                    }
-                    else if(orientation.equals(Orientation.RIGHT)){
-                        sprite=new Sprite(spriteName, 0.95f,1.5f,this,
-                                new RegionOfInterest(42,64,19,32), new Vector(.15f,-.15f));
-                    }
-                    else if(orientation.equals(Orientation.UP)){
-                        sprite=new Sprite(spriteName, .75f,1.5f,this,
-                                new RegionOfInterest(40,32,16,32), new Vector(.15f,-.15f));
-                    }
-                    else if(orientation.equals(Orientation.LEFT)){
-                        sprite=new Sprite(spriteName, 0.95f,1.5f,this,
-                                new RegionOfInterest(34,96,19,32), new Vector(.15f,-.15f));
-                    }
+                    staffSprite(orientation);
                 }
 
                 move(MOVE_DURATION);
@@ -125,8 +110,13 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         //fireball shoots from a cell in front of player
 
         if(keyboard.get(Keyboard.X).isPressed()&& hasStaff){
+            spriteName = "zelda/player.staff_water";
             Fire fire = new Fire(getOwnerArea(),getOrientation(),getCurrentMainCellCoordinates());
+            //
+
+
             fire.enterArea(getOwnerArea(),getCurrentMainCellCoordinates());
+
         }
 
         super.update(deltaTime);
@@ -165,6 +155,25 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         }
     }
 
+    public void staffSprite(Orientation orientation){
+        if(orientation.equals(Orientation.DOWN)){
+            sprite=new Sprite(spriteName, .75f,1.5f,this,
+                    new RegionOfInterest(40,0,16,32), new Vector(.15f,-.15f));
+        }
+        else if(orientation.equals(Orientation.RIGHT)){
+            sprite=new Sprite(spriteName, 0.95f,1.5f,this,
+                    new RegionOfInterest(42,64,19,32), new Vector(.15f,-.15f));
+        }
+        else if(orientation.equals(Orientation.UP)){
+            sprite=new Sprite(spriteName, .75f,1.5f,this,
+                    new RegionOfInterest(40,32,16,32), new Vector(.15f,-.15f));
+        }
+        else if(orientation.equals(Orientation.LEFT)){
+            sprite=new Sprite(spriteName, 0.95f,1.5f,this,
+                    new RegionOfInterest(34,96,19,32), new Vector(.15f,-.15f));
+        }
+    }
+
     @Override
     public void interactWith(Interactable other, boolean isCellInteraction) {
         other.acceptInteraction(handler,isCellInteraction);
@@ -184,24 +193,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 carrying.add(staff);
                 spriteName = "zelda/player.staff_water";
 
-                if(getOrientation().equals(Orientation.DOWN)){
-                    sprite=new Sprite(spriteName, .75f,1.5f,sprite,
-                            new RegionOfInterest(40,0,16,32), new Vector(.15f,-.15f));
-                }
-                else if(getOrientation().equals(Orientation.RIGHT)){
-                    sprite=new Sprite(spriteName, 0.95f,1.5f,sprite,
-                            new RegionOfInterest(42,64,19,32), new Vector(.15f,-.15f));
-                }
-                else if(getOrientation().equals(Orientation.UP)){
-                    sprite=new Sprite(spriteName, .75f,1.5f,sprite,
-                            new RegionOfInterest(40,32,16,32), new Vector(.15f,-.15f));
-                }
-                else if(getOrientation().equals(Orientation.LEFT)){
-                    sprite=new Sprite(spriteName, 0.95f,1.5f,sprite,
-                            new RegionOfInterest(34,96,19,32), new Vector(.15f,-.15f));
-                }
+                staffSprite(getOrientation());
+
 
             }
+
         }
     }
 
