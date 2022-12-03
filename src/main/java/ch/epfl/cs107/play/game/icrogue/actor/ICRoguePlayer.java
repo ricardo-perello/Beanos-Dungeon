@@ -184,6 +184,23 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 carrying.add(staff);
                 spriteName = "zelda/player.staff_water";
 
+                if(getOrientation().equals(Orientation.DOWN)){
+                    sprite=new Sprite(spriteName, .75f,1.5f,sprite,
+                            new RegionOfInterest(40,0,16,32), new Vector(.15f,-.15f));
+                }
+                else if(getOrientation().equals(Orientation.RIGHT)){
+                    sprite=new Sprite(spriteName, 0.95f,1.5f,sprite,
+                            new RegionOfInterest(42,64,19,32), new Vector(.15f,-.15f));
+                }
+                else if(getOrientation().equals(Orientation.UP)){
+                    sprite=new Sprite(spriteName, .75f,1.5f,sprite,
+                            new RegionOfInterest(40,32,16,32), new Vector(.15f,-.15f));
+                }
+                else if(getOrientation().equals(Orientation.LEFT)){
+                    sprite=new Sprite(spriteName, 0.95f,1.5f,sprite,
+                            new RegionOfInterest(34,96,19,32), new Vector(.15f,-.15f));
+                }
+
             }
         }
     }
