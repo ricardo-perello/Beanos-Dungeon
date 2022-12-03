@@ -15,12 +15,12 @@ import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
-public abstract class Projectile extends ICRogueActor {
+public abstract class Projectile extends ICRogueActor implements Consumable {
     private int frames;
     private int damage;
     private boolean isConsumed;
-    public final int DEFAULT_MOVE_DURATION=10;
-    public final int DEFAULT_DAMAGE=1;
+    public static final int DEFAULT_MOVE_DURATION=10;
+    public static final int DEFAULT_DAMAGE=1;
 
     public Projectile(Area area, Orientation orientation, DiscreteCoordinates coordinates,
                       int damagepts, int nframes){
@@ -29,12 +29,17 @@ public abstract class Projectile extends ICRogueActor {
         frames=nframes;
     }
 
+    public abstract void setSprite();
+
     public Projectile(Area area, Orientation orientation, DiscreteCoordinates coordinates){
         super(area,orientation,coordinates);
         damage=DEFAULT_DAMAGE;
         frames=DEFAULT_MOVE_DURATION;
     }
 
+    public void consume(){
+        isConsumed=true;
+    }
 
 
     public void update(float deltaTime) {
