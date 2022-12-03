@@ -40,7 +40,6 @@ public class Staff extends Item{
         return true;
     }
 
-
     public boolean isViewInteractable(){
         return true;
     }

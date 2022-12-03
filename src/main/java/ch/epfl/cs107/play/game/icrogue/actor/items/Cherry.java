@@ -14,26 +14,26 @@ import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Canvas;
 
-public class Cherry extends Item{
+public class Cherry extends Item {
     private Sprite sprite;
-    public Cherry(Area area,Orientation orientation, DiscreteCoordinates coordinates){
-        super(area,orientation,coordinates);
+    public Cherry(Area area, Orientation orientation, DiscreteCoordinates coordinates) {
+        super(area, orientation, coordinates);
         setSprite();
     }
 
-    public void setSprite(){
-        sprite=new Sprite("icrogue/cherry",0.6f,0.6f,this);
+    public void setSprite() {
+        sprite = new Sprite("icrogue/cherry", 0.6f, 0.6f, this);
     }
 
     @Override
     public void draw(Canvas canvas) {
-        if(!isCollected()){
+        if (!isCollected()) {
             sprite.draw(canvas);
         }
     }
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
-        if(!isCollected()){
-            ((ICRogueInteractionHandler)v).interactWith(this, isCellInteraction);
+        if (!isCollected()) {
+            ((ICRogueInteractionHandler) v).interactWith(this, isCellInteraction);
         }
 
     }
