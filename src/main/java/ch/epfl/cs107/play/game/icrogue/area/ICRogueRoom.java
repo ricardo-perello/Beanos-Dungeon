@@ -21,9 +21,10 @@ public abstract class ICRogueRoom extends Area {
         coordinates=roomCoordinates;
     }
 
-    public String getCoordinatesStrin(){
+    public String getCoordinatesString(){
         return coordinates.x+""+coordinates.y;
     }
+
 
     public String getBehaviourName(){
         return behaviourName;

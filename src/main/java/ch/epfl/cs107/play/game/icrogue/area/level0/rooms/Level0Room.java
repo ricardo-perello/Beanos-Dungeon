@@ -19,7 +19,7 @@ public class Level0Room extends ICRogueRoom {
     }
 
     public String getTitle() {
-        return "icrogue/level0"+getCoordinatesStrin();
+        return "icrogue/level0"+getCoordinatesString();
     }
 
     @Override
