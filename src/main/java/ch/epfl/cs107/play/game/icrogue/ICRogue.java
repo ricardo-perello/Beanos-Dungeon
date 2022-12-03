@@ -60,7 +60,6 @@ public class ICRogue extends AreaGame {
         Button key=keyboard.get(Keyboard.R);
         /*resets current room for testing purposes*/
         if(key.isDown()){
-            currentRoom.unregisterActor(player);
             initLevel();
         }
         super.update(deltaTime);

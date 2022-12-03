@@ -6,6 +6,7 @@ package ch.epfl.cs107.play.game.icrogue;
 import ch.epfl.cs107.play.game.areagame.AreaBehavior;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.window.Window;
 public class ICRogueBehavior extends AreaBehavior{
     public enum ICRogueCellType{
@@ -68,6 +69,10 @@ public class ICRogueBehavior extends AreaBehavior{
             this.type = type;
         }
 
+        public ICRogueCellType getType(){
+            return type;
+        }
+
         @Override
         protected boolean canLeave(Interactable entity) {
             return true;
@@ -79,6 +84,10 @@ public class ICRogueBehavior extends AreaBehavior{
             return !entity.takeCellSpace()&&type.isWalkable;
         }
 
+        public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
+                ((ICRogueInteractionHandler)v).interactWith(this, isCellInteraction);
+
+        }
 
         @Override
         public boolean isCellInteractable() {
@@ -90,9 +99,6 @@ public class ICRogueBehavior extends AreaBehavior{
             return false;
         }
 
-        @Override
-        public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
-        }
 
     }
 }

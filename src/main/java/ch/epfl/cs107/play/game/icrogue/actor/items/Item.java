@@ -9,6 +9,7 @@ import ch.epfl.cs107.play.game.areagame.actor.CollectableAreaEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Canvas;
 
@@ -31,6 +32,9 @@ public abstract class Item extends CollectableAreaEntity {
     }
 
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
+        if(!isCollected()){
+            ((ICRogueInteractionHandler)v).interactWith(this, isCellInteraction);
+        }
 
     }
 
