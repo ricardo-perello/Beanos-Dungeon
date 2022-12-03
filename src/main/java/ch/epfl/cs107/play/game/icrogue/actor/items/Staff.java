@@ -28,6 +28,7 @@ public class Staff extends Item{
         sprite=new Sprite("zelda/staff_water.icon",.5f,.5f,this);
     }
 
+
     @Override
     public void draw(Canvas canvas) {
         if(!isCollected()){
@@ -35,6 +36,9 @@ public class Staff extends Item{
         }
     }
 
+    public boolean takeCellSpace(){
+        return true;
+    }
 
 
     public boolean isViewInteractable(){

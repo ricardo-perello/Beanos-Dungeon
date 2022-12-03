@@ -38,7 +38,6 @@ public abstract class Item extends CollectableAreaEntity {
 
     }
 
-    @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
     }
