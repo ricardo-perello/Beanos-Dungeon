@@ -11,6 +11,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Cherry;
+import ch.epfl.cs107.play.game.icrogue.actor.items.Item;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Staff;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
@@ -21,6 +22,7 @@ import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Keyboard;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,6 +31,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private boolean hasStaff;
     private ICRoguePlayerInteractionHandler handler;
     private String spriteName = "zelda/player";
+    private ArrayList<Item> carrying = new ArrayList<>();
     /// Animation duration in frame number
     private final static int MOVE_DURATION = 8;
 
@@ -58,83 +61,58 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     }
 
 
-    public ICRoguePlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates, String spriteName){
-        super(owner,orientation,coordinates);
-        hasStaff =false;
-        this.spriteName = spriteName;
-        //setting sprites based on orientation
-        if(orientation.equals(Orientation.DOWN)){
-            sprite=new Sprite(spriteName, .75f,1.5f,this,
-                    new RegionOfInterest(0,0,16,32), new Vector(.15f,-.15f));
-        }
-        else if(orientation.equals(Orientation.RIGHT)){
-            sprite=new Sprite(spriteName, .75f,1.5f,this,
-                    new RegionOfInterest(0,32,16,32), new Vector(.15f,-.15f));
-        }
-        else if(orientation.equals(Orientation.UP)){
-            sprite=new Sprite(spriteName, .75f,1.5f,this,
-                    new RegionOfInterest(0,64,16,32), new Vector(.15f,-.15f));
-        }
-        else if(orientation.equals(Orientation.LEFT)){
-            sprite=new Sprite(spriteName, .75f,1.5f,this,
-                    new RegionOfInterest(0,96,16,32), new Vector(.15f,-.15f));
-        }
-        handler= new ICRoguePlayerInteractionHandler();
-        resetMotion();
-    }
     public void draw(Canvas canvas) {
         sprite.draw(canvas);
     }
 
     private void moveIfPressed(Orientation orientation, Button b){
+
         if(b.isDown()) {
             if (!isDisplacementOccurs()) {
                 orientate(orientation);
-                if(orientation.equals(Orientation.DOWN)){
-                    sprite=new Sprite("zelda/player", .75f,1.5f,this,
-                            new RegionOfInterest(0,0,16,32), new Vector(.15f,-.15f));
+
+                if (spriteName.equals("zelda/player")){
+                    if(orientation.equals(Orientation.DOWN)){
+                        sprite=new Sprite(spriteName, .75f,1.5f,this,
+                                new RegionOfInterest(0,0,16,32), new Vector(.15f,-.15f));
+                    }
+                    else if(orientation.equals(Orientation.RIGHT)){
+                        sprite=new Sprite(spriteName, .75f,1.5f,this,
+                                new RegionOfInterest(0,32,16,32), new Vector(.15f,-.15f));
+                    }
+                    else if(orientation.equals(Orientation.UP)){
+                        sprite=new Sprite(spriteName, .75f,1.5f,this,
+                                new RegionOfInterest(0,64,16,32), new Vector(.15f,-.15f));
+                    }
+                    else if(orientation.equals(Orientation.LEFT)){
+                        sprite=new Sprite(spriteName, .75f,1.5f,this,
+                                new RegionOfInterest(0,96,16,32), new Vector(.15f,-.15f));
+                    }
                 }
-                else if(orientation.equals(Orientation.RIGHT)){
-                    sprite=new Sprite("zelda/player", .75f,1.5f,this,
-                            new RegionOfInterest(0,32,16,32), new Vector(.15f,-.15f));
+                else if (spriteName.equals("zelda/player.staff_water")){
+                    if(orientation.equals(Orientation.DOWN)){
+                        sprite=new Sprite(spriteName, .75f,1.5f,this,
+                                new RegionOfInterest(0,0,16,32), new Vector(.15f,-.15f));
+                    }
+                    else if(orientation.equals(Orientation.RIGHT)){
+                        sprite=new Sprite(spriteName, .75f,1.5f,this,
+                                new RegionOfInterest(0,32,16,32), new Vector(.15f,-.15f));
+                    }
+                    else if(orientation.equals(Orientation.UP)){
+                        sprite=new Sprite(spriteName, .75f,1.5f,this,
+                                new RegionOfInterest(0,64,16,32), new Vector(.15f,-.15f));
+                    }
+                    else if(orientation.equals(Orientation.LEFT)){
+                        sprite=new Sprite(spriteName, .75f,1.5f,this,
+                                new RegionOfInterest(0,96,16,32), new Vector(.15f,-.15f));
+                    }
                 }
-                else if(orientation.equals(Orientation.UP)){
-                    sprite=new Sprite("zelda/player", .75f,1.5f,this,
-                            new RegionOfInterest(0,64,16,32), new Vector(.15f,-.15f));
-                }
-                else if(orientation.equals(Orientation.LEFT)){
-                    sprite=new Sprite("zelda/player", .75f,1.5f,this,
-                            new RegionOfInterest(0,96,16,32), new Vector(.15f,-.15f));
-                }
+
                 move(MOVE_DURATION);
             }
         }
     }
 
-    private void moveIfPressed(Orientation orientation, Button b, String spriteName){
-        if(b.isDown()) {
-            if (!isDisplacementOccurs()) {
-                orientate(orientation);
-                if(orientation.equals(Orientation.DOWN)){
-                    sprite=new Sprite(spriteName, .75f,1.5f,this,
-                            new RegionOfInterest(0,0,16,32), new Vector(.15f,-.15f));
-                }
-                else if(orientation.equals(Orientation.RIGHT)){
-                    sprite=new Sprite( spriteName, .75f,1.5f,this,
-                            new RegionOfInterest(0,32,16,32), new Vector(.15f,-.15f));
-                }
-                else if(orientation.equals(Orientation.UP)){
-                    sprite=new Sprite(spriteName, .75f,1.5f,this,
-                            new RegionOfInterest(0,64,16,32), new Vector(.15f,-.15f));
-                }
-                else if(orientation.equals(Orientation.LEFT)){
-                    sprite=new Sprite(spriteName, .75f,1.5f,this,
-                            new RegionOfInterest(0,96,16,32), new Vector(.15f,-.15f));
-                }
-                move(MOVE_DURATION);
-            }
-        }
-    }
 
     public void update(float deltaTime) {
         Keyboard keyboard= getOwnerArea().getKeyboard();
@@ -144,6 +122,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         moveIfPressed(Orientation.RIGHT, keyboard.get(Keyboard.RIGHT));
         moveIfPressed(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
 
+        //fireball shoots from a cell in front of player
+        //TODO change into double to add half a cell
         if(keyboard.get(Keyboard.X).isPressed()&& hasStaff){
             DiscreteCoordinates coord = getCurrentMainCellCoordinates();
             int x = coord.x;
@@ -190,7 +170,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         return true;
     }
 
-    /*interracts with interactable in its field of vision (aka in front of whatever direction he is facing)*/
+    /*interacts with intractable in its field of vision (aka in front of whatever direction he is facing)*/
     public boolean wantsViewInteraction() {
         Keyboard keyboard= getOwnerArea().getKeyboard();
         if(keyboard.get(Keyboard.W).isPressed()){  /*this means that the player only interacts with an object in front of him if you press W*/
@@ -216,7 +196,9 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         public void interactWith(Staff staff, boolean isCellInteraction){
             if(wantsViewInteraction()){
                 staff.collect();
-                hasStaff =true;
+                hasStaff = true;
+                carrying.add(staff);
+                spriteName = "zelda/player.staff_water";
 
             }
         }
