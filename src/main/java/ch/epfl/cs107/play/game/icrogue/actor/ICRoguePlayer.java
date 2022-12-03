@@ -26,14 +26,14 @@ import java.util.List;
 
 public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private Sprite sprite;
-    private boolean hasstaff;
+    private boolean hasStaff;
     private ICRoguePlayerInteractionHandler handler;
     /// Animation duration in frame number
     private final static int MOVE_DURATION = 8;
 
     public ICRoguePlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates){
         super(owner,orientation,coordinates);
-        hasstaff=false;
+        hasStaff =false;
 
         /*setting sprites based on orientation*/
         if(orientation.equals(Orientation.DOWN)){
@@ -93,24 +93,20 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         moveIfPressed(Orientation.RIGHT, keyboard.get(Keyboard.RIGHT));
         moveIfPressed(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
 
-        if(keyboard.get(Keyboard.X).isPressed()&&hasstaff){
+        if(keyboard.get(Keyboard.X).isPressed()&& hasStaff){
             DiscreteCoordinates coord = getCurrentMainCellCoordinates();
             int x = coord.x;
             int y = coord.y;
             if (getOrientation().equals(Orientation.DOWN)){
                 y -= 1;
-
             }
             else if (getOrientation().equals(Orientation.UP)){
                  y += 1;
-
             }
             else if (getOrientation().equals(Orientation.RIGHT)){
-
                  x += 1;
             }
             else if (getOrientation().equals(Orientation.LEFT)){
-
                  x -= 1;
             }
 
@@ -146,7 +142,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     /*interracts with interactable in its field of vision (aka in front of whatever direction he is facing)*/
     public boolean wantsViewInteraction() {
         Keyboard keyboard= getOwnerArea().getKeyboard();
-        if(keyboard.get(Keyboard.W).isPressed()){  /*this means that the player only interracts with an object in front of him if you press W*/
+        if(keyboard.get(Keyboard.W).isPressed()){  /*this means that the player only interacts with an object in front of him if you press W*/
             return true;
         }
         else{
@@ -169,7 +165,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         public void interactWith(Staff staff, boolean isCellInteraction){
             if(wantsViewInteraction()){
                 staff.collect();
-                hasstaff=true;
+                hasStaff =true;
+
             }
         }
     }
