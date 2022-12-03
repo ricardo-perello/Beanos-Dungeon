@@ -28,6 +28,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private Sprite sprite;
     private boolean hasStaff;
     private ICRoguePlayerInteractionHandler handler;
+    private String spriteName = "zelda/player";
     /// Animation duration in frame number
     private final static int MOVE_DURATION = 8;
 
@@ -35,7 +36,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         super(owner,orientation,coordinates);
         hasStaff =false;
 
-        /*setting sprites based on orientation*/
+        //setting sprites based on orientation
         if(orientation.equals(Orientation.DOWN)){
             sprite=new Sprite("zelda/player", .75f,1.5f,this,
                     new RegionOfInterest(0,0,16,32), new Vector(.15f,-.15f));
@@ -56,6 +57,31 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         resetMotion();
     }
 
+
+    public ICRoguePlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates, String spriteName){
+        super(owner,orientation,coordinates);
+        hasStaff =false;
+        this.spriteName = spriteName;
+        //setting sprites based on orientation
+        if(orientation.equals(Orientation.DOWN)){
+            sprite=new Sprite(spriteName, .75f,1.5f,this,
+                    new RegionOfInterest(0,0,16,32), new Vector(.15f,-.15f));
+        }
+        else if(orientation.equals(Orientation.RIGHT)){
+            sprite=new Sprite(spriteName, .75f,1.5f,this,
+                    new RegionOfInterest(0,32,16,32), new Vector(.15f,-.15f));
+        }
+        else if(orientation.equals(Orientation.UP)){
+            sprite=new Sprite(spriteName, .75f,1.5f,this,
+                    new RegionOfInterest(0,64,16,32), new Vector(.15f,-.15f));
+        }
+        else if(orientation.equals(Orientation.LEFT)){
+            sprite=new Sprite(spriteName, .75f,1.5f,this,
+                    new RegionOfInterest(0,96,16,32), new Vector(.15f,-.15f));
+        }
+        handler= new ICRoguePlayerInteractionHandler();
+        resetMotion();
+    }
     public void draw(Canvas canvas) {
         sprite.draw(canvas);
     }
@@ -78,6 +104,31 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 }
                 else if(orientation.equals(Orientation.LEFT)){
                     sprite=new Sprite("zelda/player", .75f,1.5f,this,
+                            new RegionOfInterest(0,96,16,32), new Vector(.15f,-.15f));
+                }
+                move(MOVE_DURATION);
+            }
+        }
+    }
+
+    private void moveIfPressed(Orientation orientation, Button b, String spriteName){
+        if(b.isDown()) {
+            if (!isDisplacementOccurs()) {
+                orientate(orientation);
+                if(orientation.equals(Orientation.DOWN)){
+                    sprite=new Sprite(spriteName, .75f,1.5f,this,
+                            new RegionOfInterest(0,0,16,32), new Vector(.15f,-.15f));
+                }
+                else if(orientation.equals(Orientation.RIGHT)){
+                    sprite=new Sprite( spriteName, .75f,1.5f,this,
+                            new RegionOfInterest(0,32,16,32), new Vector(.15f,-.15f));
+                }
+                else if(orientation.equals(Orientation.UP)){
+                    sprite=new Sprite(spriteName, .75f,1.5f,this,
+                            new RegionOfInterest(0,64,16,32), new Vector(.15f,-.15f));
+                }
+                else if(orientation.equals(Orientation.LEFT)){
+                    sprite=new Sprite(spriteName, .75f,1.5f,this,
                             new RegionOfInterest(0,96,16,32), new Vector(.15f,-.15f));
                 }
                 move(MOVE_DURATION);
