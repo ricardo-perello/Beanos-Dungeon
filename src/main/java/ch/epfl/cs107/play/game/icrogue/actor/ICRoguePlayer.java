@@ -94,8 +94,28 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         moveIfPressed(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
 
         if(keyboard.get(Keyboard.X).isPressed()&&hasstaff){
-           Fire fire=new Fire(getOwnerArea(),getOrientation(),getCurrentMainCellCoordinates());
-            fire.enterArea(getOwnerArea(),getCurrentMainCellCoordinates());
+            DiscreteCoordinates coord = getCurrentMainCellCoordinates();
+            int x = coord.x;
+            int y = coord.y;
+            if (getOrientation().equals(Orientation.DOWN)){
+                y -= 1;
+
+            }
+            else if (getOrientation().equals(Orientation.UP)){
+                 y += 1;
+
+            }
+            else if (getOrientation().equals(Orientation.RIGHT)){
+
+                 x += 1;
+            }
+            else if (getOrientation().equals(Orientation.LEFT)){
+
+                 x -= 1;
+            }
+
+            Fire fire = new Fire(getOwnerArea(),getOrientation(),new DiscreteCoordinates(x,y));
+            fire.enterArea(getOwnerArea(),new DiscreteCoordinates(x,y));
         }
 
         super.update(deltaTime);
