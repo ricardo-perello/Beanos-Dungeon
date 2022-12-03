@@ -34,7 +34,7 @@ public class Fire extends Projectile{
     }
 
     public void setSprite() {
-        sprite=new Sprite("zelda/fire",1f,1f,this,
+        sprite=new Sprite("zelda/fire",0.75f,0.75f,this,
                 new RegionOfInterest(0,0,16,16), new Vector(0,0));
     }
 

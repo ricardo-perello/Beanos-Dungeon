@@ -92,19 +92,19 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 else if (spriteName.equals("zelda/player.staff_water")){
                     if(orientation.equals(Orientation.DOWN)){
                         sprite=new Sprite(spriteName, .75f,1.5f,this,
-                                new RegionOfInterest(0,0,16,32), new Vector(.15f,-.15f));
+                                new RegionOfInterest(40,0,16,32), new Vector(.15f,-.15f));
                     }
                     else if(orientation.equals(Orientation.RIGHT)){
-                        sprite=new Sprite(spriteName, .75f,1.5f,this,
-                                new RegionOfInterest(0,32,16,32), new Vector(.15f,-.15f));
+                        sprite=new Sprite(spriteName, 0.95f,1.5f,this,
+                                new RegionOfInterest(42,64,19,32), new Vector(.15f,-.15f));
                     }
                     else if(orientation.equals(Orientation.UP)){
                         sprite=new Sprite(spriteName, .75f,1.5f,this,
-                                new RegionOfInterest(0,64,16,32), new Vector(.15f,-.15f));
+                                new RegionOfInterest(40,32,16,32), new Vector(.15f,-.15f));
                     }
                     else if(orientation.equals(Orientation.LEFT)){
-                        sprite=new Sprite(spriteName, .75f,1.5f,this,
-                                new RegionOfInterest(0,96,16,32), new Vector(.15f,-.15f));
+                        sprite=new Sprite(spriteName, 0.95f,1.5f,this,
+                                new RegionOfInterest(34,96,19,32), new Vector(.15f,-.15f));
                     }
                 }
 
@@ -123,26 +123,10 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         moveIfPressed(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
 
         //fireball shoots from a cell in front of player
-        //TODO change into double to add half a cell
-        if(keyboard.get(Keyboard.X).isPressed()&& hasStaff){
-            DiscreteCoordinates coord = getCurrentMainCellCoordinates();
-            int x = coord.x;
-            int y = coord.y;
-            if (getOrientation().equals(Orientation.DOWN)){
-                y -= 1;
-            }
-            else if (getOrientation().equals(Orientation.UP)){
-                 y += 1;
-            }
-            else if (getOrientation().equals(Orientation.RIGHT)){
-                 x += 1;
-            }
-            else if (getOrientation().equals(Orientation.LEFT)){
-                 x -= 1;
-            }
 
-            Fire fire = new Fire(getOwnerArea(),getOrientation(),new DiscreteCoordinates(x,y));
-            fire.enterArea(getOwnerArea(),new DiscreteCoordinates(x,y));
+        if(keyboard.get(Keyboard.X).isPressed()&& hasStaff){
+            Fire fire = new Fire(getOwnerArea(),getOrientation(),getCurrentMainCellCoordinates());
+            fire.enterArea(getOwnerArea(),getCurrentMainCellCoordinates());
         }
 
         super.update(deltaTime);
