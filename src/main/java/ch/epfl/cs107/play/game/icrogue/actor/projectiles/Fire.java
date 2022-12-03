@@ -22,6 +22,7 @@ public class Fire extends Projectile{
 
     public Fire(Area area, Orientation orientation, DiscreteCoordinates coordinates){
         super(area,orientation,coordinates,DEFAULT_DAMAGE,5);
+        setSprite();
     }
 
     @Override
@@ -29,4 +30,15 @@ public class Fire extends Projectile{
         sprite=new Sprite("zelda/fire",1f,1f,this,
                 new RegionOfInterest(0,0,16,16), new Vector(0,0));
     }
+
+    @Override
+    public void draw(Canvas canvas) {
+        sprite.draw(canvas);
+    }
+
+    @Override
+    public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
+
+    }
+
 }

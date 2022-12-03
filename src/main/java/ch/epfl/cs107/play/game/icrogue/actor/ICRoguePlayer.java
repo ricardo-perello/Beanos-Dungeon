@@ -9,6 +9,7 @@ import ch.epfl.cs107.play.game.areagame.actor.MovableAreaEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
@@ -81,6 +82,10 @@ public class ICRoguePlayer extends ICRogueActor {
         moveIfPressed(Orientation.RIGHT, keyboard.get(Keyboard.RIGHT));
         moveIfPressed(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
 
+        if(keyboard.get(Keyboard.X).isPressed()){
+           Fire fire=new Fire(getOwnerArea(),getOrientation(),getCurrentMainCellCoordinates());
+            fire.enterArea(getOwnerArea(),getCurrentMainCellCoordinates());
+        }
         /*fireball function, not implemented yet*/
 
         super.update(deltaTime);
