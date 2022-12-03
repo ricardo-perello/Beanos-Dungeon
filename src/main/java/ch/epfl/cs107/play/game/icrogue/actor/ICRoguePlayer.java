@@ -111,10 +111,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
         if(keyboard.get(Keyboard.X).isPressed()&& hasStaff){
             spriteName = "zelda/player.staff_water";
+            staffSprite(getOrientation());
             Fire fire = new Fire(getOwnerArea(),getOrientation(),getCurrentMainCellCoordinates());
-            //
-
-
             fire.enterArea(getOwnerArea(),getCurrentMainCellCoordinates());
 
         }
@@ -173,6 +171,31 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                     new RegionOfInterest(34,96,19,32), new Vector(.15f,-.15f));
         }
     }
+/*
+    public void shootFlameSprite(Orientation orientation){
+
+        //todo change area region of interest
+        if(orientation.equals(Orientation.DOWN)){
+            sprite=new Sprite(spriteName, .75f,1.5f,this,
+                    new RegionOfInterest(60,0,16,32), new Vector(.15f,-.15f));
+        }
+        else if(orientation.equals(Orientation.RIGHT)){
+            sprite=new Sprite(spriteName, 0.95f,1.5f,this,
+                    new RegionOfInterest(62,64,19,32), new Vector(.15f,-.15f));
+        }
+        else if(orientation.equals(Orientation.UP)){
+            sprite=new Sprite(spriteName, .75f,1.5f,this,
+                    new RegionOfInterest(60,32,16,32), new Vector(.15f,-.15f));
+        }
+        else if(orientation.equals(Orientation.LEFT)) {
+            sprite = new Sprite(spriteName, 0.95f, 1.5f, this,
+                    new RegionOfInterest(64, 96, 19, 32), new Vector(.15f, -.15f));
+        }
+
+
+    }
+
+ */
 
     @Override
     public void interactWith(Interactable other, boolean isCellInteraction) {
