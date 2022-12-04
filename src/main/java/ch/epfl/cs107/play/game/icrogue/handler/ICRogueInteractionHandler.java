@@ -10,10 +10,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.ICRogueBehavior;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
-import ch.epfl.cs107.play.game.icrogue.actor.items.Cherry;
-import ch.epfl.cs107.play.game.icrogue.actor.items.Staff;
-import ch.epfl.cs107.play.game.icrogue.actor.items.Key;
-import ch.epfl.cs107.play.game.icrogue.actor.items.Sword;
+import ch.epfl.cs107.play.game.icrogue.actor.items.*;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
@@ -37,6 +34,8 @@ public interface ICRogueInteractionHandler extends AreaInteractionVisitor {
     default void interactWith(Staff staff, boolean isCellInteraction) {
     }
     default void interactWith(Sword sword, boolean isCellInteraction){
+    }
+    default void interactWith(Bow bow, boolean isCellInteraction){
     }
     default void interactWith(Cherry cherry, boolean isCellInteraction) {
     }

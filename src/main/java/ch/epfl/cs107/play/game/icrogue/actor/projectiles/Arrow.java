@@ -13,6 +13,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
+import ch.epfl.cs107.play.game.icrogue.actor.items.Bow;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Cherry;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Staff;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Sword;
@@ -39,17 +40,17 @@ public class Arrow extends Projectile {
 
     public void setSprite(Orientation orientation) {
         if (orientation.equals(Orientation.DOWN)) {
-            sprite = new Sprite("zelda/arrow", .75f, 1.5f, this,
-                    new RegionOfInterest(0, 0, 16, 32), new Vector(.15f, -.15f));
+            sprite = new Sprite("zelda/arrow", .3f, 0.9f, this,
+                    new RegionOfInterest(71, 0, 16, 32), new Vector(.15f, -.15f));
         } else if (orientation.equals(Orientation.RIGHT)) {
-            sprite = new Sprite("zelda/arrow", 1.5f, 0.5f, this,
-                    new RegionOfInterest(64, 16, 32, 8), new Vector(.15f, -.15f));
+            sprite = new Sprite("zelda/arrow", 0.9f, 0.3f, this,
+                    new RegionOfInterest(32, 7, 32, 16), new Vector(.15f, -.15f));
         } else if (orientation.equals(Orientation.UP)) {
-            sprite = new Sprite("zelda/arrow", 0.5f, 1.5f, this,
+            sprite = new Sprite("zelda/arrow", 0.3f, 0.9f, this,
                     new RegionOfInterest(8, 0, 16, 32), new Vector(.15f, -.15f));
         } else if (orientation.equals(Orientation.LEFT)) {
-            sprite = new Sprite("zelda/arrow", 1.5f, 0.5f, this,
-                    new RegionOfInterest(96, 16, 32, 8), new Vector(.15f, -.15f));
+            sprite = new Sprite("zelda/arrow", 0.9f, 0.3f, this,
+                    new RegionOfInterest(96, 7, 32, 16), new Vector(.15f, -.15f));
         }
     }
 
@@ -78,6 +79,17 @@ public class Arrow extends Projectile {
 
         public void interactWith(Sword sword, boolean isCellInteraction) {
             if (wantsViewInteraction()) {
+                consume();
+            }
+        }
+
+        public void interactWith(Staff staff, boolean isCellInteraction) {
+            if(wantsViewInteraction()) {
+                consume();
+            }
+        }
+        public void interactWith(Bow bow, boolean isCellInteraction) {
+            if(wantsViewInteraction()) {
                 consume();
             }
         }

@@ -11,6 +11,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.items.*;
+import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -28,6 +29,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private Sprite sprite;
     private boolean hasStaff;
     private boolean hasSword;
+    private boolean hasBow;
     private ICRoguePlayerInteractionHandler handler;
     private String spriteName = "zelda/player";
     private ArrayList<Item> carrying = new ArrayList<>();
@@ -79,6 +81,9 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 else if (spriteName.equals("zelda/player.sword")){
                     swordSprite(orientation);
                 }
+                else if (spriteName.equals("zelda/player.bow")){
+                    bowSprite(orientation);
+                }
 
                 move(MOVE_DURATION);
             }
@@ -108,6 +113,15 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             spriteName = "zelda/player.sword";
             swordSprite(getOrientation());
             //melee damage
+        }
+
+
+        if(keyboard.get(Keyboard.C).isPressed()&& hasBow){
+            spriteName = "zelda/player.bow";
+            bowSprite(getOrientation());
+            Arrow arrow = new Arrow(getOwnerArea(),getOrientation(),getCurrentMainCellCoordinates());
+            arrow.enterArea(getOwnerArea(),getCurrentMainCellCoordinates());
+
         }
 
         super.update(deltaTime);
@@ -166,6 +180,25 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     }
 
     public void staffSprite(Orientation orientation){
+        if(orientation.equals(Orientation.DOWN)){
+            sprite=new Sprite(spriteName, .75f,1.5f,this,
+                    new RegionOfInterest(40,0,16,32), new Vector(.15f,-.15f));
+        }
+        else if(orientation.equals(Orientation.RIGHT)){
+            sprite=new Sprite(spriteName, 0.95f,1.5f,this,
+                    new RegionOfInterest(42,64,19,32), new Vector(.15f,-.15f));
+        }
+        else if(orientation.equals(Orientation.UP)){
+            sprite=new Sprite(spriteName, .75f,1.5f,this,
+                    new RegionOfInterest(40,32,16,32), new Vector(.15f,-.15f));
+        }
+        else if(orientation.equals(Orientation.LEFT)){
+            sprite=new Sprite(spriteName, 0.95f,1.5f,this,
+                    new RegionOfInterest(34,96,19,32), new Vector(.15f,-.15f));
+        }
+    }
+
+    public void bowSprite(Orientation orientation){
         if(orientation.equals(Orientation.DOWN)){
             sprite=new Sprite(spriteName, .75f,1.5f,this,
                     new RegionOfInterest(40,0,16,32), new Vector(.15f,-.15f));
@@ -257,10 +290,16 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 carrying.add(sword);
                 spriteName = "zelda/player.sword";
                 swordSprite(getOrientation());
-
-
             }
-
+        }
+        public void interactWith(Bow bow, boolean isCellInteraction){
+            if(wantsViewInteraction()){
+                bow.collect();
+                hasBow = true;
+                carrying.add(bow);
+                spriteName = "zelda/player.bow";
+                staffSprite(getOrientation());
+            }
         }
 
         public void interactWith(Key key, boolean isCellInteraction){

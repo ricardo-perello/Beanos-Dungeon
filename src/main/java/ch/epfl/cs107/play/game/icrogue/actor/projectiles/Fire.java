@@ -13,6 +13,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
+import ch.epfl.cs107.play.game.icrogue.actor.items.Bow;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Cherry;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Staff;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Sword;
@@ -65,6 +66,19 @@ public class Fire extends Projectile{
                 consume();
             }
         }
+
+        public void interactWith(Staff staff, boolean isCellInteraction) {
+            if(wantsViewInteraction()) {
+                consume();
+            }
+        }
+
+        public void interactWith(Bow bow, boolean isCellInteraction) {
+            if(wantsViewInteraction()) {
+                consume();
+            }
+        }
+
     }
 
 }
