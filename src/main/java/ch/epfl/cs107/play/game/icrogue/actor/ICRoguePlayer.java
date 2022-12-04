@@ -12,6 +12,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Cherry;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Item;
+import ch.epfl.cs107.play.game.icrogue.actor.items.Key;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Staff;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
@@ -121,7 +122,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
     }
 
-    @Override
+
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
         ((ICRogueInteractionHandler)v).interactWith(this, isCellInteraction);
     }
@@ -221,6 +222,12 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
             }
 
+        }
+        public void interactWith(Key key, boolean isCellInteraction){
+            if(wantsCellInteraction()){
+                key.collect();
+                carrying.add(key); /*adds key to carrying arraylist which represents the items the character is holding*/
+            }
         }
     }
 
