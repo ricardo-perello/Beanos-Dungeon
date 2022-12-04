@@ -28,6 +28,7 @@ public class Connector extends AreaEntity {
 
     }
     private String areaTitle;
+
     private DiscreteCoordinates arrivalcoordinates;
     private Orientation orientation;
     private int ID;
@@ -37,7 +38,6 @@ public class Connector extends AreaEntity {
 
     public Connector(Area area, Orientation orientation, DiscreteCoordinates position){
         super(area,orientation,position);
-        areaTitle=area.getTitle();
         state=ConnectorState.INVISIBLE;
         ID=0;
         this.orientation=orientation;
@@ -49,6 +49,10 @@ public class Connector extends AreaEntity {
         }
     }
 
+    public void setAreaTitle(String title){
+        areaTitle=title;
+    }
+
     public ConnectorState getState(){
         return state;
     }
@@ -56,8 +60,8 @@ public class Connector extends AreaEntity {
     public void setState(ConnectorState state){
         this.state=state;
         setSprite();
-
     }
+
     private void setSprite(){
         if(state.equals(ConnectorState.INVISIBLE)){
             sprite=new Sprite("icrogue/invisibleDoor_"+orientation.ordinal(),

@@ -38,6 +38,9 @@ public abstract class ICRogueRoom extends Area {
         return coordinates.x+""+coordinates.y;
     }
 
+    public void setConnectors(int i,Connector connector){
+        connectors.set(i,connector);
+    }
 
     public String getBehaviourName(){
         return behaviourName;
