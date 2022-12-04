@@ -12,6 +12,7 @@ import ch.epfl.cs107.play.game.icrogue.ICRogueBehavior;
 import ch.epfl.cs107.play.game.icrogue.actor.Connector;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.window.Keyboard;
 import ch.epfl.cs107.play.window.Window;
 
 import java.util.ArrayList;
@@ -74,6 +75,27 @@ public abstract class ICRogueRoom extends Area {
             return true;
         }
         return false;
+    }
+
+    public void update(float deltaTime) {
+        Keyboard keyboard= getKeyboard();
+        if(keyboard.get(Keyboard.O).isPressed()){
+            for(Connector connector:connectors){
+
+            }
+        }
+        if(keyboard.get(Keyboard.L).isPressed()){
+            for(Connector connector:connectors){
+
+            }
+        }
+        if(keyboard.get(Keyboard.T).isPressed()){
+            for(Connector connector:connectors){
+
+            }
+        }
+        super.update(deltaTime);
+
     }
 
 }

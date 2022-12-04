@@ -49,10 +49,10 @@ public class Level0Room extends ICRogueRoom {
         }
         public static List<Orientation>getAllConnectorsOrientation(){
             List<Orientation>output=new ArrayList<>();
-            output.add(Orientation.LEFT);
-            output.add(Orientation.DOWN);
             output.add(Orientation.RIGHT);
             output.add(Orientation.UP);
+            output.add(Orientation.LEFT);
+            output.add(Orientation.DOWN);
             return output;
 
         }
