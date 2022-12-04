@@ -14,6 +14,7 @@ import ch.epfl.cs107.play.game.icrogue.actor.items.Cherry;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Staff;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Key;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Sword;
+import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -28,9 +29,10 @@ import java.util.List;
 
 public interface ICRogueInteractionHandler extends AreaInteractionVisitor {
     default void interactWith(Interactable other, boolean isCellInteraction){
-
     }
     default void interactWith(Fire fire, boolean isCellInteraction) {
+    }
+    default void interactWith(Arrow arrow, boolean isCellInteraction) {
     }
     default void interactWith(Staff staff, boolean isCellInteraction) {
     }
