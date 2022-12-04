@@ -52,7 +52,7 @@ public class Fire extends Projectile{
     }
 
 
-    /*this handles all of the interactions for Fire and a handler was already created in the Fire constructor*/
+    /*this handles all the interactions for Fire and a handler was already created in the Fire constructor*/
     private class ICRogueFireInteractionHandler implements ICRogueInteractionHandler {
 
 
