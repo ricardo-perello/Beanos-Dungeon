@@ -213,7 +213,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         }
         else if(orientation.equals(Orientation.LEFT)){
             sprite=new Sprite(spriteName, 0.95f,1.5f,this,
-                    new RegionOfInterest(34,96,19,32), new Vector(.15f,-.15f));
+                    new RegionOfInterest(34,96,19,32), new Vector(-.1f,-.15f));
         }
     }
 
