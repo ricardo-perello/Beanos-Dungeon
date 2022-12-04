@@ -41,16 +41,16 @@ public class Arrow extends Projectile {
     public void setSprite(Orientation orientation) {
         if (orientation.equals(Orientation.DOWN)) {
             sprite = new Sprite("zelda/arrow", .3f, 0.9f, this,
-                    new RegionOfInterest(71, 0, 16, 32), new Vector(.15f, -.15f));
+                    new RegionOfInterest(71, 0, 16, 32), new Vector(.4f, .0f));
         } else if (orientation.equals(Orientation.RIGHT)) {
             sprite = new Sprite("zelda/arrow", 0.9f, 0.3f, this,
-                    new RegionOfInterest(32, 7, 32, 16), new Vector(.15f, -.15f));
+                    new RegionOfInterest(32, 7, 32, 16), new Vector(.0f, .2f));
         } else if (orientation.equals(Orientation.UP)) {
             sprite = new Sprite("zelda/arrow", 0.3f, 0.9f, this,
-                    new RegionOfInterest(8, 0, 16, 32), new Vector(.15f, -.15f));
+                    new RegionOfInterest(8, 0, 16, 32), new Vector(.4f, .0f));
         } else if (orientation.equals(Orientation.LEFT)) {
             sprite = new Sprite("zelda/arrow", 0.9f, 0.3f, this,
-                    new RegionOfInterest(96, 7, 32, 16), new Vector(.15f, -.15f));
+                    new RegionOfInterest(96, 7, 32, 16), new Vector(.0f, .2f));
         }
     }
 

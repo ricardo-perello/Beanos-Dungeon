@@ -5,6 +5,7 @@ package ch.epfl.cs107.play.game.icrogue.area.level0.rooms;
  */
 import ch.epfl.cs107.play.game.areagame.actor.Background;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Bow;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Cherry;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Staff;
@@ -89,6 +90,8 @@ public class Level0Room extends ICRogueRoom {
         registerActor(new Staff(this, Orientation.DOWN, new DiscreteCoordinates(4,3)));
         registerActor(new Sword(this, Orientation.DOWN, new DiscreteCoordinates(7, 3)));
         registerActor(new Bow(this, Orientation.DOWN, new DiscreteCoordinates(7, 7)));
+        registerActor(new Turret(this, Orientation.DOWN, new DiscreteCoordinates(1, 1)
+                ,true, false, false, true));
     }
 
 }
