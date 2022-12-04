@@ -39,6 +39,26 @@ public class Connector extends AreaEntity {
         super(area,orientation,position);
         areaTitle=area.getTitle();
         state=ConnectorState.INVISIBLE;
+        ID=0;
+        this.orientation=orientation;
+        setSprite();
+    }
+    public void draw(Canvas canvas) {
+        if(!getState().equals(ConnectorState.OPEN)){
+            sprite.draw(canvas);
+        }
+    }
+
+    public ConnectorState getState(){
+        return state;
+    }
+
+    public void setState(ConnectorState state){
+        this.state=state;
+        setSprite();
+
+    }
+    public void setSprite(){
         if(state.equals(ConnectorState.INVISIBLE)){
             sprite=new Sprite("icrogue/invisibleDoor_"+orientation.ordinal(),
                     (orientation.ordinal()+1)%2+1,orientation.ordinal()%2+1,this);
@@ -52,8 +72,9 @@ public class Connector extends AreaEntity {
                     (orientation.ordinal()+1)%2+1,orientation.ordinal()%2+1,this);
         }
     }
-    public void draw(Canvas canvas) {
-        sprite.draw(canvas);
+
+    public void setID(int id){
+        ID=id;
     }
 
     public List<DiscreteCoordinates> getCurrentCells() {
