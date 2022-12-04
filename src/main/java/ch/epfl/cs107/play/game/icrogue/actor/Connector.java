@@ -58,7 +58,7 @@ public class Connector extends AreaEntity {
         setSprite();
 
     }
-    public void setSprite(){
+    private void setSprite(){
         if(state.equals(ConnectorState.INVISIBLE)){
             sprite=new Sprite("icrogue/invisibleDoor_"+orientation.ordinal(),
                     (orientation.ordinal()+1)%2+1,orientation.ordinal()%2+1,this);
