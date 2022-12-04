@@ -15,6 +15,7 @@ import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Cherry;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Staff;
+import ch.epfl.cs107.play.game.icrogue.actor.items.Sword;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;
@@ -56,6 +57,11 @@ public class Fire extends Projectile{
 
         public void interactWith(ICRogueBehavior.ICRogueCell cell, boolean isCellInteraction) {
             if(cell.getType().equals(ICRogueBehavior.ICRogueCellType.WALL)||cell.getType().equals(ICRogueBehavior.ICRogueCellType.HOLE)){
+                consume();
+            }
+        }
+        public void interactWith(Sword sword, boolean isCellInteraction) {
+            if(wantsViewInteraction()) {
                 consume();
             }
         }
