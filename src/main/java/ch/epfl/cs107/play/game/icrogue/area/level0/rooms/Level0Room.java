@@ -67,7 +67,7 @@ public class Level0Room extends ICRogueRoom {
 
     public Level0Room(DiscreteCoordinates coordinates){
         super(Level0Connectors.getAllConnectorsPosition(), Level0Connectors.getAllConnectorsOrientation(),
-                "icrogue/Level0Room",coordinates);
+                "icrogue/Level0Room", coordinates);
     }
 
     public String getTitle() {

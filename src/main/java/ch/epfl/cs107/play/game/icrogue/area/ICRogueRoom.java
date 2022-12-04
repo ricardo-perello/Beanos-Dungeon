@@ -25,11 +25,12 @@ public abstract class ICRogueRoom extends Area {
     public ICRogueRoom(List<DiscreteCoordinates> connectorsCoordinates,
                        List<Orientation> orientations,
                        String behaviourName, DiscreteCoordinates roomCoordinates){
+        this.behaviourName=behaviourName;
+        coordinates=roomCoordinates;
         for(int i=0;i<connectorsCoordinates.size();++i){
             connectors.add(new Connector(this,orientations.get(i),connectorsCoordinates.get(i)));
         }
-        this.behaviourName=behaviourName;
-        coordinates=roomCoordinates;
+
     }
 
     public String getCoordinatesString(){
