@@ -230,7 +230,6 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
  */
 
-    @Override
     public void interactWith(Interactable other, boolean isCellInteraction) {
         other.acceptInteraction(handler,isCellInteraction);
     }
