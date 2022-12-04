@@ -5,6 +5,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
+import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
@@ -29,6 +30,8 @@ public class Turret extends Enemy{
         shootDown = sDown;
         shootLeft = sLeft;
         shootRight = sRight;
+
+        isAlive = true;
 
         sprite=new Sprite("icrogue/static_npc", 1.f,1.f,this,
                 new RegionOfInterest(0,0,16,24), new Vector(0.f,0.f));
@@ -72,8 +75,19 @@ public class Turret extends Enemy{
         sprite.draw(canvas);
     }
 
-    @Override
-    public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
-        //todo add interaction of getting hit by player
+
+    public boolean takeCellSpace(){
+        return true;
     }
+
+    public boolean isViewInteractable(){
+        return true;
+    }
+
+    public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
+        if (getIsAlive()) {
+            ((ICRogueInteractionHandler) v).interactWith(this, isCellInteraction);
+        }
+    }
+
 }
