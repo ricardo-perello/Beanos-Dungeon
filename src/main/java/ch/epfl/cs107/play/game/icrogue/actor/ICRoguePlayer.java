@@ -10,7 +10,6 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactor;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
-import ch.epfl.cs107.play.game.icrogue.ICRogue;
 import ch.epfl.cs107.play.game.icrogue.actor.items.*;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
@@ -35,6 +34,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private String spriteName = "zelda/player";
     private ArrayList<Item> carrying = new ArrayList<>();
     private float hp = 10;
+    private boolean receivedDamage = false;
     /// Animation duration in frame number
     private final static int MOVE_DURATION = 8;
 
@@ -284,6 +284,10 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     }
 
  */
+
+    public boolean getReceivedDamage(){return receivedDamage;}
+
+    public void setReceivedDamage(boolean rd){receivedDamage = rd;}
 
     public void interactWith(Interactable other, boolean isCellInteraction) {
         other.acceptInteraction(handler,isCellInteraction);

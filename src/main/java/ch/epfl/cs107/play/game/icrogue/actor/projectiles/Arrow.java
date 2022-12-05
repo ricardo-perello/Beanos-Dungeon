@@ -6,16 +6,12 @@ package ch.epfl.cs107.play.game.icrogue.actor.projectiles;
 
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.icrogue.ICRogueBehavior;
-import ch.epfl.cs107.play.game.icrogue.actor.ICRogueActor;
 import ch.epfl.cs107.play.game.areagame.Area;
-import ch.epfl.cs107.play.game.areagame.actor.MovableAreaEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
-import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Bow;
-import ch.epfl.cs107.play.game.icrogue.actor.items.Cherry;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Staff;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Sword;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
@@ -23,7 +19,6 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
-import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Projectile;
 
 public class Arrow extends Projectile {
 
@@ -96,9 +91,9 @@ public class Arrow extends Projectile {
         }
         //todo change that  if arrow shot by player hits player it doesn't disappear
         public void interactWith(ICRoguePlayer player, boolean isCellInteraction) {
-            if (wantsViewInteraction()) {
-                consume();
+            if (wantsViewInteraction() && !(isConsumed())) {
                 player.decreaseHp((float) DEFAULT_DAMAGE);
+                consume();
             }
         }
         public void interactWith(Turret turret, boolean isCellInteraction) {
