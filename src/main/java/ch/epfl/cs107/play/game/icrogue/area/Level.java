@@ -22,17 +22,21 @@ public abstract class Level {
     protected void setRoomConnectorDestination(DiscreteCoordinates coords, String destination,
                                                ConnectorInRoom connector){
         int idx=connector.getIndex();
-        ICRogueRoom room=map[coords.x][coords.y];
+        map[coords.x][coords.y].SetConnectorAreaTitle(idx, destination);
 
 
     }
     protected void setRoomConnector(DiscreteCoordinates coords, String destination, ConnectorInRoom connector){
         setRoomConnectorDestination(coords,destination,connector);
+        int idx=connector.getIndex();
+        map[coords.x][coords.y].setConnectorState(idx,Connector.ConnectorState.CLOSED);
 
 
     }
     protected void lockRoomConnector(DiscreteCoordinates coords, ConnectorInRoom connector, int keyId){
-
+        int idx=connector.getIndex();
+        map[coords.x][coords.y].setConnectorState(idx,Connector.ConnectorState.LOCKED);
+        map[coords.x][coords.y].setConnectorKeyID(idx,keyId);
 
     }
     protected void setRoomName(DiscreteCoordinates coordinates){
@@ -42,6 +46,7 @@ public abstract class Level {
         arrivalcoordinates=coordinates;
         map=new ICRogueRoom[x][y];
         bossPosition=new DiscreteCoordinates(0,0);
+        generateFixedMap();
     }
     public abstract void generateFixedMap();
 }
