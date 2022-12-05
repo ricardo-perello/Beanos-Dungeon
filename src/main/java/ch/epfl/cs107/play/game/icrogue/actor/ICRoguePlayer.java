@@ -33,8 +33,9 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private ICRoguePlayerInteractionHandler handler;
     private String spriteName = "zelda/player";
     private ArrayList<Item> carrying = new ArrayList<>();
-    private float hp = 10;
+    private float hp = DEFAULT_PLAYER_HP;
     private boolean receivedDamage = false;
+    public final static float DEFAULT_PLAYER_HP = 10;
     /// Animation duration in frame number
     private final static int MOVE_DURATION = 8;
 
@@ -146,10 +147,16 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         System.out.println(hp);
     }
 
-    public void increaseHp(float delta){
-        hp += delta;
+    public boolean canIncreaseHp(){
+        return hp < DEFAULT_PLAYER_HP;
     }
 
+    public void increaseHp(float delta){
+        if (hp < 10){
+            hp += delta;
+        }
+
+    }
 
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
         ((ICRogueInteractionHandler)v).interactWith(this, isCellInteraction);
@@ -296,7 +303,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private class ICRoguePlayerInteractionHandler implements ICRogueInteractionHandler{
 
         public void interactWith(Cherry cherry, boolean isCellInteraction) {
-            if(wantsCellInteraction()){
+            if(wantsCellInteraction()&&canIncreaseHp()){
+                increaseHp(1);
                 cherry.collect();
             }
         }
