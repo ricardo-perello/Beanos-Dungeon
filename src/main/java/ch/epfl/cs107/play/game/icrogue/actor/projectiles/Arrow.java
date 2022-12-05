@@ -13,6 +13,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Bow;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Cherry;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Staff;
@@ -41,16 +42,16 @@ public class Arrow extends Projectile {
     public void setSprite(Orientation orientation) {
         if (orientation.equals(Orientation.DOWN)) {
             sprite = new Sprite("zelda/arrow", .3f, 0.9f, this,
-                    new RegionOfInterest(71, 0, 16, 32), new Vector(.4f, .0f));
+                    new RegionOfInterest(71, 0, 16, 32), new Vector(.4f, 0.f));
         } else if (orientation.equals(Orientation.RIGHT)) {
             sprite = new Sprite("zelda/arrow", 0.9f, 0.3f, this,
-                    new RegionOfInterest(32, 7, 32, 16), new Vector(.0f, .2f));
+                    new RegionOfInterest(32, 7, 32, 16), new Vector(0.0f, .2f));
         } else if (orientation.equals(Orientation.UP)) {
             sprite = new Sprite("zelda/arrow", 0.3f, 0.9f, this,
-                    new RegionOfInterest(8, 0, 16, 32), new Vector(.4f, .0f));
+                    new RegionOfInterest(8, 0, 16, 32), new Vector(.4f, 0.0f));
         } else if (orientation.equals(Orientation.LEFT)) {
             sprite = new Sprite("zelda/arrow", 0.9f, 0.3f, this,
-                    new RegionOfInterest(96, 7, 32, 16), new Vector(.0f, .2f));
+                    new RegionOfInterest(96, 7, 32, 16), new Vector(0.0f, .2f));
         }
     }
 
@@ -93,6 +94,19 @@ public class Arrow extends Projectile {
                 consume();
             }
         }
+        //todo change that  if arrow shot by player hits player it doesn't disappear
+        public void interactWith(ICRoguePlayer player, boolean isCellInteraction) {
+            if (wantsViewInteraction()) {
+                consume();
+                player.decreaseHp((float) DEFAULT_DAMAGE);
+            }
+        }
+        public void interactWith(Turret turret, boolean isCellInteraction) {
+            if (wantsViewInteraction()) {
+                consume();
+            }
+        }
+
     }
 
 }

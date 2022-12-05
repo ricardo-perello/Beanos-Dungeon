@@ -42,20 +42,36 @@ public class Turret extends Enemy{
 
     public void shootArrow(){
         if (shootUp){
-            Arrow arrow = new Arrow(getOwnerArea(), Orientation.UP,getCurrentMainCellCoordinates());
-            arrow.enterArea(getOwnerArea(),getCurrentMainCellCoordinates());
+            Arrow arrow = new Arrow(getOwnerArea(), Orientation.UP,
+                new DiscreteCoordinates(getCurrentMainCellCoordinates().x
+                ,(getCurrentMainCellCoordinates().y)+1));
+
+            arrow.enterArea(getOwnerArea(),new DiscreteCoordinates(getCurrentMainCellCoordinates().x
+                    , (getCurrentMainCellCoordinates().y)+1));
         }
         if (shootDown){
-            Arrow arrow = new Arrow(getOwnerArea(), Orientation.DOWN,getCurrentMainCellCoordinates());
-            arrow.enterArea(getOwnerArea(),getCurrentMainCellCoordinates());
+            Arrow arrow = new Arrow(getOwnerArea(), Orientation.DOWN,
+                    new DiscreteCoordinates(getCurrentMainCellCoordinates().x
+                    ,(getCurrentMainCellCoordinates().y)-1));
+
+            arrow.enterArea(getOwnerArea(),new DiscreteCoordinates(getCurrentMainCellCoordinates().x
+                    ,(getCurrentMainCellCoordinates().y)-1));
         }
         if (shootLeft){
-            Arrow arrow = new Arrow(getOwnerArea(), Orientation.LEFT,getCurrentMainCellCoordinates());
-            arrow.enterArea(getOwnerArea(),getCurrentMainCellCoordinates());
+            Arrow arrow = new Arrow(getOwnerArea(), Orientation.LEFT,
+                    new DiscreteCoordinates((getCurrentMainCellCoordinates().x-1)
+                    ,(getCurrentMainCellCoordinates().y)));
+
+            arrow.enterArea(getOwnerArea(),new DiscreteCoordinates((getCurrentMainCellCoordinates().x-1)
+                    ,getCurrentMainCellCoordinates().y));
         }
         if (shootRight){
-            Arrow arrow = new Arrow(getOwnerArea(), Orientation.RIGHT,getCurrentMainCellCoordinates());
-            arrow.enterArea(getOwnerArea(),getCurrentMainCellCoordinates());
+            Arrow arrow = new Arrow(getOwnerArea(), Orientation.RIGHT,
+                    new DiscreteCoordinates((getCurrentMainCellCoordinates().x+1)
+                    ,(getCurrentMainCellCoordinates().y)));
+
+            arrow.enterArea(getOwnerArea(),new DiscreteCoordinates((getCurrentMainCellCoordinates().x+1)
+                    ,(getCurrentMainCellCoordinates().y)));
         }
     }
 

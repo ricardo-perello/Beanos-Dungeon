@@ -10,6 +10,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactor;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.icrogue.ICRogue;
 import ch.epfl.cs107.play.game.icrogue.actor.items.*;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
@@ -33,6 +34,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private ICRoguePlayerInteractionHandler handler;
     private String spriteName = "zelda/player";
     private ArrayList<Item> carrying = new ArrayList<>();
+    private float hp = 10;
     /// Animation duration in frame number
     private final static int MOVE_DURATION = 8;
 
@@ -115,7 +117,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             //melee damage
         }
 
-
+        // todo check why arrow doesnt shoot anymore
         if(keyboard.get(Keyboard.C).isPressed()&& hasBow){
             spriteName = "zelda/player.bow";
             bowSprite(getOrientation());
@@ -124,8 +126,28 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
         }
 
+
+
+
         super.update(deltaTime);
 
+    }
+
+    public void setHp(float hp){
+        this.hp = hp;
+    }
+
+    public float getHp(){
+        return hp;
+    }
+
+    public void decreaseHp(float delta){
+        hp -= delta;
+        System.out.println(hp);
+    }
+
+    public void increaseHp(float delta){
+        hp += delta;
     }
 
 

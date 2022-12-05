@@ -43,6 +43,10 @@ public class ICRogue extends AreaGame {
 
     }
 
+    public void PlayerDies(){
+        initLevel();
+    }
+
     @Override
     public boolean begin(Window window, FileSystem fileSystem) {
 
@@ -60,6 +64,9 @@ public class ICRogue extends AreaGame {
         Button key=keyboard.get(Keyboard.R);
         /*resets current room for testing purposes*/
         if(key.isDown()){
+            initLevel();
+        }
+        if(player.getHp() <= 0){
             initLevel();
         }
         super.update(deltaTime);
