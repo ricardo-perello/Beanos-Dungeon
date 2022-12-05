@@ -38,6 +38,18 @@ public abstract class ICRogueRoom extends Area {
         return coordinates.x+""+coordinates.y;
     }
 
+    public void SetConnectorAreaTitle (int index, String title){
+        connectors.get(index).setAreaTitle(title);
+    }
+
+    public void setConnectorState(int idx, Connector.ConnectorState state){
+        connectors.get(idx).setState(state);
+    }
+
+    public void setConnectorKeyID(int idx, int ID){
+        connectors.get(idx).setID(ID);
+    }
+
     public void setConnectors(int i,Connector connector){
         connectors.set(i,connector);
     }
