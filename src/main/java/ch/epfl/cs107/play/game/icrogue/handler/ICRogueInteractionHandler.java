@@ -14,6 +14,7 @@ import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.items.*;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
+import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Melee;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;
@@ -35,6 +36,8 @@ public interface ICRogueInteractionHandler extends AreaInteractionVisitor {
     default void interactWith(Staff staff, boolean isCellInteraction) {
     }
     default void interactWith(Sword sword, boolean isCellInteraction){
+    }
+    default void interactWith(Melee melee, boolean isCellInteraction) {
     }
     default void interactWith(Bow bow, boolean isCellInteraction){
     }

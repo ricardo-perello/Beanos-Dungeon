@@ -10,9 +10,11 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactor;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.items.*;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
+import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Melee;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;
@@ -111,11 +113,43 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             fire.enterArea(getOwnerArea(),getCurrentMainCellCoordinates());
 
         }
-        //todo add melee damage method
+        //todo fix melee damage method
         if(keyboard.get(Keyboard.Z).isPressed() && hasSword){
             spriteName = "zelda/player.sword";
             swordSprite(getOrientation());
-            //melee damage
+
+            if (getOrientation().equals(Orientation.UP)){
+                Melee melee = new Melee(getOwnerArea(), Orientation.UP,
+                        new DiscreteCoordinates(getCurrentMainCellCoordinates().x
+                                ,(getCurrentMainCellCoordinates().y)+1));
+
+                melee.enterArea(getOwnerArea(),new DiscreteCoordinates(getCurrentMainCellCoordinates().x
+                        , (getCurrentMainCellCoordinates().y)+1));
+            }
+            if (getOrientation().equals(Orientation.DOWN)){
+                Melee melee = new Melee(getOwnerArea(), Orientation.DOWN,
+                        new DiscreteCoordinates(getCurrentMainCellCoordinates().x
+                                ,(getCurrentMainCellCoordinates().y)-1));
+
+                melee.enterArea(getOwnerArea(),new DiscreteCoordinates(getCurrentMainCellCoordinates().x
+                        ,(getCurrentMainCellCoordinates().y)-1));
+            }
+            if (getOrientation().equals(Orientation.LEFT)){
+                Melee melee = new Melee(getOwnerArea(), Orientation.LEFT,
+                        new DiscreteCoordinates((getCurrentMainCellCoordinates().x-1)
+                                ,(getCurrentMainCellCoordinates().y)));
+
+                melee.enterArea(getOwnerArea(),new DiscreteCoordinates((getCurrentMainCellCoordinates().x-1)
+                        ,getCurrentMainCellCoordinates().y));
+            }
+            if (getOrientation().equals(Orientation.RIGHT)){
+                Melee melee = new Melee(getOwnerArea(), Orientation.RIGHT,
+                        new DiscreteCoordinates((getCurrentMainCellCoordinates().x+1)
+                                ,(getCurrentMainCellCoordinates().y)));
+
+                melee.enterArea(getOwnerArea(),new DiscreteCoordinates((getCurrentMainCellCoordinates().x+1)
+                        ,(getCurrentMainCellCoordinates().y)));
+            }
         }
 
         // todo check why arrow doesnt shoot anymore

@@ -12,6 +12,8 @@ import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.math.RegionOfInterest;
+import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
 import java.util.Collections;
@@ -25,7 +27,7 @@ public class Staff extends Item{
     }
 
     public void setSprite(){
-        sprite=new Sprite("zelda/staff_water.icon",.5f,.5f,this);
+        sprite=new Sprite("zelda/staff_water.icon",.5f,.5f,this,new RegionOfInterest(0,0,16,16),new Vector(0.25f,0.25f));
     }
 
 
