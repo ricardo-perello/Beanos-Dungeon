@@ -4,6 +4,7 @@ package ch.epfl.cs107.play.game.icrogue.area.level0;
  *  Date:
  */
 
+import ch.epfl.cs107.play.game.icrogue.ICRogue;
 import ch.epfl.cs107.play.game.icrogue.actor.Connector;
 import ch.epfl.cs107.play.game.icrogue.area.Level;
 import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0KeyRoom;
@@ -12,7 +13,7 @@ import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0StaffRoom;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 public class Level0 extends Level {
-    private static final DiscreteCoordinates startingroom=new DiscreteCoordinates(1,0);
+    public static final DiscreteCoordinates startingroom=new DiscreteCoordinates(1,0);
     private static final DiscreteCoordinates arrivalCoordinates=new DiscreteCoordinates(2,0);
     public Level0() {
         super(arrivalCoordinates, 4, 2);
