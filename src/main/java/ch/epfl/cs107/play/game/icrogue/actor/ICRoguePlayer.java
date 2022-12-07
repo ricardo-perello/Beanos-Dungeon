@@ -1,9 +1,4 @@
 package ch.epfl.cs107.play.game.icrogue.actor;
-/*
- *  Author:  Mateus Vital Nabholz
- *  Date:
- */
-
 import ch.epfl.cs107.play.game.actor.TextGraphics;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
@@ -29,10 +24,10 @@ import java.util.Collections;
 import java.util.List;
 
 public class ICRoguePlayer extends ICRogueActor implements Interactor {
-    public final static float DEFAULT_PLAYER_HP = 10;
+    public final static int DEFAULT_PLAYER_HP = 10;
     /// Animation duration in frame number
     private final static int MOVE_DURATION = 8;
-    public final static float DEFAULT_MELEE_DAMAGE = 1;
+    public final static int DEFAULT_MELEE_DAMAGE = 1;
     private Sprite sprite;
     private TextGraphics message;
 
@@ -42,9 +37,9 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private ICRoguePlayerInteractionHandler handler;
     private String spriteName = "zelda/player";
     private ArrayList<Item> carrying = new ArrayList<>();
-    private float hp = DEFAULT_PLAYER_HP;
+    private int hp = DEFAULT_PLAYER_HP;
     private boolean receivedDamage = false;
-    private float meleeDamage;
+    private int meleeDamage;
 
 
     public ICRoguePlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates){
@@ -153,11 +148,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
     }
 
-    public void setHp(float hp){
+    public void setHp(int hp){
         this.hp = hp;
     }
 
-    public float getHp(){
+    public int getHp(){
         return hp;
     }
 
