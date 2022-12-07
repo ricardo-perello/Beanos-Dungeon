@@ -5,7 +5,9 @@ package ch.epfl.cs107.play.game.icrogue.area;
  */
 
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
+import ch.epfl.cs107.play.game.icrogue.ICRogue;
 import ch.epfl.cs107.play.game.icrogue.actor.Connector;
+import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
 import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0Room;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
@@ -48,5 +50,27 @@ public abstract class Level {
         bossPosition=new DiscreteCoordinates(0,0);
         generateFixedMap();
     }
+
+    public ICRoguePlayer addPlayer(DiscreteCoordinates startingroom){
+        ICRoguePlayer player=new ICRoguePlayer(map[startingroom.x][startingroom.y],Orientation.UP,new DiscreteCoordinates(2,2));
+        player.enterArea(map[startingroom.x][startingroom.y],new DiscreteCoordinates(2,2));
+        return player;
+    }
+
+    public void addAreas(ICRogue game){
+        for(int i=0;i<map.length;++i){
+            for(int k=0;k<map[i].length;++k){
+                if(map[i][k] != null){
+                    game.addArea(map[i][k]);
+                }
+
+            }
+        }
+    }
+
+    public String getRoomName(DiscreteCoordinates coordinates){
+        return map[coordinates.x][coordinates.y].getTitle();
+    }
+
     public abstract void generateFixedMap();
 }

@@ -7,6 +7,8 @@ package ch.epfl.cs107.play.game.icrogue;
 import ch.epfl.cs107.play.game.areagame.AreaGame;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.icrogue.area.ICRogueRoom;
+import ch.epfl.cs107.play.game.icrogue.area.Level;
+import ch.epfl.cs107.play.game.icrogue.area.level0.Level0;
 import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0Room;
 import ch.epfl.cs107.play.game.tutosSolution.actor.GhostPlayer;
 import ch.epfl.cs107.play.io.FileSystem;
@@ -22,7 +24,7 @@ public class ICRogue extends AreaGame {
 
     private ICRoguePlayer player; /*Main character*/
 
-    private Level0Room currentRoom;
+    private Level level;
 
 
     private int areaIndex;
@@ -30,15 +32,15 @@ public class ICRogue extends AreaGame {
      * Add all the areas
      */
     private void initLevel(){
-        currentRoom=new Level0Room(new DiscreteCoordinates(0,0)); /* creates first area*/
+        level=new Level0(); /* creates first area*/
 
-        addArea(currentRoom); /*adds current room to the areas*/
+        level.generateFixedMap();
 
-        setCurrentArea(currentRoom.getTitle(),true); /* makes it the current area */
+        level.addAreas(this); /*adds current room to the areas*/
 
-        player=new ICRoguePlayer(currentRoom, Orientation.UP,new DiscreteCoordinates(2,2));/* creates main character*/
+        setCurrentArea(level.getRoomName(Level0.startingroom),true); /* makes it the current area */
 
-        player.enterArea(currentRoom,new DiscreteCoordinates(2,2)); /*makes mc enter the main room*/
+        player=level.addPlayer(Level0.startingroom);/* creates main character and adds to starting room*/
 
 
     }
