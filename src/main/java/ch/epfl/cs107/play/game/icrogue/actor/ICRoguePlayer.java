@@ -336,14 +336,12 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 staffSprite(getOrientation());
             }
         }
-
         public void interactWith(Key key, boolean isCellInteraction){
             if(wantsCellInteraction()){
                 key.collect();
                 carrying.add(key); /*adds key to carrying arraylist which represents the items the character is holding*/
             }
         }
-
         public void interactWith(Turret turret, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if (wantsViewInteraction() && keyboard.get(Keyboard.Z).isPressed()){
@@ -351,6 +349,4 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             }
         }
     }
-
-
 }
