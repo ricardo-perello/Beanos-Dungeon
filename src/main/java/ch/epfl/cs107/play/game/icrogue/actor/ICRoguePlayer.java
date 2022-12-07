@@ -28,6 +28,10 @@ import java.util.Collections;
 import java.util.List;
 
 public class ICRoguePlayer extends ICRogueActor implements Interactor {
+    public final static float DEFAULT_PLAYER_HP = 10;
+    /// Animation duration in frame number
+    private final static int MOVE_DURATION = 8;
+    public final static float DEFAULT_MELEE_DAMAGE = 1;
     private Sprite sprite;
     private boolean hasStaff;
     private boolean hasSword;
@@ -37,9 +41,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private ArrayList<Item> carrying = new ArrayList<>();
     private float hp = DEFAULT_PLAYER_HP;
     private boolean receivedDamage = false;
-    public final static float DEFAULT_PLAYER_HP = 10;
-    /// Animation duration in frame number
-    private final static int MOVE_DURATION = 8;
+    private float meleeDamage;
+
 
     public ICRoguePlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates){
         super(owner,orientation,coordinates);
@@ -114,45 +117,17 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
         }
         //todo fix melee damage method
-        if(keyboard.get(Keyboard.Z).isPressed() && hasSword){
-            spriteName = "zelda/player.sword";
-            swordSprite(getOrientation());
-
-            if (getOrientation().equals(Orientation.UP)){
-                Melee melee = new Melee(getOwnerArea(), Orientation.UP,
-                        new DiscreteCoordinates(getCurrentMainCellCoordinates().x
-                                ,(getCurrentMainCellCoordinates().y)+1));
-
-                melee.enterArea(getOwnerArea(),new DiscreteCoordinates(getCurrentMainCellCoordinates().x
-                        , (getCurrentMainCellCoordinates().y)+1));
+        if(keyboard.get(Keyboard.Z).isPressed()) {
+            if (hasSword) {
+                spriteName = "zelda/player.sword";
+                swordSprite(getOrientation());
+            } else {
+                spriteName = "zelda/player";
+                defaultSprite(getOrientation());
             }
-            if (getOrientation().equals(Orientation.DOWN)){
-                Melee melee = new Melee(getOwnerArea(), Orientation.DOWN,
-                        new DiscreteCoordinates(getCurrentMainCellCoordinates().x
-                                ,(getCurrentMainCellCoordinates().y)-1));
 
-                melee.enterArea(getOwnerArea(),new DiscreteCoordinates(getCurrentMainCellCoordinates().x
-                        ,(getCurrentMainCellCoordinates().y)-1));
-            }
-            if (getOrientation().equals(Orientation.LEFT)){
-                Melee melee = new Melee(getOwnerArea(), Orientation.LEFT,
-                        new DiscreteCoordinates((getCurrentMainCellCoordinates().x-1)
-                                ,(getCurrentMainCellCoordinates().y)));
-
-                melee.enterArea(getOwnerArea(),new DiscreteCoordinates((getCurrentMainCellCoordinates().x-1)
-                        ,getCurrentMainCellCoordinates().y));
-            }
-            if (getOrientation().equals(Orientation.RIGHT)){
-                Melee melee = new Melee(getOwnerArea(), Orientation.RIGHT,
-                        new DiscreteCoordinates((getCurrentMainCellCoordinates().x+1)
-                                ,(getCurrentMainCellCoordinates().y)));
-
-                melee.enterArea(getOwnerArea(),new DiscreteCoordinates((getCurrentMainCellCoordinates().x+1)
-                        ,(getCurrentMainCellCoordinates().y)));
-            }
         }
 
-        // todo check why arrow doesnt shoot anymore
         if(keyboard.get(Keyboard.C).isPressed()&& hasBow){
             spriteName = "zelda/player.bow";
             bowSprite(getOrientation());
@@ -160,10 +135,12 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             arrow.enterArea(getOwnerArea(),getCurrentMainCellCoordinates());
 
         }
-
-
-
-
+        if (hasSword){
+            meleeDamage = Sword.DEFAULT_DAMAGE;
+        }
+        else{
+            meleeDamage = DEFAULT_MELEE_DAMAGE;
+        }
         super.update(deltaTime);
 
     }
@@ -215,12 +192,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     /*interacts with intractable in its field of vision (aka in front of whatever direction he is facing)*/
     public boolean wantsViewInteraction() {
         Keyboard keyboard= getOwnerArea().getKeyboard();
-        if(keyboard.get(Keyboard.W).isPressed()){  /*this means that the player only interacts with an object in front of him if you press W*/
-            return true;
-        }
-        else{
-            return false;
-        }
+        /*this means that the player only interacts with an object in front of him if you press W*/
+        return (keyboard.get(Keyboard.W).isPressed()) || (keyboard.get(Keyboard.Z).isPressed());
     }
 
     public void defaultSprite(Orientation orientation){
@@ -343,7 +316,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             }
         }
         public void interactWith(Staff staff, boolean isCellInteraction){
-            if(wantsViewInteraction()){
+            Keyboard keyboard= getOwnerArea().getKeyboard();
+            if(wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())){
                 staff.collect();
                 hasStaff = true;
                 carrying.add(staff);
@@ -352,7 +326,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             }
         }
         public void interactWith(Sword sword, boolean isCellInteraction){
-            if(wantsViewInteraction()){
+            Keyboard keyboard= getOwnerArea().getKeyboard();
+            if(wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())){
                 sword.collect();
                 hasSword = true;
                 carrying.add(sword);
@@ -361,7 +336,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             }
         }
         public void interactWith(Bow bow, boolean isCellInteraction){
-            if(wantsViewInteraction()){
+            Keyboard keyboard= getOwnerArea().getKeyboard();
+            if(wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())){
                 bow.collect();
                 hasBow = true;
                 carrying.add(bow);
@@ -374,6 +350,13 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             if(wantsCellInteraction()){
                 key.collect();
                 carrying.add(key); /*adds key to carrying arraylist which represents the items the character is holding*/
+            }
+        }
+
+        public void interactWith(Turret turret, boolean isCellInteraction){
+            Keyboard keyboard= getOwnerArea().getKeyboard();
+            if (wantsViewInteraction() && keyboard.get(Keyboard.Z).isPressed()){
+                turret.decreaseHp(meleeDamage);
             }
         }
     }

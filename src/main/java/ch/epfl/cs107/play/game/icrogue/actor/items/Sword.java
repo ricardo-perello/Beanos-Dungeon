@@ -28,6 +28,9 @@ public class Sword extends Item{
         sprite=new Sprite("zelda/sword.icon",.5f,.5f,this,new RegionOfInterest(0,0,16,16),new Vector(0.25f,0.25f));
     }
 
+    public float getMeleeDamage(){
+        return DEFAULT_DAMAGE;
+    }
 
     @Override
     public void draw(Canvas canvas) {

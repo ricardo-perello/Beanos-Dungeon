@@ -92,6 +92,7 @@ public class Turret extends Enemy{
 
     public void decreaseHp(float delta){
         hp -= delta;
+        System.out.println("turret: "+hp);
     }
 
     public void increaseHp(float delta){
