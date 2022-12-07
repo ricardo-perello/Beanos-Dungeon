@@ -91,7 +91,12 @@ public class Turret extends Enemy{
     }
 
     public void decreaseHp(int delta){
-        hp -= delta;
+        if (hp - delta > 0) {
+            hp -= delta;
+        }
+        else{
+            hp = 0;
+        }
         System.out.println("turret: "+hp);
     }
 
