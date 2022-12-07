@@ -2,6 +2,7 @@ package ch.epfl.cs107.play.game.actor;
 
 import ch.epfl.cs107.play.math.Node;
 import ch.epfl.cs107.play.math.Shape;
+import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
 import java.awt.Color;
@@ -17,6 +18,7 @@ public class ShapeGraphics extends Node implements Graphics {
 	private float thickness;
 	private float alpha;
 	private float depth;
+    private Vector anchor;
 
     /**
      * Creates a new shape graphics.

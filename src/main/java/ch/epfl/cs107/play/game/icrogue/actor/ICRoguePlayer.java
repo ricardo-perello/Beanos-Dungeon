@@ -4,6 +4,7 @@ package ch.epfl.cs107.play.game.icrogue.actor;
  *  Date:
  */
 
+import ch.epfl.cs107.play.game.actor.TextGraphics;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Interactor;
@@ -14,7 +15,6 @@ import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.items.*;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
-import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Melee;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;
@@ -23,6 +23,7 @@ import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Keyboard;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,6 +34,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private final static int MOVE_DURATION = 8;
     public final static float DEFAULT_MELEE_DAMAGE = 1;
     private Sprite sprite;
+    private TextGraphics message;
+
     private boolean hasStaff;
     private boolean hasSword;
     private boolean hasBow;
@@ -72,6 +75,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
     public void draw(Canvas canvas) {
         sprite.draw(canvas);
+        message.draw(canvas);
     }
 
     private void moveIfPressed(Orientation orientation, Button b){
@@ -141,6 +145,10 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         else{
             meleeDamage = DEFAULT_MELEE_DAMAGE;
         }
+
+        printHp();
+
+
         super.update(deltaTime);
 
     }
@@ -151,6 +159,15 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
     public float getHp(){
         return hp;
+    }
+
+
+
+
+    private void printHp(){
+        message = new TextGraphics(Integer.toString((int)hp), 0.4f, Color.BLUE);
+        message.setParent(this);
+        message.setAnchor(new Vector(-0.3f, 0.1f));
     }
 
     public void decreaseHp(float delta){
@@ -272,32 +289,6 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         }
     }
 
-
-/*
-    public void shootFlameSprite(Orientation orientation){
-
-        //todo change area region of interest for animation of shooting fireball
-        if(orientation.equals(Orientation.DOWN)){
-            sprite=new Sprite(spriteName, .75f,1.5f,this,
-                    new RegionOfInterest(60,0,16,32), new Vector(.15f,-.15f));
-        }
-        else if(orientation.equals(Orientation.RIGHT)){
-            sprite=new Sprite(spriteName, 0.95f,1.5f,this,
-                    new RegionOfInterest(62,64,19,32), new Vector(.15f,-.15f));
-        }
-        else if(orientation.equals(Orientation.UP)){
-            sprite=new Sprite(spriteName, .75f,1.5f,this,
-                    new RegionOfInterest(60,32,16,32), new Vector(.15f,-.15f));
-        }
-        else if(orientation.equals(Orientation.LEFT)) {
-            sprite = new Sprite(spriteName, 0.95f, 1.5f, this,
-                    new RegionOfInterest(64, 96, 19, 32), new Vector(.15f, -.15f));
-        }
-
-
-    }
-
- */
 
     public boolean getReceivedDamage(){return receivedDamage;}
 
