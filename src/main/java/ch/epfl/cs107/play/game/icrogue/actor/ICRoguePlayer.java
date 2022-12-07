@@ -120,7 +120,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             fire.enterArea(getOwnerArea(),getCurrentMainCellCoordinates());
 
         }
-        //todo fix melee damage method
+
         if(keyboard.get(Keyboard.Z).isPressed()) {
             if (hasSword) {
                 spriteName = "zelda/player.sword";

@@ -21,7 +21,7 @@ import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
 public class Arrow extends Projectile {
-
+//todo add boolean to constructor to fix self damage.
     private Sprite sprite;
     private ICRogueArrowInteractionHandler handler;
 
@@ -89,7 +89,7 @@ public class Arrow extends Projectile {
                 consume();
             }
         }
-        //todo change that  if arrow shot by player hits player it doesn't disappear
+
         public void interactWith(ICRoguePlayer player, boolean isCellInteraction) {
             if (wantsViewInteraction() && !(isConsumed())) {
                 player.decreaseHp((float) DEFAULT_DAMAGE);

@@ -123,7 +123,7 @@ public class AreaGraph {
                 if(nodes.containsKey(c)){
                     connectedNodes.add(nodes.get(c));
                 }else{
-                    // TODO throw exception
+                    //   throw exception
                     System.out.println(neighborString + " neighbor for "+ coordinates.toString() + " Node does not exists");
                 }
             }

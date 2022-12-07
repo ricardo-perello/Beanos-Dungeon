@@ -101,7 +101,7 @@ public final class SwingWindow extends Node implements Window {
 
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent e) {
-			// TODO mouse scroll?
+			//  mouse scroll?
 		}
 
 		@Override
@@ -117,7 +117,7 @@ public final class SwingWindow extends Node implements Window {
 		
 		@Override
 		public Vector getVelocity() {
-			// TODO interpolate mouse velocity
+			//  interpolate mouse velocity
 			return Vector.ZERO;
 		}
 	}
@@ -351,7 +351,7 @@ public final class SwingWindow extends Node implements Window {
 				}
 			}
 			images.put(name+roi, image);
-			// TODO maybe need to free memory at some point?
+			//  maybe need to free memory at some point?
 		}
 		return image;
 	}
