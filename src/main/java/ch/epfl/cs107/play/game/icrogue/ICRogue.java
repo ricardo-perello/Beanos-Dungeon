@@ -81,7 +81,7 @@ public class ICRogue extends AreaGame {
     public void end() {
     }
 
-    @Override
+
     public String getTitle() {
         return "Beanos' Dungeon";
     } /*returns the title of our game */
@@ -93,6 +93,7 @@ public class ICRogue extends AreaGame {
             setCurrentArea(player.getTransitionArea(), false);
 
             level.enterArea(player.getCoordinatesTransition(),player,player.getTransitionArea());
+            player.transitioned();
 
 
         }

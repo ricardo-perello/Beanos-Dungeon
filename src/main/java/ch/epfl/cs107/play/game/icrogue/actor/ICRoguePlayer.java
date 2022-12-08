@@ -223,6 +223,10 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         return (keyboard.get(Keyboard.W).isPressed()) || (keyboard.get(Keyboard.Z).isPressed());
     }
 
+    public void transitioned(){
+        isTransitioning=false;
+    }
+
     public void defaultSprite(Orientation orientation){
         if(orientation.equals(Orientation.DOWN)){
             sprite=new Sprite(spriteName, .75f,1.5f,this,
@@ -373,7 +377,6 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 coordinatesTransition=connector.getArrivalcoordinates();
                 transitionArea=connector.getAreaTitle();
                 isTransitioning=true;
-
 
             }
         }
