@@ -57,6 +57,18 @@ public abstract class Level {
         return player;
     }
 
+    public void enterArea(DiscreteCoordinates transitionCoor, ICRoguePlayer player, String roomName){
+        for(int i=0;i<map.length;++i){
+            for(int k=0;k<map[i].length;++k){
+                if(map[i][k]!=null){
+                    if(roomName.equals(map[i][k].getTitle())){
+                        player.enterArea(map[i][k],transitionCoor);
+                    }
+                }
+            }
+        }
+    }
+
     public void addAreas(ICRogue game){
         for(int i=0;i<map.length;++i){
             for(int k=0;k<map[i].length;++k){

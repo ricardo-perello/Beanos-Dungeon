@@ -11,6 +11,7 @@ import ch.epfl.cs107.play.game.icrogue.area.Level;
 import ch.epfl.cs107.play.game.icrogue.area.level0.Level0;
 import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0Room;
 import ch.epfl.cs107.play.game.tutosSolution.actor.GhostPlayer;
+import ch.epfl.cs107.play.game.tutosSolution.area.Tuto2Area;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Button;
@@ -71,6 +72,7 @@ public class ICRogue extends AreaGame {
         if(player.getHp() <= 0){
             initLevel();
         }
+        switchRoom();
         super.update(deltaTime);
 
     }
@@ -84,7 +86,16 @@ public class ICRogue extends AreaGame {
         return "Beanos' Dungeon";
     } /*returns the title of our game */
 
-    protected void switchArea() {
+    protected void switchRoom() {
+        if(player.getisTransitioning()){
+            player.leaveArea();
+
+            setCurrentArea(player.getTransitionArea(), false);
+
+            level.enterArea(player.getCoordinatesTransition(),player,player.getTransitionArea());
+
+
+        }
 
     }
 

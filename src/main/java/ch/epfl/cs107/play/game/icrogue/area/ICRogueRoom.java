@@ -24,12 +24,14 @@ public abstract class ICRogueRoom extends Area {
     private String behaviourName;
     private ArrayList<Connector>connectors=new ArrayList<>();
     public ICRogueRoom(List<DiscreteCoordinates> connectorsCoordinates,
-                       List<Orientation> orientations,
+                       List<Orientation> orientations,List<DiscreteCoordinates>destinationCoordinates,
                        String behaviourName, DiscreteCoordinates roomCoordinates){
         this.behaviourName=behaviourName;
         coordinates=roomCoordinates;
         for(int i=0;i<connectorsCoordinates.size();++i){
-            connectors.add(new Connector(this,orientations.get(i),connectorsCoordinates.get(i)));
+            Connector connector=new Connector(this,orientations.get(i),connectorsCoordinates.get(i));
+            connector.setArrivalcoordinates(destinationCoordinates.get(i));
+            connectors.add(connector);
         }
 
     }
@@ -40,6 +42,9 @@ public abstract class ICRogueRoom extends Area {
 
     public void SetConnectorAreaTitle (int index, String title){
         connectors.get(index).setAreaTitle(title);
+    }
+    public void SetConnectorArrivalCoordinates (int index, DiscreteCoordinates coordinates){
+        connectors.get(index).setArrivalcoordinates(coordinates);
     }
 
     public void setConnectorState(int idx, Connector.ConnectorState state){

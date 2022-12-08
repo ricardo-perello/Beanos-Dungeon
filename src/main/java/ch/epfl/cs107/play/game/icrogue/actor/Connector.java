@@ -49,12 +49,20 @@ public class Connector extends AreaEntity {
         }
     }
 
+    public void setArrivalcoordinates(DiscreteCoordinates coordinates){
+        arrivalcoordinates=coordinates;
+    }
+
     public void setAreaTitle(String title){
         areaTitle=title;
     }
 
     public ConnectorState getState(){
         return state;
+    }
+
+    public DiscreteCoordinates getArrivalcoordinates(){
+        return arrivalcoordinates;
     }
 
     public void setState(ConnectorState state){
@@ -79,6 +87,13 @@ public class Connector extends AreaEntity {
 
     public void setID(int id){
         ID=id;
+    }
+    public int getID(){
+        return ID;
+    }
+
+    public String getAreaTitle(){
+        return areaTitle;
     }
 
     public List<DiscreteCoordinates> getCurrentCells() {

@@ -9,6 +9,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.ICRogueBehavior;
+import ch.epfl.cs107.play.game.icrogue.actor.Connector;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.items.*;
@@ -49,5 +50,8 @@ public interface ICRogueInteractionHandler extends AreaInteractionVisitor {
     }
     default void interactWith(Turret turret, boolean isCellInteraction){}
     default void interactWith(Key key, boolean isCellInteraction){
+    }
+    default void interactWith(Connector connector, boolean isCellInteraction){
+
     }
 }

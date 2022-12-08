@@ -36,6 +36,9 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private boolean hasStaff;
     private boolean hasSword;
     private boolean hasBow;
+    private boolean isTransitioning;
+    private String transitionArea;
+    private DiscreteCoordinates coordinatesTransition;
     private ICRoguePlayerInteractionHandler handler;
     private String spriteName = "zelda/player";
     private ArrayList<Item> carrying = new ArrayList<>();
@@ -72,6 +75,18 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
     public void draw(Canvas canvas) {
         sprite.draw(canvas);
+    }
+
+    public String getTransitionArea(){
+        return transitionArea;
+    }
+
+    public boolean getisTransitioning(){
+        return isTransitioning;
+    }
+
+    public DiscreteCoordinates getCoordinatesTransition(){
+        return coordinatesTransition;
     }
 
     private void moveIfPressed(Orientation orientation, Button b){
@@ -357,6 +372,25 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if (wantsViewInteraction() && keyboard.get(Keyboard.Z).isPressed()){
                 turret.decreaseHp(meleeDamage);
+            }
+        }
+        public void interactWith(Connector connector, boolean isCellInteraction){
+            if(wantsViewInteraction()){
+                boolean unlock=false;
+                if(connector.getState().equals(Connector.ConnectorState.CLOSED)){
+                    for(Item item:carrying){
+                        if(item instanceof Key||((Key) item).getIdentificator()==connector.getID()){
+                                connector.setState(Connector.ConnectorState.OPEN);
+                            }
+                        }
+                    }
+                }
+            else if(wantsCellInteraction()){
+                coordinatesTransition=connector.getArrivalcoordinates();
+                transitionArea=connector.getAreaTitle();
+                isTransitioning=true;
+
+
             }
         }
     }

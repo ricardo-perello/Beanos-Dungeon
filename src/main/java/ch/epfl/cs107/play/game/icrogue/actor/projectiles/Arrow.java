@@ -25,6 +25,8 @@ public class Arrow extends Projectile {
     private Sprite sprite;
     private ICRogueArrowInteractionHandler handler;
 
+    private boolean isEnemy;
+
     public Arrow(Area area, Orientation orientation, DiscreteCoordinates coordinates) {
         super(area, orientation, coordinates, DEFAULT_DAMAGE, 5);
         setSprite(orientation);

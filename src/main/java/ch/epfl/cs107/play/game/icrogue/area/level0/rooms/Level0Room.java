@@ -66,10 +66,18 @@ public class Level0Room extends ICRogueRoom {
             output.add(new DiscreteCoordinates(4,9));
             return output;
         }
+        public static List<DiscreteCoordinates>getAllConnectorsDestination(){
+            List<DiscreteCoordinates>output=new ArrayList<>();
+            output.add(new DiscreteCoordinates(8,5));
+            output.add(new DiscreteCoordinates(5,8));
+            output.add(new DiscreteCoordinates(1,5));
+            output.add(new DiscreteCoordinates(5,1));
+            return output;
+        }
     }
 
     public Level0Room(DiscreteCoordinates coordinates){
-        super(Level0Connectors.getAllConnectorsPosition(), Level0Connectors.getAllConnectorsOrientation(),
+        super(Level0Connectors.getAllConnectorsPosition(), Level0Connectors.getAllConnectorsOrientation(),Level0Connectors.getAllConnectorsDestination(),
                 "icrogue/Level0Room", coordinates);
     }
 
