@@ -83,7 +83,7 @@ public class Fire extends Projectile{
         public void interactWith(Turret turret, boolean isCellInteraction) {
             if(wantsViewInteraction()&&!isConsumed()) {
                 consume();
-                turret.decreaseHp((float)DEFAULT_DAMAGE);
+                turret.decreaseHp(DEFAULT_DAMAGE);
             }
         }
 

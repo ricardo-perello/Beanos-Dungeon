@@ -14,7 +14,7 @@ import ch.epfl.cs107.play.math.Vector;
  */
 public interface Canvas extends Positionable {
 
-    // TODO maybe provide some size/aspect ratio information
+    //  maybe provide some size/aspect ratio information
 
     /**
      * Gets image from file system.

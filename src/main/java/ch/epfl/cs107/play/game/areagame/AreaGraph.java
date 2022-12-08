@@ -123,7 +123,7 @@ public class AreaGraph {
                 if(nodes.containsKey(c)){
                     connectedNodes.add(nodes.get(c));
                 }else{
-                    // TODO throw exception
+                    //   throw exception
                     System.out.println(neighborString + " neighbor for "+ coordinates.toString() + " Node does not exists");
                 }
             }
@@ -166,7 +166,7 @@ public class AreaGraph {
      * Compute the shortest path in this AreaGraph from given DiscreteCoordinate to given DiscreteCoordinates
      * @param from (DiscreteCoordinates): source node of the desired path, not null
      * @param to (DiscreteCoordinates): sink node of the desired path, not null
-     * @return (Iterator of Orientation): return an iterator containing the shortest path from source to sink, or null if the path does not exists !
+     * @return (Iterator of Orientation): return an iterator containing the shortest path from source to sink, or null if the path does not exist !
      */
     public Queue<Orientation> shortestPath(DiscreteCoordinates from, DiscreteCoordinates to){
 

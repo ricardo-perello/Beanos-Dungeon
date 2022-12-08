@@ -21,7 +21,7 @@ public class Turret extends Enemy{
     private boolean shootRight;
     public final static float COOLDOWN = 2.f;
     private float counter = 0;
-    private float hp = 5;
+    private int hp = 5;
 
     public Turret(Area owner, Orientation orientation, DiscreteCoordinates coordinates, boolean sUp
             ,boolean sDown, boolean sLeft, boolean sRight) {
@@ -90,8 +90,13 @@ public class Turret extends Enemy{
         super.update(deltaTime);
     }
 
-    public void decreaseHp(float delta){
-        hp -= delta;
+    public void decreaseHp(int delta){
+        if (hp - delta > 0) {
+            hp -= delta;
+        }
+        else{
+            hp = 0;
+        }
         System.out.println("turret: "+hp);
     }
 

@@ -1,9 +1,5 @@
 package ch.epfl.cs107.play.game.icrogue.actor;
-/*
- *  Author:  Mateus Vital Nabholz
- *  Date:
- */
-
+import ch.epfl.cs107.play.game.actor.TextGraphics;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Interactor;
@@ -14,7 +10,6 @@ import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.items.*;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
-import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Melee;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;
@@ -23,16 +18,19 @@ import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Keyboard;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class ICRoguePlayer extends ICRogueActor implements Interactor {
-    public final static float DEFAULT_PLAYER_HP = 10;
+    public final static int DEFAULT_PLAYER_HP = 10;
     /// Animation duration in frame number
     private final static int MOVE_DURATION = 8;
-    public final static float DEFAULT_MELEE_DAMAGE = 1;
+    public final static int DEFAULT_MELEE_DAMAGE = 1;
     private Sprite sprite;
+    private TextGraphics message;
+
     private boolean hasStaff;
     private boolean hasSword;
     private boolean hasBow;
@@ -42,9 +40,9 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private ICRoguePlayerInteractionHandler handler;
     private String spriteName = "zelda/player";
     private ArrayList<Item> carrying = new ArrayList<>();
-    private float hp = DEFAULT_PLAYER_HP;
+    private int hp = DEFAULT_PLAYER_HP;
     private boolean receivedDamage = false;
-    private float meleeDamage;
+    private int meleeDamage;
 
 
     public ICRoguePlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates){
@@ -75,6 +73,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
     public void draw(Canvas canvas) {
         sprite.draw(canvas);
+        message.draw(canvas);
     }
 
     public String getTransitionArea(){
@@ -131,7 +130,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             fire.enterArea(getOwnerArea(),getCurrentMainCellCoordinates());
 
         }
-        //todo fix melee damage method
+
         if(keyboard.get(Keyboard.Z).isPressed()) {
             if (hasSword) {
                 spriteName = "zelda/player.sword";
@@ -156,16 +155,29 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         else{
             meleeDamage = DEFAULT_MELEE_DAMAGE;
         }
+
+        printHp();
+
+
         super.update(deltaTime);
 
     }
 
-    public void setHp(float hp){
+    public void setHp(int hp){
         this.hp = hp;
     }
 
-    public float getHp(){
+    public int getHp(){
         return hp;
+    }
+
+
+
+
+    private void printHp(){
+        message = new TextGraphics(Integer.toString((int)hp), 0.4f, Color.BLUE);
+        message.setParent(this);
+        message.setAnchor(new Vector(-0.3f, 0.1f));
     }
 
     public void decreaseHp(float delta){
@@ -288,32 +300,6 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     }
 
 
-/*
-    public void shootFlameSprite(Orientation orientation){
-
-        //todo change area region of interest for animation of shooting fireball
-        if(orientation.equals(Orientation.DOWN)){
-            sprite=new Sprite(spriteName, .75f,1.5f,this,
-                    new RegionOfInterest(60,0,16,32), new Vector(.15f,-.15f));
-        }
-        else if(orientation.equals(Orientation.RIGHT)){
-            sprite=new Sprite(spriteName, 0.95f,1.5f,this,
-                    new RegionOfInterest(62,64,19,32), new Vector(.15f,-.15f));
-        }
-        else if(orientation.equals(Orientation.UP)){
-            sprite=new Sprite(spriteName, .75f,1.5f,this,
-                    new RegionOfInterest(60,32,16,32), new Vector(.15f,-.15f));
-        }
-        else if(orientation.equals(Orientation.LEFT)) {
-            sprite = new Sprite(spriteName, 0.95f, 1.5f, this,
-                    new RegionOfInterest(64, 96, 19, 32), new Vector(.15f, -.15f));
-        }
-
-
-    }
-
- */
-
     public boolean getReceivedDamage(){return receivedDamage;}
 
     public void setReceivedDamage(boolean rd){receivedDamage = rd;}
@@ -360,14 +346,12 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 staffSprite(getOrientation());
             }
         }
-
         public void interactWith(Key key, boolean isCellInteraction){
             if(wantsCellInteraction()){
                 key.collect();
                 carrying.add(key); /*adds key to carrying arraylist which represents the items the character is holding*/
             }
         }
-
         public void interactWith(Turret turret, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if (wantsViewInteraction() && keyboard.get(Keyboard.Z).isPressed()){
@@ -394,6 +378,4 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             }
         }
     }
-
-
 }
