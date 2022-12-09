@@ -1,5 +1,7 @@
 package ch.epfl.cs107.play.game.icrogue.actor.enemies;
 
+import ch.epfl.cs107.play.game.actor.ImageGraphics;
+import ch.epfl.cs107.play.game.actor.ShapeGraphics;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
@@ -7,15 +9,18 @@ import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.math.Rectangle;
 import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
-import javax.swing.*;
+import java.awt.*;
 
 public class Turret extends Enemy{
 
     private Sprite sprite;
+    private ImageGraphics greyHealthBar;
+    private ImageGraphics redHealthBar;
     private String spriteName = "icrogue/static_npc";
     private boolean shootUp;
     private boolean shootDown;
@@ -37,8 +42,10 @@ public class Turret extends Enemy{
         isAlive = true;
 
         sprite=new Sprite("icrogue/static_npc", 1.f,1.f,this,
-                new RegionOfInterest(0,0,16,24), new Vector(0.f,0.f));
+                new RegionOfInterest(0,0,16,24), new Vector(-0.05f,0.25f));
 
+        printGreyHealthBar();
+        printRedHealthBar();
     }
 
     public void shootArrow(){
@@ -93,6 +100,19 @@ public class Turret extends Enemy{
 
 
 
+    private ImageGraphics printRedHealthBar(){
+        redHealthBar = new ImageGraphics("images/sprites/zelda/red.health.bar.png", ((.9f) * ((float)getHp()/5)) ,
+                .03f, new RegionOfInterest(0,0,(int)(100 * ((double)getHp()/5)),5), new Vector(((getPosition().x)+0.03f),((getPosition().y) + 0.07f)));
+        return redHealthBar;
+    }
+    private ImageGraphics printGreyHealthBar(){
+        greyHealthBar = new ImageGraphics("images/sprites/zelda/grey.health.bar.png", .9f,.03f,
+                new RegionOfInterest(0,0,100,5),  new Vector(((getPosition().x)+0.03f),((getPosition().y) + 0.07f)));
+        return greyHealthBar;
+    }
+
+
+
 
     public void decreaseHp(int delta){
         if (hp - delta > 0) {
@@ -115,6 +135,11 @@ public class Turret extends Enemy{
     @Override
     public void draw(Canvas canvas) {
         sprite.draw(canvas);
+        if (getHp() > 0){
+            printGreyHealthBar().draw(canvas);
+            printRedHealthBar().draw(canvas);
+        }
+
     }
 
 

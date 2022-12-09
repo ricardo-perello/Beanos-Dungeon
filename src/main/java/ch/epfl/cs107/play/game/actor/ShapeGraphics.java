@@ -40,12 +40,14 @@ public class ShapeGraphics extends Node implements Graphics {
 
     /**
      * Creates a new shape graphics.
-     * @param shape (Shape): shape, may be null
-     * @param fillColor (Color): fill color, may be null
+     *
+     * @param shape        (Shape): shape, may be null
+     * @param fillColor    (Color): fill color, may be null
      * @param outlineColor (Color): outline color, may be null
-     * @param thickness (float): outline thickness
+     * @param thickness    (float): outline thickness
+     * @param anchor
      */
-    public ShapeGraphics(Shape shape, Color fillColor, Color outlineColor, float thickness) {
+    public ShapeGraphics(Shape shape, Color fillColor, Color outlineColor, float thickness, Vector anchor) {
         this(shape, fillColor, outlineColor, thickness, 1.0f, 0.0f);
     }
 
