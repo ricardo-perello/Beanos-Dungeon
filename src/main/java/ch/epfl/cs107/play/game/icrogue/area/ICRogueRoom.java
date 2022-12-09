@@ -12,16 +12,18 @@ import ch.epfl.cs107.play.game.icrogue.ICRogueBehavior;
 import ch.epfl.cs107.play.game.icrogue.actor.Connector;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.signal.logic.Logic;
 import ch.epfl.cs107.play.window.Keyboard;
 import ch.epfl.cs107.play.window.Window;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ICRogueRoom extends Area {
+public abstract class ICRogueRoom extends Area implements Logic {
     private ICRogueBehavior behavior;
     private DiscreteCoordinates coordinates;
     private String behaviourName;
+    private boolean wasVisited;
     private ArrayList<Connector>connectors=new ArrayList<>();
     public ICRogueRoom(List<DiscreteCoordinates> connectorsCoordinates,
                        List<Orientation> orientations,List<DiscreteCoordinates>destinationCoordinates,
@@ -33,6 +35,7 @@ public abstract class ICRogueRoom extends Area {
             connector.setArrivalcoordinates(destinationCoordinates.get(i));
             connectors.add(connector);
         }
+        wasVisited=false;
 
     }
 
@@ -63,6 +66,10 @@ public abstract class ICRogueRoom extends Area {
         return behaviourName;
     }
 
+    public void visit(){
+        wasVisited=true;
+    }
+
     /**
      * Create the area by adding it all actors
      * called by begin method
@@ -76,7 +83,6 @@ public abstract class ICRogueRoom extends Area {
 
     /// EnigmeArea extends Area
 
-    @Override
     public final float getCameraScaleFactor() {
         return 11;
     }
@@ -85,7 +91,6 @@ public abstract class ICRogueRoom extends Area {
 
     /// Demo2Area implements Playable
 
-    @Override
     public boolean begin(Window window, FileSystem fileSystem) {
         if (super.begin(window, fileSystem)) {
             // Set the behavior map
@@ -98,40 +103,28 @@ public abstract class ICRogueRoom extends Area {
     }
 
     public void update(float deltaTime) {
-        Keyboard keyboard= getKeyboard();
-        if(keyboard.get(Keyboard.O).isPressed()){
+        if(isOff()&&!isOn()){
             for(Connector connector:connectors){
-                connector.setState(Connector.ConnectorState.OPEN);
-            }
-        }
-        if(keyboard.get(Keyboard.L).isPressed()){
-            connectors.get(0).setState(Connector.ConnectorState.LOCKED);
-            connectors.get(0).setID(1);
-        }
-        if(keyboard.get(Keyboard.T).isPressed()){
-            for(Connector connector:connectors){
-                if(connector.compareState(Connector.ConnectorState.OPEN)){
-                    connector.setState(Connector.ConnectorState.CLOSED);
-                }
-                else if(connector.compareState(Connector.ConnectorState.CLOSED)){
+                if(connector.compareState(Connector.ConnectorState.CLOSED)){
                     connector.setState(Connector.ConnectorState.OPEN);
                 }
-                else if(connector.compareState(Connector.ConnectorState.LOCKED)){
-                    connector.setState(Connector.ConnectorState.INVISIBLE);
-                    connector.setID(Connector.NO_KEY_ID);
-                }
-                else if(connector.compareState(Connector.ConnectorState.INVISIBLE)){
-                    connector.setState(Connector.ConnectorState.LOCKED);
-                    connector.setID(1);
-                }
-
-
-
-
             }
         }
+
         super.update(deltaTime);
 
+    }
+
+    public boolean isOn() {
+        return !wasVisited;
+    }
+
+    public boolean isOff() {
+        return wasVisited;
+    }
+
+    public float getIntensity() {
+        return 0;
     }
 
 }

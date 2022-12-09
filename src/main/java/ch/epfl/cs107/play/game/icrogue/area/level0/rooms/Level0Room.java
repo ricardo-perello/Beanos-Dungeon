@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Level0Room extends ICRogueRoom {
-
     public enum Level0Connectors implements ConnectorInRoom{
         W(new DiscreteCoordinates(0,4),
                 new DiscreteCoordinates(8,5),Orientation.LEFT),

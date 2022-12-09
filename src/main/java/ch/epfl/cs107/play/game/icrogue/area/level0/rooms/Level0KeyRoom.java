@@ -19,6 +19,4 @@ public class Level0KeyRoom extends Level0ItemRoom{
 
 
     }
-
-
 }

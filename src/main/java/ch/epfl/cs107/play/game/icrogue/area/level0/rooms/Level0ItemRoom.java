@@ -5,6 +5,7 @@ package ch.epfl.cs107.play.game.icrogue.area.level0.rooms;
  */
 
 import ch.epfl.cs107.play.game.areagame.actor.Background;
+import ch.epfl.cs107.play.game.areagame.actor.CollectableAreaEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Bow;
@@ -33,5 +34,23 @@ public abstract class Level0ItemRoom extends Level0Room {
         for(Item item:items){
             registerActor(item);
         }
+    }
+
+    public boolean itemsCollected(){
+        boolean collected=true;
+        for(Item item:items){
+            if (!item.isCollected()) {
+                collected = false;
+            }
+        }
+        return collected;
+    }
+
+    public boolean isOn() {
+        return super.isOn()||!itemsCollected();
+    }
+
+    public boolean isOff() {
+        return super.isOff()&&itemsCollected();
     }
 }

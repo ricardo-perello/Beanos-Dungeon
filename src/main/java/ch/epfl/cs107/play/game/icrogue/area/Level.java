@@ -54,6 +54,7 @@ public abstract class Level {
     public ICRoguePlayer addPlayer(DiscreteCoordinates startingroom){
         ICRoguePlayer player=new ICRoguePlayer(map[startingroom.x][startingroom.y],Orientation.UP,new DiscreteCoordinates(2,2));
         player.enterArea(map[startingroom.x][startingroom.y],new DiscreteCoordinates(2,2));
+        map[startingroom.x][startingroom.y].visit();
         return player;
     }
 
@@ -63,6 +64,7 @@ public abstract class Level {
                 if(map[i][k]!=null){
                     if(roomName.equals(map[i][k].getTitle())){
                         player.enterArea(map[i][k],transitionCoor);
+                        map[i][k].visit();
                     }
                 }
             }
