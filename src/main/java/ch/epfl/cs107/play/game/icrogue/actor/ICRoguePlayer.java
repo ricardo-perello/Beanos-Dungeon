@@ -1,4 +1,5 @@
 package ch.epfl.cs107.play.game.icrogue.actor;
+import ch.epfl.cs107.play.game.actor.ImageGraphics;
 import ch.epfl.cs107.play.game.actor.TextGraphics;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
@@ -12,6 +13,7 @@ import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.math.Positionable;
 import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Button;
@@ -23,12 +25,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static ch.epfl.cs107.play.game.areagame.io.ResourcePath.getSprite;
+
 public class ICRoguePlayer extends ICRogueActor implements Interactor {
     public final static int DEFAULT_PLAYER_HP = 10;
     /// Animation duration in frame number
     private final static int MOVE_DURATION = 8;
     public final static int DEFAULT_MELEE_DAMAGE = 1;
     private Sprite sprite;
+    private ImageGraphics fullHearts;
+    private ImageGraphics emptyHearts;
     private TextGraphics message;
 
     private boolean hasStaff;
@@ -47,8 +53,9 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
     public ICRoguePlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates){
         super(owner,orientation,coordinates);
-        hasStaff =false;
 
+        printEmptyHearts();
+        printFullHearts();
         //setting sprites based on orientation
         if(orientation.equals(Orientation.DOWN)){
             sprite=new Sprite("zelda/player", .75f,1.5f,this,
@@ -73,7 +80,10 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
     public void draw(Canvas canvas) {
         sprite.draw(canvas);
-        message.draw(canvas);
+        printEmptyHearts().draw(canvas);
+        if (getHp()>0){
+            printFullHearts().draw(canvas);
+        }
     }
 
     public String getTransitionArea(){
@@ -156,12 +166,10 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             meleeDamage = DEFAULT_MELEE_DAMAGE;
         }
 
-        printHp();
-
-
         super.update(deltaTime);
 
     }
+
 
     public void setHp(int hp){
         this.hp = hp;
@@ -171,14 +179,17 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         return hp;
     }
 
-
-
-
-    private void printHp(){
-        message = new TextGraphics(Integer.toString((int)hp), 0.4f, Color.BLUE);
-        message.setParent(this);
-        message.setAnchor(new Vector(-0.3f, 0.1f));
+    private ImageGraphics printFullHearts(){
+        fullHearts = new ImageGraphics("images/sprites/zelda/5.full.red.hearts.png", ((2.5f) * ((float)getHp()/10)) ,.5f,
+                new RegionOfInterest(0,0,(int)(80 * ((double)getHp()/10)),16), new Vector(0.5f,.25f));
+        return fullHearts;
     }
+    private ImageGraphics printEmptyHearts(){
+        emptyHearts = new ImageGraphics("images/sprites/zelda/5.empty.red.hearts.png", 2.5f,.5f,
+                new RegionOfInterest(0,0,80,16), new Vector(0.5f,.25f));
+        return emptyHearts;
+    }
+
 
     public void decreaseHp(float delta){
         hp -= delta;

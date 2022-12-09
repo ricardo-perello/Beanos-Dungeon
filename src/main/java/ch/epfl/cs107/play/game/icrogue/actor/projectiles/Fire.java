@@ -47,6 +47,7 @@ public class Fire extends Projectile{
             sprite.draw(canvas);
         }
     }
+    //todo add cooldown
 
     public void interactWith(Interactable other, boolean isCellInteraction) {
         other.acceptInteraction(handler,isCellInteraction);
@@ -58,7 +59,8 @@ public class Fire extends Projectile{
 
 
         public void interactWith(ICRogueBehavior.ICRogueCell cell, boolean isCellInteraction) {
-            if(cell.getType().equals(ICRogueBehavior.ICRogueCellType.WALL)||cell.getType().equals(ICRogueBehavior.ICRogueCellType.HOLE)){
+            if(cell.getType().equals(ICRogueBehavior.ICRogueCellType.WALL)
+                    ||cell.getType().equals(ICRogueBehavior.ICRogueCellType.HOLE)){
                 consume();
             }
         }
