@@ -10,8 +10,9 @@ import ch.epfl.cs107.play.game.icrogue.actor.Connector;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
 import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0Room;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.signal.logic.Logic;
 
-public abstract class Level {
+public abstract class Level implements Logic {
     private ICRogueRoom[][] map;
     private DiscreteCoordinates arrivalcoordinates;
     private DiscreteCoordinates bossPosition;
@@ -51,6 +52,13 @@ public abstract class Level {
         generateFixedMap();
     }
 
+    public Level(DiscreteCoordinates coordinates, int x, int y, DiscreteCoordinates bossCoor){
+        arrivalcoordinates=coordinates;
+        map=new ICRogueRoom[x][y];
+        bossPosition=bossCoor;
+        generateFixedMap();
+    }
+
     public ICRoguePlayer addPlayer(DiscreteCoordinates startingroom){
         ICRoguePlayer player=new ICRoguePlayer(map[startingroom.x][startingroom.y],Orientation.UP,new DiscreteCoordinates(2,2));
         player.enterArea(map[startingroom.x][startingroom.y],new DiscreteCoordinates(2,2));
@@ -84,6 +92,33 @@ public abstract class Level {
 
     public String getRoomName(DiscreteCoordinates coordinates){
         return map[coordinates.x][coordinates.y].getTitle();
+    }
+
+    public boolean isOn() {
+        if(map[bossPosition.x][bossPosition.y]==null){
+            return false;
+        }
+        else{
+            return map[bossPosition.x][bossPosition.y].isOn();
+        }
+
+    }
+
+    public boolean isOff() {
+        if(map[bossPosition.x][bossPosition.y]==null){
+            return false;
+        }
+        else{
+            return map[bossPosition.x][bossPosition.y].isOff();
+        }
+    }
+
+    public float getIntensity() {
+        return 0;
+    }
+
+    public boolean isResolved(){
+        return isOff()&&!isOn();
     }
 
     public abstract void generateFixedMap();
