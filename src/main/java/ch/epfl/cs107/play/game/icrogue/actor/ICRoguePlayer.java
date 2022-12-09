@@ -365,7 +365,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         public void interactWith(Connector connector, boolean isCellInteraction){
             if(wantsViewInteraction()){
                 boolean unlock=false;
-                if(connector.getState().equals(Connector.ConnectorState.LOCKED)){
+                if(connector.compareState(Connector.ConnectorState.LOCKED)){
                     for(Item item:carrying){
                         if(item instanceof Key&&((Key) item).getIdentificator()==connector.getID()){
                                 connector.setState(Connector.ConnectorState.OPEN);

@@ -110,17 +110,17 @@ public abstract class ICRogueRoom extends Area {
         }
         if(keyboard.get(Keyboard.T).isPressed()){
             for(Connector connector:connectors){
-                if(connector.getState().equals(Connector.ConnectorState.OPEN)){
+                if(connector.compareState(Connector.ConnectorState.OPEN)){
                     connector.setState(Connector.ConnectorState.CLOSED);
                 }
-                else if(connector.getState().equals(Connector.ConnectorState.CLOSED)){
+                else if(connector.compareState(Connector.ConnectorState.CLOSED)){
                     connector.setState(Connector.ConnectorState.OPEN);
                 }
-                else if(connector.getState().equals(Connector.ConnectorState.LOCKED)){
+                else if(connector.compareState(Connector.ConnectorState.LOCKED)){
                     connector.setState(Connector.ConnectorState.INVISIBLE);
                     connector.setID(Connector.NO_KEY_ID);
                 }
-                else if(connector.getState().equals(Connector.ConnectorState.INVISIBLE)){
+                else if(connector.compareState(Connector.ConnectorState.INVISIBLE)){
                     connector.setState(Connector.ConnectorState.LOCKED);
                     connector.setID(1);
                 }

@@ -8,15 +8,12 @@ import ch.epfl.cs107.play.game.areagame.actor.AreaEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
-import ch.epfl.cs107.play.game.icrogue.ICRogueBehavior;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.game.areagame.Area;
-import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
-import java.util.Collections;
 import java.util.List;
 
 public class Connector extends AreaEntity {
@@ -44,7 +41,7 @@ public class Connector extends AreaEntity {
         setSprite();
     }
     public void draw(Canvas canvas) {
-        if(!getState().equals(ConnectorState.OPEN)){
+        if(!state.equals(ConnectorState.OPEN)){
             sprite.draw(canvas);
         }
     }
@@ -57,8 +54,9 @@ public class Connector extends AreaEntity {
         areaTitle=title;
     }
 
-    public ConnectorState getState(){
-        return state;
+    public boolean compareState(ConnectorState state){
+
+        return this.state.equals(state);
     }
 
     public DiscreteCoordinates getArrivalcoordinates(){
