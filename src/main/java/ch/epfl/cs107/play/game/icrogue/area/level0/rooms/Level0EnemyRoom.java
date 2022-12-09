@@ -14,13 +14,12 @@ import java.util.List;
 
 public class Level0EnemyRoom extends Level0Room{
     private List<Enemy> enemies;
-    private int listValue;
 
     public Level0EnemyRoom(DiscreteCoordinates coordinates) {
         super(coordinates);
         enemies=new ArrayList<>();
     }
-    public void addEnemy(Enemy enemy){
+    protected void addEnemy(Enemy enemy){
         enemies.add(enemy);
     }
 
@@ -32,17 +31,8 @@ public class Level0EnemyRoom extends Level0Room{
         }
     }
 
-    protected void setListValue(int value){
-        listValue=value;
-
-    }
-
     public void update(float deltaTime) {
-        for(Enemy enemy:enemies){
-            if (!enemy.getIsAlive()) {
-                enemies.remove(enemy);
-            }
-        }
+        enemies.removeIf(enemy -> !enemy.getIsAlive());
         super.update(deltaTime);
     }
 

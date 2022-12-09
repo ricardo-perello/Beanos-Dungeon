@@ -93,6 +93,7 @@ public class Level0Room extends ICRogueRoom {
         super.createArea();
         // Base
         registerActor(new Background(this, getBehaviourName())) ;
+
         /*
         registerActor(new Cherry(this, Orientation.DOWN, new DiscreteCoordinates(6,3)));
         registerActor(new Sword(this, Orientation.DOWN, new DiscreteCoordinates(7, 3)));
@@ -101,6 +102,8 @@ public class Level0Room extends ICRogueRoom {
                 ,true, false, false, true));
 
          */
+
+
     }
 
 }

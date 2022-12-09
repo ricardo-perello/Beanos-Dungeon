@@ -20,7 +20,7 @@ public class Turret extends Enemy{
     private boolean shootLeft;
     private boolean shootRight;
     public final static float COOLDOWN = 2.f;
-    private float counter = 0;
+    private float counter = 2.f;
     private int hp = 5;
 
     public Turret(Area owner, Orientation orientation, DiscreteCoordinates coordinates, boolean sUp
@@ -37,8 +37,6 @@ public class Turret extends Enemy{
         sprite=new Sprite("icrogue/static_npc", 1.f,1.f,this,
                 new RegionOfInterest(0,0,16,24), new Vector(0.f,0.f));
 
-        shootArrow();
-
     }
 
     public void shootArrow(){
@@ -54,6 +52,7 @@ public class Turret extends Enemy{
             Arrow arrow = new Arrow(getOwnerArea(), Orientation.DOWN,
                     new DiscreteCoordinates(getCurrentMainCellCoordinates().x
                     ,(getCurrentMainCellCoordinates().y)-1));
+
 
             arrow.enterArea(getOwnerArea(),new DiscreteCoordinates(getCurrentMainCellCoordinates().x
                     ,(getCurrentMainCellCoordinates().y)-1));

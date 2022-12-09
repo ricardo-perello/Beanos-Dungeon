@@ -36,21 +36,16 @@ public abstract class Level0ItemRoom extends Level0Room {
         }
     }
 
-    public boolean itemsCollected(){
-        boolean collected=true;
-        for(Item item:items){
-            if (!item.isCollected()) {
-                collected = false;
-            }
-        }
-        return collected;
+    public void update(float deltaTime) {
+        items.removeIf(CollectableAreaEntity::isCollected);
+        super.update(deltaTime);
     }
 
     public boolean isOn() {
-        return super.isOn()||!itemsCollected();
+        return super.isOn()||(items.size()>0);
     }
 
     public boolean isOff() {
-        return super.isOff()&&itemsCollected();
+        return super.isOff()&&(items.size()==0);
     }
 }

@@ -27,8 +27,7 @@ public class ICRogue extends AreaGame {
 
     private Level level;
     private int lives;
-
-
+    private int display;
     private int areaIndex;
     /**
      * Add all the areas
@@ -56,6 +55,7 @@ public class ICRogue extends AreaGame {
 
         if (super.begin(window, fileSystem)) {
             lives=3;
+            display=0;
             /*starts level*/
             initLevel();
             return true;
@@ -75,14 +75,16 @@ public class ICRogue extends AreaGame {
             lives-=1;
             initLevel();
         }
-        if(lives<0){
+        if((lives<0)&&(display==0)){
             end();
             System.out.println("GameOver");
+            display=1;
         }
         switchRoom();
-        if(level.isResolved()){
+        if(level.isResolved()&&(display==0)){
             end();
             System.out.println("Win");
+            display=1;
         }
         super.update(deltaTime);
 
