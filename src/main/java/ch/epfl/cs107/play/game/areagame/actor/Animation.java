@@ -122,6 +122,14 @@ public class Animation implements Updatable, Graphics{
 	@Override
 	public void draw(Canvas canvas) {
 		frames[currentFrame].draw(canvas);
+		if (currentFrame < frames.length - 1){
+			currentFrame++;
+		}
+		else{
+			isCompleted = true;
+
+		}
+
 	}
 
 

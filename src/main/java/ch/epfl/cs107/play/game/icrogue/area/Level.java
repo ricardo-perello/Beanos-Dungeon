@@ -32,7 +32,7 @@ public abstract class Level implements Logic {
     protected void setRoomConnector(DiscreteCoordinates coords, String destination, ConnectorInRoom connector){
         setRoomConnectorDestination(coords,destination,connector);
         int idx=connector.getIndex();
-        map[coords.x][coords.y].setConnectorState(idx,Connector.ConnectorState.OPEN);
+        map[coords.x][coords.y].setConnectorState(idx,Connector.ConnectorState.CLOSED);
 
 
     }
