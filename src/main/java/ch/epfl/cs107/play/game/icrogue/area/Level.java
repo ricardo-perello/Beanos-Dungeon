@@ -44,6 +44,10 @@ public abstract class Level implements Logic {
         return bossRoomKeyID;
     }
 
+    public boolean isNextToBossRoom(DiscreteCoordinates coordinates){
+        return (map[coordinates.x][coordinates.y] instanceof Level0BossRoom);
+    }
+
     protected void setRoom(DiscreteCoordinates coords, ICRogueRoom room){
         map[coords.x][coords.y]=room;
     }
