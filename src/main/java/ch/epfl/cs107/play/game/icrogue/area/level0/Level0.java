@@ -100,6 +100,7 @@ public class Level0 extends Level {
 
         roomArrangement=Level0RoomType.setroomArrangement();
 
+        //TODO fix mistake of rooms not being generated and fix the BOSSROOM connector
         for(int i=0;i<roomArrangement[0];++i){
             int randomcoor=RandomHelper.roomGenerator.nextInt(0, roomsToCreate.size());
             DiscreteCoordinates coordinates=roomsToCreate.get(randomcoor);
@@ -164,6 +165,7 @@ public class Level0 extends Level {
             roomsToCreate.remove(randomcoor);
         }
 
+
         printMap(mapStates);
 
         for(Level0Room room:rooms){
@@ -211,7 +213,7 @@ public class Level0 extends Level {
             String destinationName= getRoomName(destination);
             setRoomConnector(roomCoordinates,destinationName,Level0Room.Level0Connectors.S);
             if(room instanceof Level0BossRoom){
-                lockRoomConnector(roomCoordinates,Level0Room.Level0Connectors.S,1);
+                lockRoomConnector(roomCoordinates,Level0Room.Level0Connectors.S,getBossRoomKeyID());
             }
         }
 
