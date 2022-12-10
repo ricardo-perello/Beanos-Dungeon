@@ -157,8 +157,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         if(keyboard.get(Keyboard.X).isPressed()&& hasStaff){
             spriteName = "zelda/player.staff_water";
             isStaffAnimation = true;
+
             Fire fire = new Fire(getOwnerArea(),getOrientation(),getCurrentMainCellCoordinates());
             fire.enterArea(getOwnerArea(),getCurrentMainCellCoordinates());
+
+
 
         }
 
@@ -278,32 +281,51 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     }
 
     //ANIMATIONS
-    //todo fix staff animations for left, right and up
+    //todo add music
+    //todo add animations for walking
+    //todo add animations for sword
+    //todo fix staff animations for right and up
     public void setStaffAnimation() {
         String name = "zelda/player.staff_water";
         Sprite[] spritesDOWN = {
-                (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(10, 0, 16, 32), new Vector(0.25f ,-0.15f))),
-                (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(40, 0, 16, 32), new Vector(0.2f, -0.15f))),
-                (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(72, 0, 16, 32), new Vector(0.12f, -0.15f))),
-                (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(100, 0, 16, 32), new Vector(-0.0f, -0.15f)))};
+                (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(10 , 0, 16, 32)
+                        , new Vector(0.25f ,-0.15f))),
+                (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(40,  0, 16, 32)
+                        , new Vector(0.2f, -0.15f))),
+                (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(72,  0, 16, 32)
+                        , new Vector(0.12f, -0.15f))),
+                (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(100, 0, 16, 32)
+                        , new Vector(-0.0f, -0.15f)))};
 
         Sprite[] spritesLEFT = {
-                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(0, 96, 25, 32), new Vector(0.25f ,-0.15f))),
-                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(40, 96, 25, 32), new Vector(0.2f, -0.15f))),
-                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(72, 96, 25, 32), new Vector(0.12f, -0.15f))),
-                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(90,96, 24, 32), new Vector(-0.0f, -0.15f)))};
+                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(0 , 96, 25, 32)
+                        , new Vector(0.1f ,-0.15f))),
+                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(32, 96, 25, 32)
+                        , new Vector(0.05f, -0.15f))),
+                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(64, 96, 25, 32)
+                        , new Vector(0.0f, -0.15f))),
+                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(90, 96, 24, 32)
+                        , new Vector(-0.3f, -0.15f)))};
 
         Sprite[] spritesUP = {
-                (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(10, 32, 16, 32), new Vector(0.25f ,-0.15f))),
-                (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(40, 32, 16, 32), new Vector(0.2f, -0.15f))),
-                (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(72, 32, 16, 32), new Vector(0.12f, -0.15f))),
-                (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(100,32, 16, 32), new Vector(-0.0f, -0.15f)))};
+                (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(10, 32, 16, 32)
+                        , new Vector(0.25f ,-0.15f))),
+                (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(40, 32, 16, 32)
+                        , new Vector(0.2f, -0.15f))),
+                (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(72, 32, 16, 32)
+                        , new Vector(0.12f, -0.15f))),
+                (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(100,32, 16, 32)
+                        , new Vector(-0.0f, -0.15f)))};
 
         Sprite[] spritesRIGHT = {
-                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(0, 64, 25, 32), new Vector(0.25f ,-0.15f))),
-                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(40,64, 25, 32), new Vector(0.2f, -0.15f))),
-                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(72,64, 25, 32), new Vector(0.12f, -0.15f))),
-                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(90,64, 24, 32), new Vector(-0.0f, -0.15f)))};
+                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(0, 64, 25, 32)
+                        , new Vector(0.25f ,-0.15f))),
+                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(40,64, 25, 32)
+                        , new Vector(0.2f, -0.15f))),
+                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(72,64, 25, 32)
+                        , new Vector(0.12f, -0.15f))),
+                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(90,64, 24, 32)
+                        , new Vector(-0.0f, -0.15f)))};
 
 
         // on présume:   private final static int ANIMATION_DURATION = 8;
