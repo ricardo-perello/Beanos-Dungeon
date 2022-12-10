@@ -18,34 +18,40 @@ import java.util.ArrayList;
 
 public class Level0 extends Level {
     public enum Level0RoomType{
-        TurretRoom,
-        StaffRoom,
-        Boss_Key,
-        Boss,
-        Spawn,
-        Normal;
+        TurretRoom(RandomHelper.roomGenerator.nextInt(1,2)),
+        StaffRoom(1),
+        Boss_Key(1),
+        Boss(1),
+        Spawn(1),
+        Normal(RandomHelper.roomGenerator.nextInt(1,3));
+
+        private int quantity;
+        Level0RoomType(int nextInt) {
+            quantity=nextInt;
+        }
+
+        public static int[] setroomArrangement(){
+            int size=Level0RoomType.values().length;
+            int[] roomArrangement = new int[size];
+            roomArrangement[0]=Level0RoomType.TurretRoom.quantity;
+            roomArrangement[1]=Level0RoomType.StaffRoom.quantity;
+            roomArrangement[2]=Level0RoomType.Boss_Key.quantity;
+            roomArrangement[3]=Level0RoomType.Boss.quantity;
+            roomArrangement[4]=Level0RoomType.Spawn.quantity;
+            roomArrangement[5]=Level0RoomType.Normal.quantity;
+            return roomArrangement;
+        }
     }
     public static DiscreteCoordinates startingroom=new DiscreteCoordinates(1,0);
     private static final DiscreteCoordinates arrivalCoordinates=new DiscreteCoordinates(2,0);
     private static int[] roomArrangement;
 
     public Level0() {
-        super(true,startingroom,setroomArrangement(), 4, 2);
+        super(true,startingroom,Level0RoomType.setroomArrangement(), 4, 2);
     }
 
     public Level0(boolean randomMap) {
-        super(randomMap,startingroom,setroomArrangement(), 4, 2);
-    }
-
-    public static int[] setroomArrangement(){
-        roomArrangement = new int[Level0RoomType.values().length];
-        roomArrangement[0]=RandomHelper.roomGenerator.nextInt(0,1);
-        roomArrangement[1]=1;
-        roomArrangement[2]=1;
-        roomArrangement[3]=1;
-        roomArrangement[4]=1;
-        roomArrangement[5]=RandomHelper.roomGenerator.nextInt(0,1);
-        return roomArrangement;
+        super(randomMap,startingroom,Level0RoomType.setroomArrangement(), 4, 2);
     }
 
     public void generateFixedMap(){
@@ -83,13 +89,16 @@ public class Level0 extends Level {
 
         for(int i=0;i<mapStates.length;++i){
             for(int k=0;k<mapStates[i].length;++k){
-                if(mapStates[i][k].equals(MapState.EXPLORED)){
+                if(mapStates[i][k].equals(MapState.EXPLORED)||mapStates[i][k].equals(MapState.BOSS_KEYROOM)||
+                        mapStates[i][k].equals(MapState.BOSS_ROOM)){
                     roomsToCreate.add(new DiscreteCoordinates(i,k));
                 }
             }
         }
 
         ArrayList<Level0Room>rooms=new ArrayList<>();
+
+        roomArrangement=Level0RoomType.setroomArrangement();
 
         for(int i=0;i<roomArrangement[0];++i){
             int randomcoor=RandomHelper.roomGenerator.nextInt(0, roomsToCreate.size());
@@ -155,6 +164,8 @@ public class Level0 extends Level {
             roomsToCreate.remove(randomcoor);
         }
 
+        printMap(mapStates);
+
         for(Level0Room room:rooms){
             setUpConnector(mapStates,room);
         }
@@ -167,39 +178,35 @@ public class Level0 extends Level {
         DiscreteCoordinates roomCoordinates=room.getCoordinates();
         int xcor=roomCoordinates.x;
         int ycor=roomCoordinates.y;
-        if(xcor<roomsplacement.length-1&&(roomsplacement[xcor+1][ycor].equals(MapState.PLACED)||
-                roomsplacement[xcor+1][ycor].equals(MapState.CREATED)||
-                roomsplacement[xcor+1][ycor].equals(MapState.EXPLORED))){
+        if(xcor<roomsplacement.length-1&&(roomsplacement[xcor+1][ycor].equals(MapState.CREATED)||
+                roomsplacement[xcor+1][ycor].equals(MapState.EXPLORED)||roomsplacement[xcor+1][ycor].equals(MapState.PLACED))){
             DiscreteCoordinates destination=roomCoordinates.jump(Orientation.RIGHT.toVector());
             String destinationName= getRoomName(destination);
             setRoomConnector(roomCoordinates,destinationName,Level0Room.Level0Connectors.E);
             if(room instanceof Level0BossRoom){
-                lockRoomConnector(roomCoordinates,Level0Room.Level0Connectors.E,1);
+                lockRoomConnector(roomCoordinates,Level0Room.Level0Connectors.E,getBossRoomKeyID());
             }
         }
-        if(xcor>0&&(roomsplacement[xcor-1][ycor].equals(MapState.PLACED)||
-                roomsplacement[xcor-1][ycor].equals(MapState.CREATED)||
-                roomsplacement[xcor-1][ycor].equals(MapState.EXPLORED))){
+        if(xcor>0&&(roomsplacement[xcor-1][ycor].equals(MapState.CREATED)||
+                roomsplacement[xcor-1][ycor].equals(MapState.EXPLORED)||roomsplacement[xcor-1][ycor].equals(MapState.PLACED))){
             DiscreteCoordinates destination=roomCoordinates.jump(Orientation.LEFT.toVector());
             String destinationName= getRoomName(destination);
             setRoomConnector(roomCoordinates,destinationName,Level0Room.Level0Connectors.W);
             if(room instanceof Level0BossRoom){
-                lockRoomConnector(roomCoordinates,Level0Room.Level0Connectors.W,1);
+                lockRoomConnector(roomCoordinates,Level0Room.Level0Connectors.W,getBossRoomKeyID());
             }
         }
-        if(ycor<roomsplacement[0].length-1&&(roomsplacement[xcor][ycor+1].equals(MapState.PLACED)||
-                roomsplacement[xcor][ycor+1].equals(MapState.CREATED)||
-                roomsplacement[xcor][ycor+1].equals(MapState.EXPLORED))){
+        if(ycor<roomsplacement[0].length-1&&(roomsplacement[xcor][ycor+1].equals(MapState.CREATED)||
+                roomsplacement[xcor][ycor+1].equals(MapState.EXPLORED)||roomsplacement[xcor][ycor+1].equals(MapState.PLACED))){
             DiscreteCoordinates destination=roomCoordinates.jump(Orientation.UP.toVector());
             String destinationName= getRoomName(destination);
             setRoomConnector(roomCoordinates,destinationName,Level0Room.Level0Connectors.N);
             if(room instanceof Level0BossRoom){
-                lockRoomConnector(roomCoordinates,Level0Room.Level0Connectors.N,1);
+                lockRoomConnector(roomCoordinates,Level0Room.Level0Connectors.N,getBossRoomKeyID());
             }
         }
-        if(ycor>0&&(roomsplacement[xcor][ycor-1].equals(MapState.PLACED)||
-                roomsplacement[xcor][ycor-1].equals(MapState.CREATED)||
-                roomsplacement[xcor][ycor-1].equals(MapState.EXPLORED))){
+        if(ycor>0 &&(roomsplacement[xcor][ycor-1].equals(MapState.CREATED)||
+                roomsplacement[xcor][ycor-1].equals(MapState.EXPLORED)||roomsplacement[xcor][ycor-1].equals(MapState.PLACED))){
             DiscreteCoordinates destination=roomCoordinates.jump(Orientation.DOWN.toVector());
             String destinationName= getRoomName(destination);
             setRoomConnector(roomCoordinates,destinationName,Level0Room.Level0Connectors.S);

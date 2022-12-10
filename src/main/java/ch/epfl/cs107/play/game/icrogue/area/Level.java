@@ -40,6 +40,10 @@ public abstract class Level implements Logic {
     private int[] roomDistribution;
     private int bossRoomKeyID;
 
+    public int getBossRoomKeyID(){
+        return bossRoomKeyID;
+    }
+
     protected void setRoom(DiscreteCoordinates coords, ICRogueRoom room){
         map[coords.x][coords.y]=room;
     }
@@ -78,7 +82,12 @@ public abstract class Level implements Logic {
             generateFixedMap();
         }
         else{
-            map=new ICRogueRoom[roomDistribution.length][roomDistribution.length];
+            int i=0;
+            for(int room:roomDistribution){
+                i+=room;
+            }
+            map=new ICRogueRoom[i][i];
+            this.roomDistribution=roomDistribution;
             generateRandomMap();
         }
 
@@ -144,7 +153,11 @@ public abstract class Level implements Logic {
 
 
         MapState[][]output=new MapState[map.length][map[0].length];
-        int roomsToPlace=map.length*map[0].length;
+        int p=0;
+        for (int j : roomDistribution) {
+            p += j;
+        }
+        int roomsToPlace=p;
         for(int i=0;i<map.length;++i){
             for(int k=0;k<map[i].length;++k){
                 output[i][k]=MapState.NULL;
@@ -154,6 +167,7 @@ public abstract class Level implements Logic {
         placed.add(new DiscreteCoordinates ((map.length+1)/2,(map[(map.length+1)/2].length+1)/2));
         --roomsToPlace;
 
+        while (roomsToPlace>0){
             for(int i=0;i<placed.size();++i){
                 int xcor=placed.get(i).x;
                 int ycor=placed.get(i).y;
@@ -204,9 +218,29 @@ public abstract class Level implements Logic {
                         }
                     }
                 }
+                else if(freeSlots==1||roomsToPlace==1){
+                    int rooms= 1;
+
+                    if(roomCoorAvailable.size()>0){
+                        ArrayList<Integer>nOfCoor=new ArrayList<>();
+                        for(int z=0;z<roomCoorAvailable.size();++z){
+                            nOfCoor.add(z);
+                        }
+                        List<Integer> indexFromCoorArray=RandomHelper.chooseKInList(rooms,nOfCoor);
+                        for (Integer integer : indexFromCoorArray) {
+                            int x=roomCoorAvailable.get(integer).x;
+                            int y=roomCoorAvailable.get(integer).y;
+                            output[x][y] = MapState.PLACED;
+                            roomsToPlace--;
+                            placed.add(new DiscreteCoordinates(x,y));
+                        }
+                    }
+                }
 
 
             }
+        }
+
         int keyindx=RandomHelper.roomGenerator.nextInt(0,explored.size());
         DiscreteCoordinates keyroomCoords=explored.get(keyindx);
         explored.remove(keyindx);
