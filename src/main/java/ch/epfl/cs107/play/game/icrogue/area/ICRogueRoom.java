@@ -43,6 +43,8 @@ public abstract class ICRogueRoom extends Area implements Logic {
         return coordinates.x+""+coordinates.y;
     }
 
+    public DiscreteCoordinates getCoordinates(){return coordinates;}
+
     public void SetConnectorAreaTitle (int index, String title){
         connectors.get(index).setAreaTitle(title);
     }

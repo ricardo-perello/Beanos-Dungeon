@@ -35,8 +35,6 @@ public class ICRogue extends AreaGame {
     private void initLevel(){
         level=new Level0(); /* creates first area*/
 
-        level.generateFixedMap();
-
         level.addAreas(this); /*adds current room to the areas*/
 
         setCurrentArea(level.getRoomName(Level0.startingroom),true); /* makes it the current area */
@@ -77,7 +75,7 @@ public class ICRogue extends AreaGame {
         }
         if((lives<0)&&(display==0)){
             end();
-            System.out.println("GameOver");
+            System.out.println("Game Over");
             display=1;
         }
         switchRoom();
