@@ -157,11 +157,7 @@ public abstract class Level implements Logic {
 
 
         MapState[][]output=new MapState[map.length][map[0].length];
-        int p=0;
-        for (int j : roomDistribution) {
-            p += j;
-        }
-        int roomsToPlace=p;
+        int roomsToPlace=map.length;
         for(int i=0;i<map.length;++i){
             for(int k=0;k<map[i].length;++k){
                 output[i][k]=MapState.NULL;
@@ -213,13 +209,15 @@ public abstract class Level implements Logic {
                             nOfCoor.add(z);
                         }
                         List<Integer> indexFromCoorArray=RandomHelper.chooseKInList(rooms,nOfCoor);
-                        for (Integer integer : indexFromCoorArray) {
-                            int x=roomCoorAvailable.get(integer).x;
-                            int y=roomCoorAvailable.get(integer).y;
-                            output[x][y] = MapState.PLACED;
-                            roomsToPlace--;
-                            placed.add(new DiscreteCoordinates(x,y));
-                        }
+                            for (Integer integer : indexFromCoorArray) {
+                                int x=roomCoorAvailable.get(integer).x;
+                                int y=roomCoorAvailable.get(integer).y;
+                                if(roomsToPlace>0){
+                                    output[x][y] = MapState.PLACED;
+                                    roomsToPlace--;
+                                    placed.add(new DiscreteCoordinates(x,y));
+                                }
+                            }
                     }
                 }
                 else if(freeSlots==1||(roomsToPlace==1&&freeSlots!=0)){
@@ -231,13 +229,15 @@ public abstract class Level implements Logic {
                             nOfCoor.add(z);
                         }
                         List<Integer> indexFromCoorArray=RandomHelper.chooseKInList(rooms,nOfCoor);
-                        for (Integer integer : indexFromCoorArray) {
-                            int x=roomCoorAvailable.get(integer).x;
-                            int y=roomCoorAvailable.get(integer).y;
-                            output[x][y] = MapState.PLACED;
-                            roomsToPlace--;
-                            placed.add(new DiscreteCoordinates(x,y));
-                        }
+                            for (Integer integer : indexFromCoorArray) {
+                                int x=roomCoorAvailable.get(integer).x;
+                                int y=roomCoorAvailable.get(integer).y;
+                                if(roomsToPlace>0){
+                                    output[x][y] = MapState.PLACED;
+                                    roomsToPlace--;
+                                    placed.add(new DiscreteCoordinates(x,y));
+                                }
+                            }
                     }
                 }
 
@@ -245,13 +245,13 @@ public abstract class Level implements Logic {
             }
         }
 
-        int keyindx=RandomHelper.roomGenerator.nextInt(0,explored.size());
-        DiscreteCoordinates keyroomCoords=explored.get(keyindx);
-        explored.remove(keyindx);
+        int keyindx=RandomHelper.roomGenerator.nextInt(0,placed.size());
+        DiscreteCoordinates keyroomCoords=placed.get(keyindx);
+        placed.remove(keyindx);
 
-        int bossindx=RandomHelper.roomGenerator.nextInt(0,explored.size());
-        DiscreteCoordinates bossroomCoords=explored.get(bossindx);
-        explored.remove(bossindx);
+        int bossindx=RandomHelper.roomGenerator.nextInt(0,placed.size());
+        DiscreteCoordinates bossroomCoords=placed.get(bossindx);
+        placed.remove(bossindx);
 
 
         output[keyroomCoords.x][keyroomCoords.y]=MapState.BOSS_KEYROOM;
