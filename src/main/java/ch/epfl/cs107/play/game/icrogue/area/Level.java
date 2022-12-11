@@ -101,25 +101,6 @@ public abstract class Level implements Logic {
 
     }
 
-    public Level(boolean randomMap,DiscreteCoordinates startPosition,
-                 int[] roomDistribution, int x, int y, DiscreteCoordinates bossCoor){
-        if(!randomMap){
-            arrivalcoordinates=startPosition;
-            map=new ICRogueRoom[x][y];
-            bossPosition=bossCoor;
-            generateFixedMap();
-        }
-        else{
-            int i=0;
-            for(int room:roomDistribution){
-                i+=room;
-            }
-            map=new ICRogueRoom[i][i];
-            this.roomDistribution=roomDistribution;
-            generateRandomMap();
-        }
-    }
-
     public ICRoguePlayer addPlayer(DiscreteCoordinates startingroom){
         ICRoguePlayer player=new ICRoguePlayer(map[startingroom.x][startingroom.y],Orientation.UP,new DiscreteCoordinates(2,2));
         player.enterArea(map[startingroom.x][startingroom.y],new DiscreteCoordinates(2,2));
