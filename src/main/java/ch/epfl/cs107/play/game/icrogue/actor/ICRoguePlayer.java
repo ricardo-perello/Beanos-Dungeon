@@ -163,6 +163,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
 
 
+
+
         }
 
         if(keyboard.get(Keyboard.Z).isPressed()) {
@@ -284,7 +286,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     //todo add music
     //todo add animations for walking
     //todo add animations for sword
-    //todo fix staff animations for right and up
+    //todo fix staff animation for right
     public void setStaffAnimation() {
         String name = "zelda/player.staff_water";
         Sprite[] spritesDOWN = {
@@ -303,9 +305,9 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(32, 96, 25, 32)
                         , new Vector(0.05f, -0.15f))),
                 (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(64, 96, 25, 32)
-                        , new Vector(0.0f, -0.15f))),
+                        , new Vector(.05f, -0.15f))),
                 (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(90, 96, 24, 32)
-                        , new Vector(-0.3f, -0.15f)))};
+                        , new Vector(-.25f, -0.15f)))};
 
         Sprite[] spritesUP = {
                 (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(10, 32, 16, 32)
@@ -318,14 +320,14 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                         , new Vector(-0.0f, -0.15f)))};
 
         Sprite[] spritesRIGHT = {
-                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(0, 64, 25, 32)
-                        , new Vector(0.25f ,-0.15f))),
+                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(10, 64, 25, 32)
+                        , new Vector(0.15f ,-0.15f))),
                 (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(40,64, 25, 32)
-                        , new Vector(0.2f, -0.15f))),
+                        , new Vector(0.1f, -0.15f))),
                 (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(72,64, 25, 32)
-                        , new Vector(0.12f, -0.15f))),
-                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(90,64, 24, 32)
-                        , new Vector(-0.0f, -0.15f)))};
+                        , new Vector(0.1f, -0.15f))),
+                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(96,64, 24, 32)
+                        , new Vector(-0.15f, -0.15f)))};
 
 
         // on présume:   private final static int ANIMATION_DURATION = 8;
@@ -362,7 +364,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         }
         else if(orientation.equals(Orientation.RIGHT)){
             sprite=new Sprite(spriteName, 0.95f,1.5f,this,
-                    new RegionOfInterest(42,64,19,32), new Vector(.15f,-.15f));
+                    new RegionOfInterest(42,64,19,32), new Vector(.2f,-.15f));
         }
         else if(orientation.equals(Orientation.UP)){
             sprite=new Sprite(spriteName, .75f,1.5f,this,
@@ -370,7 +372,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         }
         else if(orientation.equals(Orientation.LEFT)){
             sprite=new Sprite(spriteName, 0.95f,1.5f,this,
-                    new RegionOfInterest(34,96,19,32), new Vector(.15f,-.15f));
+                    new RegionOfInterest(35,96,19,32), new Vector(.2f,-.15f));
         }
     }
 
@@ -381,7 +383,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         }
         else if(orientation.equals(Orientation.RIGHT)){
             sprite=new Sprite(spriteName, 0.95f,1.5f,this,
-                    new RegionOfInterest(42,64,19,32), new Vector(.15f,-.15f));
+                    new RegionOfInterest(42,64,19,32), new Vector(.25f,-.15f));
         }
         else if(orientation.equals(Orientation.UP)){
             sprite=new Sprite(spriteName, .75f,1.5f,this,
