@@ -114,7 +114,7 @@ public class Level0 extends Level {
 
 
 
-        //TODO fix mistake of rooms not being generated and fix the BOSSROOM connector
+        //TODO starting room
         for(int i=0;i<roomArrangement[0];++i){
             int randomcoor=RandomHelper.roomGenerator.nextInt(0, roomsToCreate.size());
             DiscreteCoordinates coordinates=roomsToCreate.get(randomcoor);
@@ -143,6 +143,7 @@ public class Level0 extends Level {
         ycor=roomsToCreate.get(randomcoor).y;
         Level0Room Room=new Level0Room(roomsToCreate.get(randomcoor));
         startingroom=coordinates;
+        setArrivalcoordinates(coordinates);
         rooms.add(Room);
         setRoom(coordinates,Room);
         mapStates[xcor][ycor]=MapState.CREATED;

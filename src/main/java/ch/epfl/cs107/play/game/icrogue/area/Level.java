@@ -48,6 +48,10 @@ public abstract class Level implements Logic {
         return (map[coordinates.x][coordinates.y] instanceof Level0BossRoom);
     }
 
+    public void setArrivalcoordinates(DiscreteCoordinates coordinates){
+        arrivalcoordinates=coordinates;
+    }
+
     protected void setRoom(DiscreteCoordinates coords, ICRogueRoom room){
         map[coords.x][coords.y]=room;
     }
