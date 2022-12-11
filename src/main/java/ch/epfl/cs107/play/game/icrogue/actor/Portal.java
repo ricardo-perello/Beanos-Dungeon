@@ -1,0 +1,111 @@
+package ch.epfl.cs107.play.game.icrogue.actor;
+/*
+ *  Author:  Mateus Vital Nabholz
+ *  Date:
+ */
+
+import ch.epfl.cs107.play.game.areagame.Area;
+import ch.epfl.cs107.play.game.areagame.actor.AreaEntity;
+import ch.epfl.cs107.play.game.areagame.actor.Orientation;
+import ch.epfl.cs107.play.game.areagame.actor.Sprite;
+import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
+import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.math.Vector;
+import ch.epfl.cs107.play.window.Canvas;
+
+import java.util.List;
+
+public class Portal extends AreaEntity {
+    public enum PortalState{
+        OPEN,
+        LOCKED,
+
+    }
+    private String areaTitle;
+
+    private DiscreteCoordinates arrivalcoordinates;
+    private Orientation orientation;
+    private int ID;
+    private Sprite sprite;
+    public static final int NO_KEY_ID=0; /*when no key is required to open the door, this will be its identifier*/
+    private PortalState state;
+
+    public Portal(Area area, Orientation orientation, DiscreteCoordinates position){
+        super(area,orientation,position);
+        state= PortalState.OPEN;
+        ID=0;
+        this.orientation=orientation;
+        setSprite();
+    }
+    public void draw(Canvas canvas) {
+            sprite.draw(canvas);
+    }
+
+    public void setArrivalcoordinates(DiscreteCoordinates coordinates){
+        arrivalcoordinates=coordinates;
+    }
+
+    public void setAreaTitle(String title){
+        areaTitle=title;
+    }
+
+    public boolean compareState(PortalState state){
+
+        return this.state.equals(state);
+    }
+
+    public DiscreteCoordinates getArrivalcoordinates(){
+        return arrivalcoordinates;
+    }
+
+    public void setState(PortalState state){
+        this.state=state;
+        setSprite();
+    }
+
+    private void setSprite(){
+        if(state.equals(PortalState.OPEN)){
+            sprite=new Sprite("icrogue/door_2",
+                    (orientation.ordinal()+1)%2+1,orientation.ordinal()%2+1,this);
+        }
+        else if(state.equals(PortalState.LOCKED)){
+            sprite=new Sprite("icrogue/lockedDoor_2",
+                    (orientation.ordinal()+1)%2+1,orientation.ordinal()%2+1,this);
+        }
+    }
+
+    public void setID(int id){
+        ID=id;
+    }
+    public int getID(){
+        return ID;
+    }
+
+    public String getAreaTitle(){
+        return areaTitle;
+    }
+
+    public List<DiscreteCoordinates> getCurrentCells() {
+        DiscreteCoordinates coord= getCurrentMainCellCoordinates();
+        return List.of(coord,coord.jump(new Vector((getOrientation().ordinal()+1)%2,
+                getOrientation().ordinal()%2)));
+    }
+
+    public boolean takeCellSpace() {
+            return true;
+    }
+
+    public boolean isCellInteractable() {
+        return true;
+    }
+
+    public boolean isViewInteractable() {
+        return true;
+    }
+
+    @Override
+    public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
+        ((ICRogueInteractionHandler)v).interactWith(this, isCellInteraction);
+    }
+}

@@ -8,6 +8,7 @@ import ch.epfl.cs107.play.game.areagame.AreaGame;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.icrogue.area.ICRogueRoom;
 import ch.epfl.cs107.play.game.icrogue.area.Level;
+import ch.epfl.cs107.play.game.icrogue.area.MainBase;
 import ch.epfl.cs107.play.game.icrogue.area.level0.Level0;
 import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0Room;
 import ch.epfl.cs107.play.game.tutosSolution.actor.GhostPlayer;
@@ -26,21 +27,38 @@ public class ICRogue extends AreaGame {
     private ICRoguePlayer player; /*Main character*/
 
     private Level level;
+
+    private MainBase base;
     private int lives;
     private int display;
     private int areaIndex;
+    private DiscreteCoordinates previousCoorInBase;
     /**
      * Add all the areas
      */
+
+    private void initGame(){
+        base = new MainBase();
+        addArea(base);
+        setCurrentArea(base.getTitle(),false);
+        player=new ICRoguePlayer(base,Orientation.DOWN,base.getPlayerSpawnPosition());
+        player.enterArea(base,base.getPlayerSpawnPosition());
+        player.centerCamera();
+
+    }
     private void initLevel(){
+
+
         level=new Level0(); /* creates first area*/
+
 
         level.addAreas(this); /*adds current room to the areas*/
 
+
         setCurrentArea(level.getRoomName(Level0.startingroom),true); /* makes it the current area */
 
-        player=level.addPlayer(Level0.startingroom);/* creates main character and adds to starting room*/
 
+        player=level.addPlayer(Level0.startingroom);/* creates main character and adds to starting room*/
 
     }
 
@@ -55,7 +73,7 @@ public class ICRogue extends AreaGame {
             lives=3;
             display=0;
             /*starts level*/
-            initLevel();
+            initGame();
             return true;
         }
         return false;
@@ -69,19 +87,23 @@ public class ICRogue extends AreaGame {
         if(key.isDown()){
             initLevel();
         }
+
         if((player.getHp() <= 0)&&lives>=0){
-            lives-=1;
-            initLevel();
+            switchArea();
         }
+
         if((lives<0)&&(display==0)){
             end();
             System.out.println("Game Over");
             display=1;
         }
         switchRoom();
-        if(level.isResolved()&&(display==0)){
+        switchArea();
+        if(level!=null&&level.isResolved()&&(display==0)){
             end();
             System.out.println("Win");
+
+
             display=1;
         }
         super.update(deltaTime);
@@ -99,6 +121,24 @@ public class ICRogue extends AreaGame {
     public String getTitle() {
         return "Beanos' Dungeon";
     } /*returns the title of our game */
+
+    protected void switchArea() {
+        if(player.getisTransporting()&&getCurrentArea() instanceof MainBase){
+            previousCoorInBase=player.getCurrentCells().get(0);
+            player.leaveArea();
+            player.transported();
+            initLevel();
+
+        }
+        else if(level!=null&&level.isResolved()&&(display==0)){
+            player.leaveArea();
+            player.clearCarrying();
+            setCurrentArea(base.getTitle(),false);
+            player.enterArea(base,previousCoorInBase);
+            player.centerCamera();
+
+        }
+    }
 
     protected void switchRoom() {
         if(player.getisTransitioning()){

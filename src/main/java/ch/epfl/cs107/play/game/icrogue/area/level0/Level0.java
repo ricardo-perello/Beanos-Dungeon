@@ -114,7 +114,6 @@ public class Level0 extends Level {
 
 
 
-        //TODO starting room
         for(int i=0;i<roomArrangement[0];++i){
             int randomcoor=RandomHelper.roomGenerator.nextInt(0, roomsToCreate.size());
             DiscreteCoordinates coordinates=roomsToCreate.get(randomcoor);
