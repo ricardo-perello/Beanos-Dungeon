@@ -222,7 +222,7 @@ public abstract class Level implements Logic {
                         }
                     }
                 }
-                else if(freeSlots==1||roomsToPlace==1){
+                else if(freeSlots==1||(roomsToPlace==1&&freeSlots!=0)){
                     int rooms= 1;
 
                     if(roomCoorAvailable.size()>0){

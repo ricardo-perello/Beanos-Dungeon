@@ -44,14 +44,14 @@ public class Level0 extends Level {
     }
     public static DiscreteCoordinates startingroom=new DiscreteCoordinates(1,0);
     private static final DiscreteCoordinates arrivalCoordinates=new DiscreteCoordinates(2,0);
-    private static int[] roomArrangement;
+    private static int[] roomArrangement=Level0RoomType.setroomArrangement();
 
     public Level0() {
-        super(true,startingroom,Level0RoomType.setroomArrangement(), 4, 2);
+        super(true,startingroom,roomArrangement, 4, 2);
     }
 
     public Level0(boolean randomMap) {
-        super(randomMap,startingroom,Level0RoomType.setroomArrangement(), 4, 2);
+        super(randomMap,startingroom,roomArrangement, 4, 2);
     }
 
     public void generateFixedMap(){
@@ -86,19 +86,33 @@ public class Level0 extends Level {
         MapState[][]mapStates=generateRandomRoomPlacement();
         printMap(mapStates);
         ArrayList<DiscreteCoordinates>roomsToCreate=new ArrayList<>();
+        ArrayList<Level0Room>rooms=new ArrayList<>();
 
         for(int i=0;i<mapStates.length;++i){
             for(int k=0;k<mapStates[i].length;++k){
-                if(mapStates[i][k].equals(MapState.EXPLORED)||mapStates[i][k].equals(MapState.BOSS_KEYROOM)||
-                        mapStates[i][k].equals(MapState.BOSS_ROOM)){
+                if(mapStates[i][k].equals(MapState.PLACED)||mapStates[i][k].equals(MapState.EXPLORED)){
                     roomsToCreate.add(new DiscreteCoordinates(i,k));
+                }
+
+                else if(mapStates[i][k].equals(MapState.BOSS_ROOM)){
+                    DiscreteCoordinates coordinates=new DiscreteCoordinates(i,k);
+                    Level0BossRoom bossRoom=new Level0BossRoom(coordinates);
+                    rooms.add(bossRoom);
+                    setRoom(coordinates,bossRoom);
+                    mapStates[i][k]=MapState.CREATED;
+                }
+
+                else if(mapStates[i][k].equals(MapState.BOSS_KEYROOM)){
+                    DiscreteCoordinates coordinates=new DiscreteCoordinates(i,k);
+                    Level0KeyRoom keyRoom=new Level0KeyRoom(coordinates,getBossRoomKeyID());
+                    rooms.add(keyRoom);
+                    setRoom(coordinates,keyRoom);
+                    mapStates[i][k]=MapState.CREATED;
                 }
             }
         }
 
-        ArrayList<Level0Room>rooms=new ArrayList<>();
 
-        roomArrangement=Level0RoomType.setroomArrangement();
 
         //TODO fix mistake of rooms not being generated and fix the BOSSROOM connector
         for(int i=0;i<roomArrangement[0];++i){
@@ -112,6 +126,7 @@ public class Level0 extends Level {
             mapStates[xcor][ycor]=MapState.CREATED;
             roomsToCreate.remove(randomcoor);
         }
+
         int randomcoor=RandomHelper.roomGenerator.nextInt(0, roomsToCreate.size());
         DiscreteCoordinates coordinates=roomsToCreate.get(randomcoor);
         int xcor=roomsToCreate.get(randomcoor).x;
@@ -119,26 +134,6 @@ public class Level0 extends Level {
         Level0StaffRoom staffRoom=new Level0StaffRoom(roomsToCreate.get(randomcoor));
         rooms.add(staffRoom);
         setRoom(coordinates,staffRoom);
-        mapStates[xcor][ycor]=MapState.CREATED;
-        roomsToCreate.remove(randomcoor);
-
-        randomcoor=RandomHelper.roomGenerator.nextInt(0, roomsToCreate.size());
-        coordinates=roomsToCreate.get(randomcoor);
-        xcor=roomsToCreate.get(randomcoor).x;
-        ycor=roomsToCreate.get(randomcoor).y;
-        Level0KeyRoom keyRoom=new Level0KeyRoom(roomsToCreate.get(randomcoor),1);
-        rooms.add(keyRoom);
-        setRoom(coordinates,keyRoom);
-        mapStates[xcor][ycor]=MapState.CREATED;
-        roomsToCreate.remove(randomcoor);
-
-        randomcoor=RandomHelper.roomGenerator.nextInt(0, roomsToCreate.size());
-        coordinates=roomsToCreate.get(randomcoor);
-        xcor=roomsToCreate.get(randomcoor).x;
-        ycor=roomsToCreate.get(randomcoor).y;
-        Level0BossRoom bossRoom=new Level0BossRoom(roomsToCreate.get(randomcoor));
-        rooms.add(bossRoom);
-        setRoom(coordinates,bossRoom);
         mapStates[xcor][ycor]=MapState.CREATED;
         roomsToCreate.remove(randomcoor);
 
