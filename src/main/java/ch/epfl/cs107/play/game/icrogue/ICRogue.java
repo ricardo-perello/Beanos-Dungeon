@@ -55,7 +55,7 @@ public class ICRogue extends AreaGame {
         level.addAreas(this); /*adds current room to the areas*/
 
 
-        setCurrentArea(level.getRoomName(Level0.startingroom),true); /* makes it the current area */
+        setCurrentArea(level.getRoomName(Level0.startingroom),false); /* makes it the current area */
 
 
         player=level.addPlayer(Level0.startingroom);/* creates main character and adds to starting room*/

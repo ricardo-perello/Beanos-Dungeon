@@ -386,7 +386,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             }
         }
         public void interactWith(Key key, boolean isCellInteraction){
-            if(wantsCellInteraction()){
+            if(isCellInteraction){
                 key.collect();
                 carrying.add(key); /*adds key to carrying arraylist which represents the items the character is holding*/
             }
@@ -409,7 +409,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                         }
                     }
                 }
-            else if(wantsCellInteraction()){
+            if(isCellInteraction&&connector.compareState(Connector.ConnectorState.OPEN)){
                 coordinatesTransition=connector.getArrivalcoordinates();
                 transitionArea=connector.getAreaTitle();
                 isTransitioning=true;
@@ -422,6 +422,9 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             if(wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())&&
                     portal.compareState(Portal.PortalState.OPEN)){
                 isTransporting=true;
+            }
+            else{
+                isTransporting=false;
             }
         }
     }
