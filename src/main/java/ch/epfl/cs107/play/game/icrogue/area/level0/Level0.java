@@ -18,36 +18,36 @@ import java.util.ArrayList;
 
 public class Level0 extends Level {
     public enum Level0RoomType{
-        TurretRoom(RandomHelper.roomGenerator.nextInt(1,2)),
-        StaffRoom(1),
-        Boss_Key(1),
-        Boss(1),
-        Spawn(1),
-        Normal(RandomHelper.roomGenerator.nextInt(1,3));
-
-        private int quantity;
-        Level0RoomType(int nextInt) {
-            quantity=nextInt;
-        }
+        TurretRoom,
+        StaffRoom,
+        Boss_Key,
+        Boss,
+        Spawn,
+        Normal;
 
         public static int[] setroomArrangement(){
             int size=Level0RoomType.values().length;
             int[] roomArrangement = new int[size];
-            roomArrangement[0]=Level0RoomType.TurretRoom.quantity;
-            roomArrangement[1]=Level0RoomType.StaffRoom.quantity;
-            roomArrangement[2]=Level0RoomType.Boss_Key.quantity;
-            roomArrangement[3]=Level0RoomType.Boss.quantity;
-            roomArrangement[4]=Level0RoomType.Spawn.quantity;
-            roomArrangement[5]=Level0RoomType.Normal.quantity;
+            roomArrangement[0]=RandomHelper.roomGenerator.nextInt(1,2);
+            roomArrangement[1]=1;
+            roomArrangement[2]=1;
+            roomArrangement[3]=1;
+            roomArrangement[4]=1;
+            roomArrangement[5]=RandomHelper.roomGenerator.nextInt(1,3);
             return roomArrangement;
         }
     }
     public static DiscreteCoordinates startingroom=new DiscreteCoordinates(1,0);
     private static final DiscreteCoordinates arrivalCoordinates=new DiscreteCoordinates(2,0);
-    private static int[] roomArrangement=Level0RoomType.setroomArrangement();
+    private static int[] roomArrangement;
 
     public Level0() {
-        super(true,startingroom,roomArrangement, 4, 2);
+        super(true,startingroom,createRoomArrangement(), 4, 2);
+    }
+
+    private static int[]createRoomArrangement(){
+        roomArrangement=Level0RoomType.setroomArrangement();
+        return roomArrangement;
     }
 
     public Level0(boolean randomMap) {
