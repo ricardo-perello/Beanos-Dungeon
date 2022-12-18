@@ -4,9 +4,11 @@ package ch.epfl.cs107.play.game.icrogue.area;
  *  Date:
  */
 
+import ch.epfl.cs107.play.game.actor.SoundAcoustics;
 import ch.epfl.cs107.play.game.areagame.actor.Background;
 import ch.epfl.cs107.play.game.areagame.actor.Foreground;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
+import ch.epfl.cs107.play.game.areagame.io.ResourcePath;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
 import ch.epfl.cs107.play.game.icrogue.actor.NPC;
 import ch.epfl.cs107.play.game.icrogue.actor.Portal;
@@ -14,6 +16,7 @@ import ch.epfl.cs107.play.game.tutosSolution.actor.SimpleGhost;
 import ch.epfl.cs107.play.game.tutosSolution.area.Tuto2Area;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Vector;
+import ch.epfl.cs107.play.window.Window;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +30,7 @@ public class MainBase extends Tuto2Area {
     }
 
 
+
     @Override
     public DiscreteCoordinates getPlayerSpawnPosition() {
         return new DiscreteCoordinates(5,15);
@@ -35,6 +39,7 @@ public class MainBase extends Tuto2Area {
     public void unlockPortal(int i){
         portals.get(i).setState(Portal.PortalState.OPEN);
     }
+
 
     protected void createArea() {
         // Base

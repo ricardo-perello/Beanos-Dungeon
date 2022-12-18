@@ -4,8 +4,10 @@ package ch.epfl.cs107.play.game.icrogue;
  *  Date:
  */
 
+import ch.epfl.cs107.play.game.actor.SoundAcoustics;
 import ch.epfl.cs107.play.game.areagame.AreaGame;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
+import ch.epfl.cs107.play.game.areagame.io.ResourcePath;
 import ch.epfl.cs107.play.game.icrogue.actor.Portal;
 import ch.epfl.cs107.play.game.icrogue.area.Beanos.LevelBeanos;
 import ch.epfl.cs107.play.game.icrogue.area.ICRogueRoom;
@@ -32,6 +34,8 @@ public class ICRogue extends AreaGame {
 
     private ICRoguePlayer player; /*Main character*/
 
+    private SoundAcoustics soundtrack;
+
     private Level level;
     private int lvl0clears;
     private int lvl1clears;
@@ -46,7 +50,10 @@ public class ICRogue extends AreaGame {
 
     private void initGame(){
         base = new MainBase();
+        soundtrack=new SoundAcoustics(ResourcePath.getSound("home"),1,false,false,true,false);
         addArea(base);
+        soundtrack.shouldBeStarted();
+        soundtrack.bip(getWindow());
         setCurrentArea(base.getTitle(),false);
         player=new ICRoguePlayer(base,Orientation.DOWN,base.getPlayerSpawnPosition());
         player.enterArea(base,base.getPlayerSpawnPosition());
@@ -57,9 +64,12 @@ public class ICRogue extends AreaGame {
 
 
         level=new Level0(); /* creates first area*/
-
-
         level.addAreas(this); /*adds current room to the areas*/
+
+        soundtrack=new SoundAcoustics(ResourcePath.getSound("dungeon"),1,true,false,true,true);
+        soundtrack.shouldBeStarted();
+        soundtrack.bip(getWindow());
+
 
 
         setCurrentArea(level.getRoomName(Level0.startingroom),false); /* makes it the current area */
@@ -76,6 +86,9 @@ public class ICRogue extends AreaGame {
 
 
         level.addAreas(this); /*adds current room to the areas*/
+        soundtrack=new SoundAcoustics(ResourcePath.getSound("dungeon"),1,true,false,true,true);
+        soundtrack.shouldBeStarted();
+        soundtrack.bip(getWindow());
 
 
         setCurrentArea(level.getRoomName(Level1.startingroom),false); /* makes it the current area */
@@ -92,6 +105,9 @@ public class ICRogue extends AreaGame {
 
 
         level.addAreas(this); /*adds current room to the areas*/
+        soundtrack=new SoundAcoustics(ResourcePath.getSound("dungeon"),1,true,false,true,true);
+        soundtrack.shouldBeStarted();
+        soundtrack.bip(getWindow());
 
 
         setCurrentArea(level.getRoomName(Level2.startingroom),false); /* makes it the current area */
@@ -108,6 +124,9 @@ public class ICRogue extends AreaGame {
 
 
         level.addAreas(this); /*adds current room to the areas*/
+        soundtrack=new SoundAcoustics(ResourcePath.getSound("boss"),1,true,false,true,true);
+        soundtrack.shouldBeStarted();
+        soundtrack.bip(getWindow());
 
 
         setCurrentArea(level.getRoomName(LevelBeanos.startingroom),false); /* makes it the current area */
@@ -191,6 +210,7 @@ public class ICRogue extends AreaGame {
         if(lvl2clears==3){
             base.unlockPortal(3);
         }
+
     }
 
     public String getTitle() {
@@ -221,6 +241,9 @@ public class ICRogue extends AreaGame {
             player.leaveArea();
             player.clearCarrying();
             setCurrentArea(base.getTitle(),false);
+            soundtrack=new SoundAcoustics(ResourcePath.getSound("home"),1,true,false,true,true);
+            soundtrack.shouldBeStarted();
+            soundtrack.bip(getWindow());
             player.enterArea(base,previousCoorInBase);
             player.centerCamera();
             display=0;
@@ -239,6 +262,9 @@ public class ICRogue extends AreaGame {
             player.leaveArea();
             player.clearCarrying();
             setCurrentArea(base.getTitle(),false);
+            soundtrack=new SoundAcoustics(ResourcePath.getSound("home"),1,true,false,true,true);
+            soundtrack.shouldBeStarted();
+            soundtrack.bip(getWindow());
             player.enterArea(base,previousCoorInBase);
             player.centerCamera();
             display=0;
