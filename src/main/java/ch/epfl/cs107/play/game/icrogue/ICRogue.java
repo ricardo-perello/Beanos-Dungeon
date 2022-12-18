@@ -6,6 +6,7 @@ package ch.epfl.cs107.play.game.icrogue;
 
 import ch.epfl.cs107.play.game.areagame.AreaGame;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
+import ch.epfl.cs107.play.game.icrogue.actor.Portal;
 import ch.epfl.cs107.play.game.icrogue.area.Beanos.LevelBeanos;
 import ch.epfl.cs107.play.game.icrogue.area.ICRogueRoom;
 import ch.epfl.cs107.play.game.icrogue.area.Level;
@@ -32,11 +33,12 @@ public class ICRogue extends AreaGame {
     private ICRoguePlayer player; /*Main character*/
 
     private Level level;
-
+    private int lvl0clears;
+    private int lvl1clears;
+    private int lvl2clears;
     private MainBase base;
     private int lives;
     private int display;
-    private int areaIndex;
     private DiscreteCoordinates previousCoorInBase;
     /**
      * Add all the areas
@@ -133,12 +135,21 @@ public class ICRogue extends AreaGame {
         Keyboard keyboard = getWindow().getKeyboard() ;
         Button key=keyboard.get(Keyboard.R);
         /*resets current room for testing purposes*/
-        if(key.isDown()){
+        if(key.isPressed()){
             initLevel0();
         }
 
-        if((player.getHp() <= 0)&&lives>=0){
-            switchArea();
+        key=keyboard.get(Keyboard.P);
+        if(key.isPressed()){
+            ++lvl0clears;
+        }
+        key=keyboard.get(Keyboard.O);
+        if(key.isPressed()){
+            ++lvl1clears;
+        }
+        key=keyboard.get(Keyboard.I);
+        if(key.isPressed()){
+            ++lvl2clears;
         }
 
         if((lives<0)&&(display==0)){
@@ -155,6 +166,9 @@ public class ICRogue extends AreaGame {
 
             display=1;
         }
+        if(getCurrentArea() instanceof MainBase){
+            unlockPortals();
+        }
         super.update(deltaTime);
 
     }
@@ -166,6 +180,18 @@ public class ICRogue extends AreaGame {
          */
     }
 
+    public void unlockPortals(){
+        MainBase base=(MainBase)getCurrentArea();
+        if(lvl0clears==3){
+            base.unlockPortal(1);
+        }
+        if(lvl1clears==3){
+            base.unlockPortal(2);
+        }
+        if(lvl2clears==3){
+            base.unlockPortal(3);
+        }
+    }
 
     public String getTitle() {
         return "Beanos' Dungeon";
@@ -191,7 +217,25 @@ public class ICRogue extends AreaGame {
             display=0;
 
         }
+        else if(player.getHp() <= 0){
+            player.leaveArea();
+            player.clearCarrying();
+            setCurrentArea(base.getTitle(),false);
+            player.enterArea(base,previousCoorInBase);
+            player.centerCamera();
+            display=0;
+
+        }
         else if(level!=null&&level.isResolved()&&(display==0)){
+            if(level instanceof Level0){
+                ++lvl0clears;
+            }
+            else if(level instanceof Level1){
+                ++lvl1clears;
+            }
+            else if(level instanceof Level2){
+                ++lvl2clears;
+            }
             player.leaveArea();
             player.clearCarrying();
             setCurrentArea(base.getTitle(),false);
