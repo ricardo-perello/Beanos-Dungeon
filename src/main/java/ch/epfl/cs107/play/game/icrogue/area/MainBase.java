@@ -41,7 +41,9 @@ public class MainBase extends Tuto2Area {
         registerActor(new NPC(this,new DiscreteCoordinates(10, 10), "boy.1"));
         registerActor(new NPC(this,new DiscreteCoordinates(6, 10), "girl.1"));
         registerActor(new NPC(this,new DiscreteCoordinates(20, 10), "joel.fixed"));
-        portals.add(new Portal(this,Orientation.UP,new DiscreteCoordinates(15,5)));
+        portals.add(new Portal(this,Orientation.UP,new DiscreteCoordinates(15,5),"level0"));
+        portals.add(new Portal(this,Orientation.UP,new DiscreteCoordinates(19,5),"level1"));
+        portals.add(new Portal(this,Orientation.UP,new DiscreteCoordinates(17,7),"level2"));
 
         for(Portal portal:portals){
             this.registerActor(portal);

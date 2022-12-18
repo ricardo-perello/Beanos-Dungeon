@@ -24,6 +24,8 @@ public class Portal extends AreaEntity {
     }
     private String areaTitle;
 
+    private String levelname;
+
     private DiscreteCoordinates arrivalcoordinates;
     private Orientation orientation;
     private int ID;
@@ -31,11 +33,12 @@ public class Portal extends AreaEntity {
     public static final int NO_KEY_ID=0; /*when no key is required to open the door, this will be its identifier*/
     private PortalState state;
 
-    public Portal(Area area, Orientation orientation, DiscreteCoordinates position){
+    public Portal(Area area, Orientation orientation, DiscreteCoordinates position, String level){
         super(area,orientation,position);
         state= PortalState.OPEN;
         ID=0;
         this.orientation=orientation;
+        levelname=level;
         setSprite();
     }
     public void draw(Canvas canvas) {
@@ -53,6 +56,10 @@ public class Portal extends AreaEntity {
     public boolean compareState(PortalState state){
 
         return this.state.equals(state);
+    }
+
+    public String getLevel(){
+        return levelname;
     }
 
     public DiscreteCoordinates getArrivalcoordinates(){

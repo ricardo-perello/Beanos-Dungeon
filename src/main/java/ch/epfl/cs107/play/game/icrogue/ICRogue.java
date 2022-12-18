@@ -11,6 +11,10 @@ import ch.epfl.cs107.play.game.icrogue.area.Level;
 import ch.epfl.cs107.play.game.icrogue.area.MainBase;
 import ch.epfl.cs107.play.game.icrogue.area.level0.Level0;
 import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0Room;
+import ch.epfl.cs107.play.game.icrogue.area.level1.Level1;
+import ch.epfl.cs107.play.game.icrogue.area.level1.rooms.Level1Room;
+import ch.epfl.cs107.play.game.icrogue.area.level2.Level2;
+import ch.epfl.cs107.play.game.icrogue.area.level2.rooms.Level2Room;
 import ch.epfl.cs107.play.game.tutosSolution.actor.GhostPlayer;
 import ch.epfl.cs107.play.game.tutosSolution.area.Tuto2Area;
 import ch.epfl.cs107.play.io.FileSystem;
@@ -46,7 +50,7 @@ public class ICRogue extends AreaGame {
         player.centerCamera();
 
     }
-    private void initLevel(){
+    private void initLevel0(){
 
 
         level=new Level0(); /* creates first area*/
@@ -62,8 +66,36 @@ public class ICRogue extends AreaGame {
 
     }
 
-    public void PlayerDies(){
-        initLevel();
+    private void initLevel1(){
+
+
+        level=new Level1(); /* creates first area*/
+
+
+        level.addAreas(this); /*adds current room to the areas*/
+
+
+        setCurrentArea(level.getRoomName(Level1.startingroom),false); /* makes it the current area */
+
+
+        player=level.addPlayer(Level1.startingroom);/* creates main character and adds to starting room*/
+
+    }
+
+    private void initLevel2(){
+
+
+        level=new Level2(); /* creates first area*/
+
+
+        level.addAreas(this); /*adds current room to the areas*/
+
+
+        setCurrentArea(level.getRoomName(Level2.startingroom),false); /* makes it the current area */
+
+
+        player=level.addPlayer(Level2.startingroom);/* creates main character and adds to starting room*/
+
     }
 
     @Override
@@ -85,7 +117,7 @@ public class ICRogue extends AreaGame {
         Button key=keyboard.get(Keyboard.R);
         /*resets current room for testing purposes*/
         if(key.isDown()){
-            initLevel();
+            initLevel0();
         }
 
         if((player.getHp() <= 0)&&lives>=0){
@@ -127,7 +159,15 @@ public class ICRogue extends AreaGame {
             previousCoorInBase=player.getCurrentCells().get(0);
             player.leaveArea();
             player.transported();
-            initLevel();
+            if(player.getTransportArea().equals("level0")){
+                initLevel0();
+            }
+            else if(player.getTransportArea().equals("level1")){
+                initLevel1();
+            }
+            else if(player.getTransportArea().equals("level2")){
+                initLevel2();
+            }
             display=0;
 
         }

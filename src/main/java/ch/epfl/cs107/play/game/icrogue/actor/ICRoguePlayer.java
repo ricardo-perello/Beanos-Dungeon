@@ -43,6 +43,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private boolean isTransitioning;
     private boolean isTransporting;
     private String transitionArea;
+    private String transportArea;
     private DiscreteCoordinates coordinatesTransition;
     private ICRoguePlayerInteractionHandler handler;
     private String spriteName = "zelda/player";
@@ -89,6 +90,10 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
     public String getTransitionArea(){
         return transitionArea;
+    }
+
+    public String getTransportArea(){
+        return transportArea;
     }
 
     public boolean getisTransitioning(){
@@ -421,6 +426,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if(wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())&&
                     portal.compareState(Portal.PortalState.OPEN)){
+                transportArea=portal.getLevel();
                 isTransporting=true;
             }
             else{
