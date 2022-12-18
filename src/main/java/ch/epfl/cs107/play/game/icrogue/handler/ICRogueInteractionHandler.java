@@ -5,6 +5,7 @@ import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.ICRogueBehavior;
 import ch.epfl.cs107.play.game.icrogue.actor.Connector;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
+import ch.epfl.cs107.play.game.icrogue.actor.Portal;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.items.*;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
@@ -12,6 +13,8 @@ import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
 
 public interface ICRogueInteractionHandler extends AreaInteractionVisitor {
     default void interactWith(Interactable other, boolean isCellInteraction){
+    }
+    default void interactWith(Portal portal, boolean isCellInteraction){
     }
     default void interactWith(Fire fire, boolean isCellInteraction) {
     }

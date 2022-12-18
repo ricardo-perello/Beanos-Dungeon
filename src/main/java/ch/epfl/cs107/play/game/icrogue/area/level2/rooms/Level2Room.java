@@ -1,26 +1,20 @@
-package ch.epfl.cs107.play.game.icrogue.area.level0.rooms;
+package ch.epfl.cs107.play.game.icrogue.area.level2.rooms;
 /*
  *  Author:  Mateus Vital Nabholz
  *  Date:
  */
+
 import ch.epfl.cs107.play.game.areagame.actor.Background;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
-import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
-import ch.epfl.cs107.play.game.icrogue.actor.items.Bow;
-import ch.epfl.cs107.play.game.icrogue.actor.items.Cherry;
-import ch.epfl.cs107.play.game.icrogue.actor.items.Staff;
-import ch.epfl.cs107.play.game.icrogue.actor.items.Sword;
 import ch.epfl.cs107.play.game.icrogue.area.ConnectorInRoom;
-import ch.epfl.cs107.play.game.tutosSolution.actor.SimpleGhost;
-import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.game.icrogue.area.ICRogueRoom;
-import ch.epfl.cs107.play.math.Vector;
+import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Level0Room extends ICRogueRoom {
-    public enum Level0Connectors implements ConnectorInRoom{
+public class Level2Room extends ICRogueRoom {
+    public enum Level2Connectors implements ConnectorInRoom{
         W(new DiscreteCoordinates(0,4),
                 new DiscreteCoordinates(8,5),Orientation.LEFT),
         S(new DiscreteCoordinates(4,0),
@@ -34,7 +28,7 @@ public class Level0Room extends ICRogueRoom {
         private DiscreteCoordinates destination;
         private Orientation orientation;
 
-        Level0Connectors(DiscreteCoordinates coordinates, DiscreteCoordinates coordinates1, Orientation orientation) {
+        Level2Connectors(DiscreteCoordinates coordinates, DiscreteCoordinates coordinates1, Orientation orientation) {
             position=coordinates;
             destination=coordinates1;
             this.orientation=orientation;
@@ -75,13 +69,13 @@ public class Level0Room extends ICRogueRoom {
         }
     }
 
-    public Level0Room(DiscreteCoordinates coordinates){
-        super(Level0Connectors.getAllConnectorsPosition(), Level0Connectors.getAllConnectorsOrientation(),Level0Connectors.getAllConnectorsDestination(),
-                "icrogue/Level0Room", coordinates);
+    public Level2Room(DiscreteCoordinates coordinates){
+        super(Level2Connectors.getAllConnectorsPosition(), Level2Connectors.getAllConnectorsOrientation(),Level2Connectors.getAllConnectorsDestination(),
+                "icrogue/Level2Room", coordinates);
     }
 
     public String getTitle() {
-        return "icrogue/level0"+getCoordinatesString();
+        return "icrogue/level2"+getCoordinatesString();
     }
 
     public DiscreteCoordinates getPlayerSpawnPosition() {

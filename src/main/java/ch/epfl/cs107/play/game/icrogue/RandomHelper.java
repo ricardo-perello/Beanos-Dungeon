@@ -33,7 +33,7 @@ public class RandomHelper {
 
         while (remainingValues > 0) {
             int ix = chooseGenerator.nextInt(values.size());
-            res.add(list.get(ix));
+            res.add(values.get(ix));
             values.remove(ix);
             remainingValues -= 1;
         }

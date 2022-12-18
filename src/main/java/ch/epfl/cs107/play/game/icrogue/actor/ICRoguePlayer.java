@@ -27,7 +27,7 @@ import static ch.epfl.cs107.play.game.areagame.actor.Animation.createAnimations;
 import static ch.epfl.cs107.play.game.areagame.io.ResourcePath.getSprite;
 
 public class ICRoguePlayer extends ICRogueActor implements Interactor {
-    public final static int DEFAULT_PLAYER_HP = 10;
+    public static int DEFAULT_PLAYER_HP = 10;
     /// Animation duration in frame number
     private final static int MOVE_DURATION = 8;
     public final static int DEFAULT_MELEE_DAMAGE = 1;
@@ -47,7 +47,9 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private boolean hasSword;
     private boolean hasBow;
     private boolean isTransitioning;
+    private boolean isTransporting;
     private String transitionArea;
+    private String transportArea;
     private DiscreteCoordinates coordinatesTransition;
     private ICRoguePlayerInteractionHandler handler;
     private String spriteName = "zelda/player";
@@ -111,8 +113,24 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         return transitionArea;
     }
 
+    public String getTransportArea(){
+        return transportArea;
+    }
+
     public boolean getisTransitioning(){
         return isTransitioning;
+    }
+
+    public boolean getisTransporting(){
+        return isTransporting;
+    }
+
+    public void transported(){
+        isTransporting=false;
+    }
+
+    public void strengthen() {
+        hp = DEFAULT_PLAYER_HP;
     }
 
     public DiscreteCoordinates getCoordinatesTransition(){
@@ -160,10 +178,6 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
             Fire fire = new Fire(getOwnerArea(),getOrientation(),getCurrentMainCellCoordinates());
             fire.enterArea(getOwnerArea(),getCurrentMainCellCoordinates());
-
-
-
-
 
         }
 
@@ -251,6 +265,13 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
     }
 
+    public void clearCarrying(){
+        carrying.clear();
+        hasStaff=false;
+        hasBow=false;
+        hasSword=false;
+    }
+
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
         ((ICRogueInteractionHandler)v).interactWith(this, isCellInteraction);
     }
@@ -280,6 +301,10 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
     public void transitioned(){
         isTransitioning=false;
+    }
+
+    public void centerCamera() {
+        getOwnerArea().setViewCandidate(this);
     }
 
     //ANIMATIONS
@@ -462,7 +487,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             }
         }
         public void interactWith(Key key, boolean isCellInteraction){
-            if(wantsCellInteraction()){
+            if(isCellInteraction){
                 key.collect();
                 carrying.add(key); /*adds key to carrying arraylist which represents the items the character is holding*/
             }
@@ -474,7 +499,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             }
         }
         public void interactWith(Connector connector, boolean isCellInteraction){
-            if(wantsViewInteraction()){
+            Keyboard keyboard= getOwnerArea().getKeyboard();
+            if(wantsViewInteraction()&& (keyboard.get(Keyboard.W).isPressed())){
                 boolean unlock=false;
                 if(connector.compareState(Connector.ConnectorState.LOCKED)){
                     for(Item item:carrying){
@@ -484,11 +510,23 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                         }
                     }
                 }
-            else if(wantsCellInteraction()){
+            if(isCellInteraction&&connector.compareState(Connector.ConnectorState.OPEN)){
                 coordinatesTransition=connector.getArrivalcoordinates();
                 transitionArea=connector.getAreaTitle();
                 isTransitioning=true;
 
+            }
+        }
+
+        public void interactWith(Portal portal, boolean isCellInteraction){
+            Keyboard keyboard= getOwnerArea().getKeyboard();
+            if(wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())&&
+                    portal.compareState(Portal.PortalState.OPEN)){
+                transportArea=portal.getLevel();
+                isTransporting=true;
+            }
+            else{
+                isTransporting=false;
             }
         }
     }

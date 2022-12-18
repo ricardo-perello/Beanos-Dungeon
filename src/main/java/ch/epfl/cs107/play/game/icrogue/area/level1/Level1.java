@@ -1,23 +1,20 @@
-package ch.epfl.cs107.play.game.icrogue.area.level0;
+package ch.epfl.cs107.play.game.icrogue.area.level1;
 /*
  *  Author:  Mateus Vital Nabholz
  *  Date:
  */
 
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
-import ch.epfl.cs107.play.game.icrogue.ICRogue;
 import ch.epfl.cs107.play.game.icrogue.RandomHelper;
-import ch.epfl.cs107.play.game.icrogue.actor.Connector;
-import ch.epfl.cs107.play.game.icrogue.area.ConnectorInRoom;
 import ch.epfl.cs107.play.game.icrogue.area.ICRogueRoom;
 import ch.epfl.cs107.play.game.icrogue.area.Level;
-import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.*;
+import ch.epfl.cs107.play.game.icrogue.area.level1.rooms.*;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 import java.util.ArrayList;
 
-public class Level0 extends Level {
-    public enum Level0RoomType{
+public class Level1 extends Level {
+    public enum Level1RoomType{
         TurretRoom,
         StaffRoom,
         Boss_Key,
@@ -26,7 +23,7 @@ public class Level0 extends Level {
         Normal;
 
         public static int[] setroomArrangement(){
-            int size=Level0RoomType.values().length;
+            int size=Level1RoomType.values().length;
             int[] roomArrangement = new int[size];
             roomArrangement[0]=RandomHelper.roomGenerator.nextInt(1,2);
             roomArrangement[1]=1;
@@ -41,16 +38,16 @@ public class Level0 extends Level {
     private static final DiscreteCoordinates arrivalCoordinates=new DiscreteCoordinates(2,0);
     private static int[] roomArrangement;
 
-    public Level0() {
+    public Level1() {
         super(true,startingroom,createRoomArrangement(), 4, 2);
     }
 
     private static int[]createRoomArrangement(){
-        roomArrangement=Level0RoomType.setroomArrangement();
+        roomArrangement=Level1RoomType.setroomArrangement();
         return roomArrangement;
     }
 
-    public Level0(boolean randomMap) {
+    public Level1(boolean randomMap) {
         super(randomMap,startingroom,roomArrangement, 4, 2);
     }
 
@@ -86,7 +83,7 @@ public class Level0 extends Level {
         MapState[][]mapStates=generateRandomRoomPlacement();
         printMap(mapStates);
         ArrayList<DiscreteCoordinates>roomsToCreate=new ArrayList<>();
-        ArrayList<Level0Room>rooms=new ArrayList<>();
+        ArrayList<Level1Room>rooms=new ArrayList<>();
 
         for(int i=0;i<mapStates.length;++i){
             for(int k=0;k<mapStates[i].length;++k){
@@ -96,7 +93,7 @@ public class Level0 extends Level {
 
                 else if(mapStates[i][k].equals(MapState.BOSS_ROOM)){
                     DiscreteCoordinates coordinates=new DiscreteCoordinates(i,k);
-                    Level0BossRoom bossRoom=new Level0BossRoom(coordinates);
+                    Level1BossRoom bossRoom=new Level1BossRoom(coordinates);
                     rooms.add(bossRoom);
                     setRoom(coordinates,bossRoom);
                     mapStates[i][k]=MapState.CREATED;
@@ -104,7 +101,7 @@ public class Level0 extends Level {
 
                 else if(mapStates[i][k].equals(MapState.BOSS_KEYROOM)){
                     DiscreteCoordinates coordinates=new DiscreteCoordinates(i,k);
-                    Level0KeyRoom keyRoom=new Level0KeyRoom(coordinates,getBossRoomKeyID());
+                    Level1KeyRoom keyRoom=new Level1KeyRoom(coordinates,getBossRoomKeyID());
                     rooms.add(keyRoom);
                     setRoom(coordinates,keyRoom);
                     mapStates[i][k]=MapState.CREATED;
@@ -119,7 +116,7 @@ public class Level0 extends Level {
             DiscreteCoordinates coordinates=roomsToCreate.get(randomcoor);
             int xcor=roomsToCreate.get(randomcoor).x;
             int ycor=roomsToCreate.get(randomcoor).y;
-            Level0TurretRoom turretRoom=new Level0TurretRoom(roomsToCreate.get(randomcoor));
+            Level1TurretRoom turretRoom=new Level1TurretRoom(roomsToCreate.get(randomcoor));
             rooms.add(turretRoom);
             setRoom(coordinates,turretRoom);
             mapStates[xcor][ycor]=MapState.CREATED;
@@ -130,7 +127,7 @@ public class Level0 extends Level {
         DiscreteCoordinates coordinates=roomsToCreate.get(randomcoor);
         int xcor=roomsToCreate.get(randomcoor).x;
         int ycor=roomsToCreate.get(randomcoor).y;
-        Level0StaffRoom staffRoom=new Level0StaffRoom(roomsToCreate.get(randomcoor));
+        Level1StaffRoom staffRoom=new Level1StaffRoom(roomsToCreate.get(randomcoor));
         rooms.add(staffRoom);
         setRoom(coordinates,staffRoom);
         mapStates[xcor][ycor]=MapState.CREATED;
@@ -140,7 +137,7 @@ public class Level0 extends Level {
         coordinates=roomsToCreate.get(randomcoor);
         xcor=roomsToCreate.get(randomcoor).x;
         ycor=roomsToCreate.get(randomcoor).y;
-        Level0Room Room=new Level0Room(roomsToCreate.get(randomcoor));
+        Level1Room Room=new Level1Room(roomsToCreate.get(randomcoor));
         startingroom=coordinates;
         setArrivalcoordinates(coordinates);
         rooms.add(Room);
@@ -153,7 +150,7 @@ public class Level0 extends Level {
             coordinates=roomsToCreate.get(randomcoor);
             xcor=roomsToCreate.get(randomcoor).x;
             ycor=roomsToCreate.get(randomcoor).y;
-            Room=new Level0Room(coordinates);
+            Room=new Level1Room(coordinates);
             rooms.add(Room);
             setRoom(coordinates,Room);
             mapStates[xcor][ycor]=MapState.CREATED;
@@ -163,7 +160,7 @@ public class Level0 extends Level {
 
         printMap(mapStates);
 
-        for(Level0Room room:rooms){
+        for(Level1Room room:rooms){
             setUpConnector(mapStates,room);
         }
 
@@ -179,30 +176,30 @@ public class Level0 extends Level {
                 roomsplacement[xcor+1][ycor].equals(MapState.EXPLORED)||roomsplacement[xcor+1][ycor].equals(MapState.PLACED))){
             DiscreteCoordinates destination=roomCoordinates.jump(Orientation.RIGHT.toVector());
             String destinationName= getRoomName(destination);
-            setRoomConnector(roomCoordinates,destinationName,Level0Room.Level0Connectors.E);
+            setRoomConnector(roomCoordinates,destinationName, Level1Room.Level1Connectors.E);
             boolean bossDestination=isNextToBossRoom(destination);
             if(bossDestination){
-                lockRoomConnector(roomCoordinates,Level0Room.Level0Connectors.E,getBossRoomKeyID());
+                lockRoomConnector(roomCoordinates, Level1Room.Level1Connectors.E,getBossRoomKeyID());
             }
         }
         if(xcor>0&&(roomsplacement[xcor-1][ycor].equals(MapState.CREATED)||
                 roomsplacement[xcor-1][ycor].equals(MapState.EXPLORED)||roomsplacement[xcor-1][ycor].equals(MapState.PLACED))){
             DiscreteCoordinates destination=roomCoordinates.jump(Orientation.LEFT.toVector());
             String destinationName= getRoomName(destination);
-            setRoomConnector(roomCoordinates,destinationName,Level0Room.Level0Connectors.W);
+            setRoomConnector(roomCoordinates,destinationName, Level1Room.Level1Connectors.W);
             boolean bossDestination=isNextToBossRoom(destination);
             if(bossDestination){
-                lockRoomConnector(roomCoordinates,Level0Room.Level0Connectors.W,getBossRoomKeyID());
+                lockRoomConnector(roomCoordinates, Level1Room.Level1Connectors.W,getBossRoomKeyID());
             }
         }
         if(ycor<roomsplacement[0].length-1&&(roomsplacement[xcor][ycor+1].equals(MapState.CREATED)||
                 roomsplacement[xcor][ycor+1].equals(MapState.EXPLORED)||roomsplacement[xcor][ycor+1].equals(MapState.PLACED))){
             DiscreteCoordinates destination=roomCoordinates.jump(Orientation.UP.toVector());
             String destinationName= getRoomName(destination);
-            setRoomConnector(roomCoordinates,destinationName,Level0Room.Level0Connectors.N);
+            setRoomConnector(roomCoordinates,destinationName, Level1Room.Level1Connectors.N);
             boolean bossDestination=isNextToBossRoom(destination);
             if(bossDestination){
-                lockRoomConnector(roomCoordinates,Level0Room.Level0Connectors.N,getBossRoomKeyID());
+                lockRoomConnector(roomCoordinates, Level1Room.Level1Connectors.N,getBossRoomKeyID());
             }
         }
         if(ycor>0 &&(roomsplacement[xcor][ycor-1].equals(MapState.CREATED)||
@@ -210,9 +207,9 @@ public class Level0 extends Level {
             DiscreteCoordinates destination=roomCoordinates.jump(Orientation.DOWN.toVector());
             boolean bossDestination=isNextToBossRoom(destination);
             String destinationName= getRoomName(destination);
-            setRoomConnector(roomCoordinates,destinationName,Level0Room.Level0Connectors.S);
+            setRoomConnector(roomCoordinates,destinationName, Level1Room.Level1Connectors.S);
             if(bossDestination){
-                lockRoomConnector(roomCoordinates,Level0Room.Level0Connectors.S,getBossRoomKeyID());
+                lockRoomConnector(roomCoordinates, Level1Room.Level1Connectors.S,getBossRoomKeyID());
             }
         }
 
@@ -221,39 +218,39 @@ public class Level0 extends Level {
 
     private void generateMap1() {
         DiscreteCoordinates room00 = new DiscreteCoordinates(0, 0);
-        setRoom(room00, new Level0KeyRoom(room00, 1));
-        setRoomConnector(room00, "icrogue/level010", Level0Room.Level0Connectors.E);
-        lockRoomConnector(room00, Level0Room.Level0Connectors.E,  1);
+        setRoom(room00, new Level1KeyRoom(room00, 1));
+        setRoomConnector(room00, "icrogue/level110", Level1Room.Level1Connectors.E);
+        lockRoomConnector(room00, Level1Room.Level1Connectors.E,  1);
 
         DiscreteCoordinates room10 = new DiscreteCoordinates(1, 0);
-        setRoom(room10, new Level0Room(room10));
-        setRoomConnector(room10, "icrogue/level000", Level0Room.Level0Connectors.W);
+        setRoom(room10, new Level1Room(room10));
+        setRoomConnector(room10, "icrogue/level100", Level1Room.Level1Connectors.W);
     }
 
     public void generateFinalMap(){
         DiscreteCoordinates room00 = new DiscreteCoordinates(0, 0);
-        setRoom(room00, new Level0TurretRoom(room00));
-        setRoomConnector(room00, "icrogue/level010", Level0Room.Level0Connectors.E);
+        setRoom(room00, new Level1TurretRoom(room00));
+        setRoomConnector(room00, "icrogue/level110", Level1Room.Level1Connectors.E);
 
         DiscreteCoordinates room10 = new DiscreteCoordinates(1,0);
-        setRoom(room10, new Level0Room(room10));
-        setRoomConnector(room10, "icrogue/level011", Level0Room.Level0Connectors.S);
-        setRoomConnector(room10, "icrogue/level020", Level0Room.Level0Connectors.E);
+        setRoom(room10, new Level1Room(room10));
+        setRoomConnector(room10, "icrogue/level111", Level1Room.Level1Connectors.S);
+        setRoomConnector(room10, "icrogue/level120", Level1Room.Level1Connectors.E);
 
-        lockRoomConnector(room10, Level0Room.Level0Connectors.W,  2);
-        setRoomConnectorDestination(room10, "icrogue/level000", Level0Room.Level0Connectors.W);
+        lockRoomConnector(room10, Level1Room.Level1Connectors.W,  2);
+        setRoomConnectorDestination(room10, "icrogue/level100", Level1Room.Level1Connectors.W);
 
         DiscreteCoordinates room20 = new DiscreteCoordinates(2,0);
-        setRoom(room20,  new Level0StaffRoom(room20));
-        setRoomConnector(room20, "icrogue/level010", Level0Room.Level0Connectors.W);
-        setRoomConnector(room20, "icrogue/level030", Level0Room.Level0Connectors.E);
+        setRoom(room20,  new Level1StaffRoom(room20));
+        setRoomConnector(room20, "icrogue/level110", Level1Room.Level1Connectors.W);
+        setRoomConnector(room20, "icrogue/level130", Level1Room.Level1Connectors.E);
 
         DiscreteCoordinates room30 = new DiscreteCoordinates(3,0);
-        setRoom(room30, new Level0KeyRoom(room30, 2));
-        setRoomConnector(room30, "icrogue/level020", Level0Room.Level0Connectors.W);
+        setRoom(room30, new Level1KeyRoom(room30, 2));
+        setRoomConnector(room30, "icrogue/level120", Level1Room.Level1Connectors.W);
 
         DiscreteCoordinates room11 = new DiscreteCoordinates(1, 1);
-        setRoom (room11, new Level0Room(room11));
-        setRoomConnector(room11, "icrogue/level010", Level0Room.Level0Connectors.N);
+        setRoom (room11, new Level1Room(room11));
+        setRoomConnector(room11, "icrogue/level110", Level1Room.Level1Connectors.N);
     }
 }

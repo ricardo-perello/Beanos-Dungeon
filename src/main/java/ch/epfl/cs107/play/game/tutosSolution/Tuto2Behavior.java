@@ -76,8 +76,17 @@ public class Tuto2Behavior extends AreaBehavior {
 
 		@Override
 		protected boolean canEnter(Interactable entity) {
+			for(Interactable elements: entities){
+				if(elements.takeCellSpace()){
+					return false;
+				}
+				else {
+					return true;
+				}
+			}
+
 			return type.isWalkable;
-	    }
+		}
 
 	    
 		@Override
