@@ -58,6 +58,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private int hp = DEFAULT_PLAYER_HP;
     private boolean receivedDamage = false;
     private int meleeDamage;
+    public final static float COOLDOWN = 1.f;
+    private float counter = 1.f;
 
 
     public ICRoguePlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates){
@@ -164,6 +166,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
 
     public void update(float deltaTime) {
+        counter += deltaTime;
         Keyboard keyboard= getOwnerArea().getKeyboard();
         setCurrentAnimation();
         moveIfPressed(Orientation.LEFT, keyboard.get(Keyboard.LEFT));
@@ -173,12 +176,13 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
         //fireball shoots from a cell in front of player
 
-        if(keyboard.get(Keyboard.X).isPressed()&& hasStaff){
+        if(keyboard.get(Keyboard.X).isPressed()&& hasStaff && (counter >= COOLDOWN)){
             spriteName = "zelda/player.staff_water";
             isStaffAnimation = true;
 
             Fire fire = new Fire(getOwnerArea(),getOrientation(),getCurrentMainCellCoordinates());
             fire.enterArea(getOwnerArea(),getCurrentMainCellCoordinates());
+            counter = 0;
 
         }
 
@@ -309,10 +313,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     }
 
     //ANIMATIONS
-    //todo add music
     //todo add animations for walking
     //todo add animations for sword
-    //todo fix staff animation for right
     public void setStaffAnimation() {
         String name = "zelda/player.staff_water";
         Sprite[] spritesDOWN = {

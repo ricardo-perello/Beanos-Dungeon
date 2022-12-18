@@ -48,7 +48,7 @@ public class Fire extends Projectile{
             sprite.draw(canvas);
         }
     }
-    //todo add cooldown
+
 
     public void interactWith(Interactable other, boolean isCellInteraction) {
         other.acceptInteraction(handler,isCellInteraction);
