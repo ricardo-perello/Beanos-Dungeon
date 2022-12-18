@@ -136,6 +136,10 @@ public abstract class Level implements Logic {
         return map[coordinates.x][coordinates.y].getTitle();
     }
 
+    public void setBossPosition(DiscreteCoordinates coordinates){
+        bossPosition=coordinates;
+    }
+
     protected MapState[][] generateRandomRoomPlacement(){
         ArrayList<DiscreteCoordinates>placed=new ArrayList<>();
         ArrayList<DiscreteCoordinates>explored=new ArrayList<>();
