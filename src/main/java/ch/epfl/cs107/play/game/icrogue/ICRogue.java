@@ -128,6 +128,7 @@ public class ICRogue extends AreaGame {
             player.leaveArea();
             player.transported();
             initLevel();
+            display=0;
 
         }
         else if(level!=null&&level.isResolved()&&(display==0)){
@@ -136,6 +137,7 @@ public class ICRogue extends AreaGame {
             setCurrentArea(base.getTitle(),false);
             player.enterArea(base,previousCoorInBase);
             player.centerCamera();
+            display=0;
 
         }
     }
