@@ -6,6 +6,7 @@ package ch.epfl.cs107.play.game.icrogue;
 
 import ch.epfl.cs107.play.game.areagame.AreaGame;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
+import ch.epfl.cs107.play.game.icrogue.area.Beanos.LevelBeanos;
 import ch.epfl.cs107.play.game.icrogue.area.ICRogueRoom;
 import ch.epfl.cs107.play.game.icrogue.area.Level;
 import ch.epfl.cs107.play.game.icrogue.area.MainBase;
@@ -98,6 +99,22 @@ public class ICRogue extends AreaGame {
 
     }
 
+    private void initLevelBeanos(){
+
+
+        level=new LevelBeanos(); /* creates first area*/
+
+
+        level.addAreas(this); /*adds current room to the areas*/
+
+
+        setCurrentArea(level.getRoomName(LevelBeanos.startingroom),false); /* makes it the current area */
+
+
+        player=level.addPlayer(LevelBeanos.startingroom);/* creates main character and adds to starting room*/
+
+    }
+
     @Override
     public boolean begin(Window window, FileSystem fileSystem) {
 
@@ -167,6 +184,9 @@ public class ICRogue extends AreaGame {
             }
             else if(player.getTransportArea().equals("level2")){
                 initLevel2();
+            }
+            else if(player.getTransportArea().equals("beanos")){
+                initLevelBeanos();
             }
             display=0;
 
