@@ -13,6 +13,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.BossTurret;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Bow;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Cherry;
@@ -83,6 +84,12 @@ public class Fire extends Projectile{
         }
 
         public void interactWith(Turret turret, boolean isCellInteraction) {
+            if(wantsViewInteraction()&&!isConsumed()) {
+                consume();
+                turret.decreaseHp(DEFAULT_DAMAGE);
+            }
+        }
+        public void interactWith(BossTurret turret, boolean isCellInteraction) {
             if(wantsViewInteraction()&&!isConsumed()) {
                 consume();
                 turret.decreaseHp(DEFAULT_DAMAGE);

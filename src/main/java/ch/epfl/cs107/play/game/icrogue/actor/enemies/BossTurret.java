@@ -1,37 +1,34 @@
 package ch.epfl.cs107.play.game.icrogue.actor.enemies;
 
 import ch.epfl.cs107.play.game.actor.ImageGraphics;
-import ch.epfl.cs107.play.game.actor.ShapeGraphics;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
+import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow2;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
-import ch.epfl.cs107.play.math.Rectangle;
 import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
-import java.awt.*;
-
-public class Turret extends Enemy{
+public class BossTurret extends Enemy{
 
     private Sprite sprite;
     private ImageGraphics greyHealthBar;
     private ImageGraphics redHealthBar;
-    private String spriteName = "icrogue/blue_static_npc";
+    private String spriteName = "icrogue/static_npc";
     private boolean shootUp;
     private boolean shootDown;
     private boolean shootLeft;
     private boolean shootRight;
-    public final static float COOLDOWN = 2.f;
-    private float counter = 2.f;
+    public final static float COOLDOWN = 1.7f;
+    private float counter = 0.f;
     private int hp = 5;
 
-    public Turret(Area owner, Orientation orientation, DiscreteCoordinates coordinates, boolean sUp
-            ,boolean sDown, boolean sLeft, boolean sRight) {
+    public BossTurret(Area owner, Orientation orientation, DiscreteCoordinates coordinates, boolean sUp
+            , boolean sDown, boolean sLeft, boolean sRight) {
         super(owner, orientation, coordinates);
 
         shootUp = sUp;
@@ -41,7 +38,7 @@ public class Turret extends Enemy{
 
         isAlive = true;
 
-        sprite=new Sprite(spriteName, 1.f,1.f,this,
+        sprite=new Sprite("icrogue/static_npc", 1.f,1.f,this,
                 new RegionOfInterest(0,0,16,24), new Vector(-0.05f,0.25f));
 
         printGreyHealthBar();
@@ -50,7 +47,7 @@ public class Turret extends Enemy{
 
     public void shootArrow(){
         if (shootUp){
-            Arrow arrow = new Arrow(getOwnerArea(), Orientation.UP,
+            Arrow2 arrow = new Arrow2(getOwnerArea(), Orientation.UP,
                 new DiscreteCoordinates(getCurrentMainCellCoordinates().x
                 ,(getCurrentMainCellCoordinates().y)+1));
 
@@ -58,7 +55,7 @@ public class Turret extends Enemy{
                     , (getCurrentMainCellCoordinates().y)+1));
         }
         if (shootDown){
-            Arrow arrow = new Arrow(getOwnerArea(), Orientation.DOWN,
+            Arrow2 arrow = new Arrow2(getOwnerArea(), Orientation.DOWN,
                     new DiscreteCoordinates(getCurrentMainCellCoordinates().x
                     ,(getCurrentMainCellCoordinates().y)-1));
 
@@ -67,7 +64,7 @@ public class Turret extends Enemy{
                     ,(getCurrentMainCellCoordinates().y)-1));
         }
         if (shootLeft){
-            Arrow arrow = new Arrow(getOwnerArea(), Orientation.LEFT,
+            Arrow2 arrow = new Arrow2(getOwnerArea(), Orientation.LEFT,
                     new DiscreteCoordinates((getCurrentMainCellCoordinates().x-1)
                     ,(getCurrentMainCellCoordinates().y)));
 
@@ -75,7 +72,7 @@ public class Turret extends Enemy{
                     ,getCurrentMainCellCoordinates().y));
         }
         if (shootRight){
-            Arrow arrow = new Arrow(getOwnerArea(), Orientation.RIGHT,
+            Arrow2 arrow = new Arrow2(getOwnerArea(), Orientation.RIGHT,
                     new DiscreteCoordinates((getCurrentMainCellCoordinates().x+1)
                     ,(getCurrentMainCellCoordinates().y)));
 
@@ -101,13 +98,15 @@ public class Turret extends Enemy{
 
 
     private ImageGraphics printRedHealthBar(){
-        redHealthBar = new ImageGraphics("images/sprites/zelda/red.health.bar.png", ((.9f) * ((float)getHp()/5)) ,
-                .03f, new RegionOfInterest(0,0,(int)(100 * ((double)getHp()/5)),5), new Vector(((getPosition().x)+0.03f),((getPosition().y) + 0.07f)));
+        redHealthBar = new ImageGraphics("images/sprites/zelda/red.health.bar.png", ((.9f) * (getHp() /5)) ,
+                .03f, new RegionOfInterest(0,0,(int)(100 * ((double)getHp()/5)),5),
+                new Vector(((getPosition().x)+0.03f),((getPosition().y) + 0.07f)));
         return redHealthBar;
     }
     private ImageGraphics printGreyHealthBar(){
         greyHealthBar = new ImageGraphics("images/sprites/zelda/grey.health.bar.png", .9f,.03f,
-                new RegionOfInterest(0,0,100,5),  new Vector(((getPosition().x)+0.03f),((getPosition().y) + 0.07f)));
+                new RegionOfInterest(0,0,100,5),  new Vector(((getPosition().x)+0.03f)
+                , ((getPosition().y) + 0.07f)));
         return greyHealthBar;
     }
 

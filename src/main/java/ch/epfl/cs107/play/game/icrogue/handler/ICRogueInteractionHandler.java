@@ -6,10 +6,10 @@ import ch.epfl.cs107.play.game.icrogue.ICRogueBehavior;
 import ch.epfl.cs107.play.game.icrogue.actor.Connector;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
 import ch.epfl.cs107.play.game.icrogue.actor.Portal;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.BossTurret;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.items.*;
-import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
-import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
+import ch.epfl.cs107.play.game.icrogue.actor.projectiles.*;
 
 public interface ICRogueInteractionHandler extends AreaInteractionVisitor {
     default void interactWith(Interactable other, boolean isCellInteraction){
@@ -18,8 +18,9 @@ public interface ICRogueInteractionHandler extends AreaInteractionVisitor {
     }
     default void interactWith(Fire fire, boolean isCellInteraction) {
     }
-    default void interactWith(Arrow arrow, boolean isCellInteraction) {
-    }
+    default void interactWith(Arrow arrow, boolean isCellInteraction) {}
+
+    default void interactWith(Arrow2 arrow, boolean isCellInteraction) {}
     default void interactWith(Staff staff, boolean isCellInteraction) {
     }
     default void interactWith(Sword sword, boolean isCellInteraction){
@@ -34,6 +35,7 @@ public interface ICRogueInteractionHandler extends AreaInteractionVisitor {
     default void interactWith(ICRoguePlayer player, boolean isCellInteraction){
     }
     default void interactWith(Turret turret, boolean isCellInteraction){}
+    default void interactWith(BossTurret turret, boolean isCellInteraction){}
     default void interactWith(Key key, boolean isCellInteraction){
     }
     default void interactWith(Connector connector, boolean isCellInteraction){

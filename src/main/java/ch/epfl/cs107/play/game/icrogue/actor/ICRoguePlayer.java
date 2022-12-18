@@ -5,6 +5,7 @@ import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Animation;
 import ch.epfl.cs107.play.game.areagame.actor.*;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.BossTurret;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.items.*;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
@@ -493,6 +494,12 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             }
         }
         public void interactWith(Turret turret, boolean isCellInteraction){
+            Keyboard keyboard= getOwnerArea().getKeyboard();
+            if (wantsViewInteraction() && keyboard.get(Keyboard.Z).isPressed()){
+                turret.decreaseHp(meleeDamage);
+            }
+        }
+        public void interactWith(BossTurret turret, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if (wantsViewInteraction() && keyboard.get(Keyboard.Z).isPressed()){
                 turret.decreaseHp(meleeDamage);
