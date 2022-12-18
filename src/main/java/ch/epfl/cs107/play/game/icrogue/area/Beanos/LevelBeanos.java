@@ -47,6 +47,8 @@ public class LevelBeanos extends Level {
         DiscreteCoordinates room11 = new DiscreteCoordinates(1, 1);
         setRoom(room11, new BeanosBossRoom(room11));
         setRoomConnector(room11, "icrogue/beanos10", BeanosRoom.BeanosConnectors.S);
+        setBossPosition(new DiscreteCoordinates(1,1));
+
 
         DiscreteCoordinates room10 = new DiscreteCoordinates(1, 0);
         setRoom(room10, new BeanosStartingRoom(room10));
