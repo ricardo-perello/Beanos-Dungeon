@@ -8,6 +8,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.icrogue.RandomHelper;
 import ch.epfl.cs107.play.game.icrogue.area.ICRogueRoom;
 import ch.epfl.cs107.play.game.icrogue.area.Level;
+import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0Room;
 import ch.epfl.cs107.play.game.icrogue.area.level1.rooms.*;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
@@ -106,6 +107,14 @@ public class Level1 extends Level {
                     setRoom(coordinates,keyRoom);
                     mapStates[i][k]=MapState.CREATED;
                 }
+                else if(mapStates[i][k].equals(MapState.SPAWN_ROOM)){
+                    DiscreteCoordinates coordinates=new DiscreteCoordinates(i,k);
+                    Level1Room Room=new Level1Room(coordinates);
+                    rooms.add(Room);
+                    setRoom(coordinates,Room);
+                    startingroom=coordinates;
+                    mapStates[i][k]=MapState.CREATED;
+                }
             }
         }
 
@@ -133,24 +142,12 @@ public class Level1 extends Level {
         mapStates[xcor][ycor]=MapState.CREATED;
         roomsToCreate.remove(randomcoor);
 
-        randomcoor=RandomHelper.roomGenerator.nextInt(0, roomsToCreate.size());
-        coordinates=roomsToCreate.get(randomcoor);
-        xcor=roomsToCreate.get(randomcoor).x;
-        ycor=roomsToCreate.get(randomcoor).y;
-        Level1Room Room=new Level1Room(roomsToCreate.get(randomcoor));
-        startingroom=coordinates;
-        setArrivalcoordinates(coordinates);
-        rooms.add(Room);
-        setRoom(coordinates,Room);
-        mapStates[xcor][ycor]=MapState.CREATED;
-        roomsToCreate.remove(randomcoor);
-
         for(int i=0;i<roomArrangement[5];++i){
             randomcoor=RandomHelper.roomGenerator.nextInt(0, roomsToCreate.size());
             coordinates=roomsToCreate.get(randomcoor);
             xcor=roomsToCreate.get(randomcoor).x;
             ycor=roomsToCreate.get(randomcoor).y;
-            Room=new Level1Room(coordinates);
+            Level1Room Room=new Level1Room(coordinates);
             rooms.add(Room);
             setRoom(coordinates,Room);
             mapStates[xcor][ycor]=MapState.CREATED;

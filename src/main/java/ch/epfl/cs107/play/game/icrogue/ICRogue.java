@@ -170,18 +170,15 @@ public class ICRogue extends AreaGame {
         if(key.isPressed()){
             ++lvl2clears;
         }
-
-        if((lives<0)&&(display==0)){
-            end();
-            System.out.println("Game Over");
-            display=1;
-        }
         switchRoom();
         switchArea();
-        if(level!=null&&level.isResolved()&&(display==0)){
-            end();
-            System.out.println("Win");
+        if((player.getHp() <= 0)&&(display==0)){
+            System.out.println("Dead");
+            display=1;
+        }
 
+        if(level!=null&&level.isResolved()&&(display==0)){
+            System.out.println("Win");
 
             display=1;
         }
@@ -237,7 +234,7 @@ public class ICRogue extends AreaGame {
             display=0;
 
         }
-        else if(player.getHp() <= 0){
+        else if(level!=null&&(player.getHp() <= 0)&&(display==0)){
             player.leaveArea();
             player.clearCarrying();
             setCurrentArea(base.getTitle(),false);
@@ -290,4 +287,4 @@ public class ICRogue extends AreaGame {
 
 //TODO new signal rooms, enemies(one that moves and one that spawns other enemies), new levels, merchant room,
 //TODO create TOTA and alejandro, dialogue, sounds, add portals for new levels and do the key spawn in  base,
-//TODO
+//TODO progress bar for levels

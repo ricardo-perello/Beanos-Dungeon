@@ -10,6 +10,7 @@ import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.items.*;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
+import ch.epfl.cs107.play.game.icrogue.area.MainBase;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Positionable;
@@ -30,9 +31,9 @@ import static ch.epfl.cs107.play.game.areagame.io.ResourcePath.getSprite;
 public class ICRoguePlayer extends ICRogueActor implements Interactor {
     public static int DEFAULT_PLAYER_HP = 10;
     /// Animation duration in frame number
-    private final static int MOVE_DURATION = 8;
+    private final static int MOVE_DURATION = 6;
     public final static int DEFAULT_MELEE_DAMAGE = 1;
-    private static final int ANIMATION_DURATION = 8;
+    private static final int ANIMATION_DURATION = 2;
     private Sprite sprite;
     private ImageGraphics fullHearts;
     private ImageGraphics emptyHearts;
@@ -60,13 +61,19 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private int meleeDamage;
     public final static float COOLDOWN = 1.f;
     private float counter = 1.f;
+    private Sprite[] spritesDOWN = new Sprite[4], spritesLEFT = new Sprite[4], spritesUP = new Sprite[4], spritesRIGHT = new Sprite[4];
+    private final Animation animationsDOWN = new Animation(ANIMATION_DURATION/2, spritesDOWN);
+    private final Animation animationsLEFT = new Animation(ANIMATION_DURATION/2, spritesLEFT);
+    private final Animation animationsUP = new Animation(ANIMATION_DURATION/2, spritesUP);
+    private final Animation animationsRIGHT = new Animation(ANIMATION_DURATION/2, spritesRIGHT);
 
 
     public ICRoguePlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates){
         super(owner,orientation,coordinates);
 
-        printEmptyHearts();
-        printFullHearts();
+            printEmptyHearts();
+            printFullHearts();
+
         //setting sprites based on orientation
         if(orientation.equals(Orientation.DOWN)){
             sprite=new Sprite("zelda/player", .75f,1.5f,this,
@@ -84,9 +91,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             sprite=new Sprite("zelda/player", .75f,1.5f,this,
                     new RegionOfInterest(0,96,16,32), new Vector(.15f,-.15f));
         }
-
-
-        setStaffAnimation();
+        setSpriteAnimation();
 
 
         handler= new ICRoguePlayerInteractionHandler();
@@ -95,10 +100,18 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
 
     public void draw(Canvas canvas) {
-        printEmptyHearts().draw(canvas);
-        if (getHp()>0){
-            printFullHearts().draw(canvas);
+
+        if (!(getOwnerArea() instanceof MainBase)){
+            if(hp>0){
+                printFullHearts().draw(canvas);
+            }
+            printEmptyHearts().draw(canvas);
+
         }
+        if(hp>0) {
+            currentAnimation.draw(canvas);
+        }
+
         if (isStaffAnimation) {
 
             currentAnimation.draw(canvas);
@@ -107,9 +120,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 currentAnimation.reset();
             }
         }
-        else{
-            sprite.draw(canvas);
-        }
+
+
     }
 
     public String getTransitionArea(){
@@ -140,51 +152,58 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         return coordinatesTransition;
     }
 
-    private void moveIfPressed(Orientation orientation, Button b){
-
-        if(b.isDown()) {
+    private boolean moveIfPressed(Orientation orientation, Button b,float deltaTime) {
+        if (b.isDown()) {
             if (!isDisplacementOccurs()) {
-                orientate(orientation);
-
-                if (spriteName.equals("zelda/player")){
-                    defaultSprite(orientation);
-                }
-                else if (spriteName.equals("zelda/player.staff_water")){
-                    staffSprite(orientation);
-                }
-                else if (spriteName.equals("zelda/player.sword")){
-                    swordSprite(orientation);
-                }
-                else if (spriteName.equals("zelda/player.bow")){
-                    bowSprite(orientation);
-                }
-
-                move(MOVE_DURATION);
+                orientate(orientation);//change orientation
+                move(MOVE_DURATION);//moves in that orientation
+                setCurrentAnimation();
+                currentAnimation.setSpeedFactor(4);
+                currentAnimation.update(deltaTime);
             }
+            return true;
         }
+        return false;
     }
 
 
     public void update(float deltaTime) {
+        boolean doStaffAnimation=false;
         counter += deltaTime;
+        setSpriteAnimation();
         Keyboard keyboard= getOwnerArea().getKeyboard();
         setCurrentAnimation();
-        moveIfPressed(Orientation.LEFT, keyboard.get(Keyboard.LEFT));
-        moveIfPressed(Orientation.UP, keyboard.get(Keyboard.UP));
-        moveIfPressed(Orientation.RIGHT, keyboard.get(Keyboard.RIGHT));
-        moveIfPressed(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
+        boolean movedLeft=moveIfPressed(Orientation.LEFT, keyboard.get(Keyboard.LEFT),deltaTime);
+        boolean movedUp=moveIfPressed(Orientation.UP, keyboard.get(Keyboard.UP),deltaTime);
+        boolean movedRight=moveIfPressed(Orientation.RIGHT, keyboard.get(Keyboard.RIGHT),deltaTime);
+        boolean movedDown=moveIfPressed(Orientation.DOWN, keyboard.get(Keyboard.DOWN),deltaTime);
+
+        if(!movedLeft&&!movedUp&&!movedDown&&!movedRight){
+            currentAnimation.reset();
+        }
 
         //fireball shoots from a cell in front of player
 
         if(keyboard.get(Keyboard.X).isPressed()&& hasStaff && (counter >= COOLDOWN)){
             spriteName = "zelda/player.staff_water";
             isStaffAnimation = true;
-
+            doStaffAnimation=true;
             Fire fire = new Fire(getOwnerArea(),getOrientation(),getCurrentMainCellCoordinates());
             fire.enterArea(getOwnerArea(),getCurrentMainCellCoordinates());
             counter = 0;
 
         }
+        if(doStaffAnimation){
+            setStaffAnimation();
+            setCurrentStaffAnimation();
+            currentAnimation.setSpeedFactor(1);
+            currentAnimation.update(deltaTime);
+            if(currentAnimation.isCompleted()){
+                doStaffAnimation=false;
+                setSpriteAnimation();
+            }
+        }
+
 
         if(keyboard.get(Keyboard.Z).isPressed()) {
             if (hasSword) {
@@ -214,8 +233,19 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         super.update(deltaTime);
 
     }
+    public void setCurrentAnimation(){
+        if(getOrientation().equals(Orientation.DOWN)){
+            currentAnimation = animationsDOWN;
+        } else if (getOrientation().equals(Orientation.UP)) {
+            currentAnimation = animationsUP;
+        }else if (getOrientation().equals(Orientation.LEFT)) {
+            currentAnimation = animationsLEFT;
+        }else{
+            currentAnimation = animationsRIGHT;
+        }
+    }
 
-    private void setCurrentAnimation() {
+    private void setCurrentStaffAnimation() {
         if (spriteName.equals("zelda/player.staff_water")){
             if (getOrientation().equals(Orientation.DOWN)){
                 currentAnimation = staffAnimationsDOWN;
@@ -312,57 +342,70 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         getOwnerArea().setViewCandidate(this);
     }
 
+
+    private Vector anchor = new Vector(0.15f, -0.15f);
+    public void setSpriteAnimation(){
+            for(int i = 0; i<4; i++){
+
+                spritesDOWN[i] = new Sprite("zelda/player", 0.75f, 1.5f,
+                        this, new RegionOfInterest(i*16, 0, 16, 32), anchor);
+                spritesLEFT[i] = new Sprite("zelda/player", 0.75f, 1.5f,
+                        this, new RegionOfInterest(i*16, 96, 16, 32), anchor);
+                spritesUP[i] = new Sprite("zelda/player", 0.75f, 1.5f,
+                        this, new RegionOfInterest(i*16, 64, 16, 32), anchor);
+                spritesRIGHT[i] = new Sprite("zelda/player", 0.75f, 1.5f,
+                        this, new RegionOfInterest(i*16, 32, 16, 32), anchor);
+        }
+    }
+
     //ANIMATIONS
-    //todo add animations for walking
+    //todo fix animations for staff
     //todo add animations for sword
     public void setStaffAnimation() {
         String name = "zelda/player.staff_water";
-        Sprite[] spritesDOWN = {
-                (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(10 , 0, 16, 32)
-                        , new Vector(0.25f ,-0.15f))),
-                (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(40,  0, 16, 32)
-                        , new Vector(0.2f, -0.15f))),
-                (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(72,  0, 16, 32)
-                        , new Vector(0.12f, -0.15f))),
-                (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(100, 0, 16, 32)
-                        , new Vector(-0.0f, -0.15f)))};
 
-        Sprite[] spritesLEFT = {
-                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(0 , 96, 25, 32)
-                        , new Vector(0.1f ,-0.15f))),
-                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(32, 96, 25, 32)
-                        , new Vector(0.05f, -0.15f))),
-                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(64, 96, 25, 32)
-                        , new Vector(.05f, -0.15f))),
-                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(90, 96, 24, 32)
-                        , new Vector(-.25f, -0.15f)))};
+        spritesDOWN[0] = new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(10 , 0, 16, 32)
+                , new Vector(0.25f ,-0.15f));
+        spritesDOWN[1] =new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(40,  0, 16, 32)
+                , new Vector(0.2f, -0.15f));
+        spritesDOWN[2] =new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(72,  0, 16, 32)
+                , new Vector(0.12f, -0.15f));
+        spritesDOWN[3]=new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(100, 0, 16, 32)
+                , new Vector(-0.0f, -0.15f));
 
-        Sprite[] spritesUP = {
-                (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(10, 32, 16, 32)
-                        , new Vector(0.25f ,-0.15f))),
-                (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(40, 32, 16, 32)
-                        , new Vector(0.2f, -0.15f))),
-                (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(72, 32, 16, 32)
-                        , new Vector(0.12f, -0.15f))),
-                (new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(100,32, 16, 32)
-                        , new Vector(-0.0f, -0.15f)))};
+        spritesLEFT[0] = new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(0 , 96, 25, 32)
+                , new Vector(0.1f ,-0.15f));
+        spritesLEFT[1] =new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(32, 96, 25, 32)
+                , new Vector(0.05f, -0.15f));
+        spritesLEFT[2] =new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(64, 96, 25, 32)
+                , new Vector(.05f, -0.15f));
+        spritesLEFT[3]=new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(90, 96, 24, 32)
+                , new Vector(-.25f, -0.15f));
 
-        Sprite[] spritesRIGHT = {
-                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(10, 64, 25, 32)
-                        , new Vector(0.15f ,-0.15f))),
-                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(40,64, 25, 32)
-                        , new Vector(0.1f, -0.15f))),
-                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(72,64, 25, 32)
-                        , new Vector(0.1f, -0.15f))),
-                (new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(96,64, 24, 32)
-                        , new Vector(-0.15f, -0.15f)))};
+        spritesUP[0] = new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(10, 32, 16, 32)
+                , new Vector(0.25f ,-0.15f));
+        spritesUP[1] =new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(40, 32, 16, 32)
+                , new Vector(0.2f, -0.15f));
+        spritesUP[2] =new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(72, 32, 16, 32)
+                , new Vector(0.12f, -0.15f));
+        spritesUP[3]=new Sprite(name, 0.75f, 1.5f, this, new RegionOfInterest(100,32, 16, 32)
+                , new Vector(-0.0f, -0.15f));
+
+        spritesRIGHT[0] = new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(10, 64, 25, 32)
+                , new Vector(0.15f ,-0.15f));
+        spritesRIGHT[1] =new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(40,64, 25, 32)
+                , new Vector(0.1f, -0.15f));
+        spritesRIGHT[2] =new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(72,64, 25, 32)
+                , new Vector(0.1f, -0.15f));
+        spritesRIGHT[3]=new Sprite(name, 1.25f, 1.5f, this, new RegionOfInterest(96,64, 24, 32)
+                , new Vector(-0.15f, -0.15f));
 
 
         // on présume:   private final static int ANIMATION_DURATION = 8;
-        staffAnimationsDOWN = new Animation(ANIMATION_DURATION *2 , spritesDOWN);
-        staffAnimationsLEFT = new Animation(ANIMATION_DURATION *2 , spritesLEFT);
-        staffAnimationsUP = new Animation(ANIMATION_DURATION *2, spritesUP);
-        staffAnimationsRIGHT = new Animation(ANIMATION_DURATION*2, spritesRIGHT);
+        staffAnimationsDOWN = new Animation(ANIMATION_DURATION *8 , spritesDOWN);
+        staffAnimationsLEFT = new Animation(ANIMATION_DURATION *8 , spritesLEFT);
+        staffAnimationsUP = new Animation(ANIMATION_DURATION *8, spritesUP);
+        staffAnimationsRIGHT = new Animation(ANIMATION_DURATION*8, spritesRIGHT);
     }
 
 

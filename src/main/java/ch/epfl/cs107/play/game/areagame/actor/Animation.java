@@ -56,7 +56,7 @@ public class Animation implements Updatable, Graphics{
 	 * Update the speed factor of this Animation. Can be done on the fly.
 	 * Note the speed factor is given between 1 (original speed) and frameDuration (maximal speed)
 	 * Hence we cannot slow down the animation !
-	 *  make the animation compatible with slow down
+	 * TODO make the animation compatible with slow down
 	 * @param speedFactor (int): new speed factor. Will be cropped between 1 and frameDuration
 	 */
 	public void setSpeedFactor(int speedFactor) {
@@ -122,14 +122,6 @@ public class Animation implements Updatable, Graphics{
 	@Override
 	public void draw(Canvas canvas) {
 		frames[currentFrame].draw(canvas);
-		if (currentFrame < frames.length - 1){
-			currentFrame++;
-		}
-		else{
-			isCompleted = true;
-
-		}
-
 	}
 
 
@@ -149,7 +141,7 @@ public class Animation implements Updatable, Graphics{
 	public static Animation[] createAnimations(int animationDuration, Sprite[][] sprites, boolean repeat)
 	{
 		Animation[] animations = new Animation[4];
-		for (Orientation direction : Orientation.values()) {	
+		for (Orientation direction : Orientation.values()) {
 			int index = direction.ordinal();
 			animations[index] = new Animation(animationDuration, sprites[index], repeat);
 		}

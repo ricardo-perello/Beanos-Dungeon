@@ -25,6 +25,7 @@ public abstract class Level implements Logic {
         EXPLORED,
         BOSS_ROOM,
         BOSS_KEYROOM,
+        SPAWN_ROOM,
         CREATED;
 
         @Override
@@ -234,19 +235,24 @@ public abstract class Level implements Logic {
             }
         }
 
-        int keyindx=RandomHelper.roomGenerator.nextInt(0,placed.size());
-        DiscreteCoordinates keyroomCoords=placed.get(keyindx);
-        placed.remove(keyindx);
+        int spawnindx=RandomHelper.roomGenerator.nextInt(0,placed.size());
+        DiscreteCoordinates spawnroomCoords=placed.get(spawnindx);
+        placed.remove(spawnindx);
 
         int bossindx=RandomHelper.roomGenerator.nextInt(0,placed.size());
         DiscreteCoordinates bossroomCoords=placed.get(bossindx);
         placed.remove(bossindx);
+
+        int keyindx=RandomHelper.roomGenerator.nextInt(0,placed.size());
+        DiscreteCoordinates keyroomCoords=placed.get(keyindx);
+        placed.remove(keyindx);
 
 
         output[keyroomCoords.x][keyroomCoords.y]=MapState.BOSS_KEYROOM;
 
         bossPosition=bossroomCoords;
         output[bossroomCoords.x][bossroomCoords.y]=MapState.BOSS_ROOM;
+        output[spawnroomCoords.x][spawnroomCoords.y]=MapState.SPAWN_ROOM;
 
         return output;
     }
