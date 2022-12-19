@@ -102,10 +102,10 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     public void draw(Canvas canvas) {
 
         if (!(getOwnerArea() instanceof MainBase)){
+            printEmptyHearts().draw(canvas);
             if(hp>0){
                 printFullHearts().draw(canvas);
             }
-            printEmptyHearts().draw(canvas);
 
         }
         if(hp>0) {
