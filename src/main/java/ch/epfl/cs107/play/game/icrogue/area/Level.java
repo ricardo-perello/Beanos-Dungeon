@@ -239,9 +239,8 @@ public abstract class Level implements Logic {
         DiscreteCoordinates spawnroomCoords=placed.get(spawnindx);
         placed.remove(spawnindx);
 
-        int bossindx=RandomHelper.roomGenerator.nextInt(0,placed.size());
-        DiscreteCoordinates bossroomCoords=placed.get(bossindx);
-        placed.remove(bossindx);
+        DiscreteCoordinates bossroomCoords=farthestRoom(placed,spawnroomCoords);
+        placed.remove(bossroomCoords);
 
         int keyindx=RandomHelper.roomGenerator.nextInt(0,placed.size());
         DiscreteCoordinates keyroomCoords=placed.get(keyindx);
@@ -254,6 +253,21 @@ public abstract class Level implements Logic {
         output[bossroomCoords.x][bossroomCoords.y]=MapState.BOSS_ROOM;
         output[spawnroomCoords.x][spawnroomCoords.y]=MapState.SPAWN_ROOM;
 
+        return output;
+    }
+
+    private DiscreteCoordinates farthestRoom(List<DiscreteCoordinates>placed,DiscreteCoordinates room){
+        double dist=0;
+        DiscreteCoordinates output=room;
+        for(DiscreteCoordinates coor:placed){
+            double xdist=coor.x-room.x;
+            double ydist=coor.y-room.y;
+            double distance=Math.sqrt(xdist*xdist+ydist*ydist);
+            if(distance>dist){
+                dist=distance;
+                output=coor;
+            }
+        }
         return output;
     }
 
