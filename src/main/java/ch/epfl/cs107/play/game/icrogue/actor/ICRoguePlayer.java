@@ -256,7 +256,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         else{
             meleeDamage = DEFAULT_MELEE_DAMAGE;
         }
-        if(dialogueStart&&stopForDialogue&&keyboard.get(Keyboard.W).isPressed()){
+        if(dialogueStart&&stopForDialogue&&keyboard.get(Keyboard.SPACE).isPressed()){
             dialogueStart=false;
             stopForDialogue=false;
         }
