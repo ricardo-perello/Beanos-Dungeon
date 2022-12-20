@@ -4,22 +4,23 @@ package ch.epfl.cs107.play.game.icrogue.area;
  *  Date:
  */
 
-import ch.epfl.cs107.play.game.actor.SoundAcoustics;
+import ch.epfl.cs107.play.game.actor.ImageGraphics;
+import ch.epfl.cs107.play.game.actor.TextGraphics;
 import ch.epfl.cs107.play.game.areagame.actor.Background;
 import ch.epfl.cs107.play.game.areagame.actor.Foreground;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
-import ch.epfl.cs107.play.game.areagame.io.ResourcePath;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
 import ch.epfl.cs107.play.game.icrogue.actor.NPC;
 import ch.epfl.cs107.play.game.icrogue.actor.Portal;
-import ch.epfl.cs107.play.game.tutosSolution.actor.SimpleGhost;
 import ch.epfl.cs107.play.game.tutosSolution.area.Tuto2Area;
+import ch.epfl.cs107.play.io.XMLTexts;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
-import ch.epfl.cs107.play.window.Window;
+import ch.epfl.cs107.play.window.Canvas;
 
+import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainBase extends Tuto2Area {
 
@@ -28,6 +29,8 @@ public class MainBase extends Tuto2Area {
     public String getTitle() {
         return "zelda/Village";
     }
+    private final ImageGraphics dialogueBox=new ImageGraphics("images/sprites/dialog.png",8,2,
+            new RegionOfInterest(0,0,235,42), new Vector(1,-2));
 
 
 
@@ -40,16 +43,34 @@ public class MainBase extends Tuto2Area {
         portals.get(i).setState(Portal.PortalState.OPEN);
     }
 
+    public void draw(Canvas canvas, TextGraphics dialogue){
+        dialogueBox.draw(canvas);
+        dialogue.draw(canvas);
+    }
+
+    public void setParent(ICRoguePlayer player){
+        dialogueBox.setParent(player);
+    }
+
 
     protected void createArea() {
         // Base
 
+
         registerActor(new Background(this)) ;
         registerActor(new Foreground(this)) ;
-        registerActor(new NPC(this,new DiscreteCoordinates(20, 10), "assistant.fixed"));
-        registerActor(new NPC(this,new DiscreteCoordinates(10, 10), "boy.1"));
-        registerActor(new NPC(this,new DiscreteCoordinates(6, 10), "girl.1"));
-        registerActor(new NPC(this,new DiscreteCoordinates(20, 10), "joel.fixed"));
+        String message = XMLTexts.getText("NPC1");
+        TextGraphics dialogue=new TextGraphics(message,0.3F, Color.BLACK);
+        registerActor(new NPC(this,new DiscreteCoordinates(20, 10), "assistant.fixed",dialogue));
+        message = XMLTexts.getText("NPC2");
+        dialogue=new TextGraphics(message,0.3F, Color.BLACK);
+        registerActor(new NPC(this,new DiscreteCoordinates(10, 10), "boy.1",dialogue));
+        message = XMLTexts.getText("NPC3");
+        dialogue=new TextGraphics(message,0.3F, Color.BLACK);
+        registerActor(new NPC(this,new DiscreteCoordinates(6, 10), "girl.1",dialogue));
+        message = XMLTexts.getText("NPC4");
+        dialogue=new TextGraphics(message,0.3F, Color.BLACK);
+        registerActor(new NPC(this,new DiscreteCoordinates(20, 10), "joel.fixed",dialogue));
         Portal lvl1=new Portal(this,Orientation.UP,new DiscreteCoordinates(19,5),"level1");
         lvl1.setState(Portal.PortalState.LOCKED);
         Portal lvl2=new Portal(this,Orientation.UP,new DiscreteCoordinates(17,7),"level2");

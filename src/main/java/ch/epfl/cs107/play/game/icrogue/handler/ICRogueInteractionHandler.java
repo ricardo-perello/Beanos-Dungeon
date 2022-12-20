@@ -3,13 +3,12 @@ package ch.epfl.cs107.play.game.icrogue.handler;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.ICRogueBehavior;
-import ch.epfl.cs107.play.game.icrogue.actor.Connector;
-import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
-import ch.epfl.cs107.play.game.icrogue.actor.Portal;
+import ch.epfl.cs107.play.game.icrogue.actor.*;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.BossTurret;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.items.*;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.*;
+import ch.epfl.cs107.play.window.Keyboard;
 
 public interface ICRogueInteractionHandler extends AreaInteractionVisitor {
     default void interactWith(Interactable other, boolean isCellInteraction){
@@ -39,6 +38,9 @@ public interface ICRogueInteractionHandler extends AreaInteractionVisitor {
     default void interactWith(Key key, boolean isCellInteraction){
     }
     default void interactWith(Connector connector, boolean isCellInteraction){
-
+    }
+    default void interactWith(NPC npc, boolean isCellInteraction){
+    }
+    default void interactWith(Tota tota, boolean isCellInteraction){
     }
 }

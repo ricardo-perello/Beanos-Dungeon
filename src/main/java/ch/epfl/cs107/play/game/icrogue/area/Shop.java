@@ -4,20 +4,25 @@ package ch.epfl.cs107.play.game.icrogue.area;
  *  Date:
  */
 
+import ch.epfl.cs107.play.game.actor.ImageGraphics;
+import ch.epfl.cs107.play.game.actor.TextGraphics;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Background;
-import ch.epfl.cs107.play.game.areagame.actor.Foreground;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.icrogue.ICRogueBehavior;
 import ch.epfl.cs107.play.game.icrogue.actor.Connector;
 import ch.epfl.cs107.play.game.icrogue.actor.NPC;
 import ch.epfl.cs107.play.game.icrogue.actor.Portal;
-import ch.epfl.cs107.play.game.tutosSolution.Tuto2Behavior;
-import ch.epfl.cs107.play.game.tutosSolution.area.Tuto2Area;
+import ch.epfl.cs107.play.game.icrogue.actor.Tota;
 import ch.epfl.cs107.play.io.FileSystem;
+import ch.epfl.cs107.play.io.XMLTexts;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.math.RegionOfInterest;
+import ch.epfl.cs107.play.math.Vector;
+import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Window;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +32,9 @@ public class Shop extends Area {
     private List<Connector> connectorList=new ArrayList<>();
 
     private ICRogueBehavior behavior;
+
+    private final ImageGraphics dialogueBox=new ImageGraphics("images/sprites/dialog.png",8,2,
+            new RegionOfInterest(0,0,235,42), new Vector(1,.8f));
 
     public String getTitle() {
         return "icrogue/Shop";
@@ -42,8 +50,12 @@ public class Shop extends Area {
         // Shop
 
         registerActor(new Background(this)) ;
-        registerActor(new NPC(this,new DiscreteCoordinates(6,5), "boy.1"));
-        registerActor(new NPC(this,new DiscreteCoordinates(3, 5), "girl.1"));
+        String message = XMLTexts.getText("Tota_upgrade");
+        TextGraphics dialogue=new TextGraphics(message,0.3F, Color.BLACK);
+        registerActor(new Tota(this,new DiscreteCoordinates(6,5), "boy.1",dialogue));
+        message = XMLTexts.getText("NPC1");
+        dialogue=new TextGraphics(message,0.3F, Color.BLACK);
+        registerActor(new NPC(this,new DiscreteCoordinates(3, 5), "girl.1",dialogue));
         portals=new Portal(this,Orientation.DOWN,new DiscreteCoordinates(4,0),"shop");
         connectorList.add(new Connector(this,Orientation.DOWN,new DiscreteCoordinates(4,9)));
         connectorList.add(new Connector(this,Orientation.RIGHT,new DiscreteCoordinates(0,4)));
@@ -55,6 +67,11 @@ public class Shop extends Area {
         for(Connector connector:connectorList){
             registerActor(connector);
         }
+    }
+
+    public void draw(Canvas canvas, TextGraphics dialogue){
+        dialogueBox.draw(canvas);
+        dialogue.draw(canvas);
     }
 
 
