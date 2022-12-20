@@ -123,7 +123,11 @@ public class Arrow extends Projectile {
                 consume();
                 wither.decreaseHp(getDamage());
             }
+            if (wantsViewInteraction() && getIsEnemy()) {
+                consume();
+            }
         }
+
 
     }
 

@@ -115,15 +115,21 @@ public class Fire extends Projectile{
         }
 
         public void interactWith(Turret turret, boolean isCellInteraction) {
-            if(wantsViewInteraction()&&!isConsumed()) {
+            if(wantsViewInteraction()&&!isConsumed() && !getIsEnemy()) {
                 consume();
                 turret.decreaseHp(DEFAULT_DAMAGE);
             }
+            else if(wantsViewInteraction()&&!isConsumed() && getIsEnemy()) {
+                consume();
+            }
         }
         public void interactWith(BossTurret turret, boolean isCellInteraction) {
-            if(wantsViewInteraction()&&!isConsumed()) {
+            if(wantsViewInteraction()&&!isConsumed() && !getIsEnemy()) {
                 consume();
                 turret.decreaseHp(DEFAULT_DAMAGE);
+            }
+            else if(wantsViewInteraction()&&!isConsumed() && getIsEnemy()) {
+                consume();
             }
         }
         public void interactWith(ICRoguePlayer player, boolean isCellInteraction) {

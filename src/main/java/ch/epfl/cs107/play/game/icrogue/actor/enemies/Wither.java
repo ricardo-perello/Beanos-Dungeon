@@ -5,13 +5,13 @@ import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
-import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
+import java.util.Random;
 
 public class Wither extends Enemy{
 
@@ -24,7 +24,8 @@ public class Wither extends Enemy{
     private boolean shootLeft;
     private boolean shootRight;
     public final static float COOLDOWN = 2.f;
-    private float counter = 2.f;
+    private float FireCounter = 2.f;
+    private float MoveCounter = 1.f;
     private int hp = 10;
 
     public Wither(Area owner, Orientation orientation, DiscreteCoordinates coordinates) {
@@ -35,6 +36,7 @@ public class Wither extends Enemy{
 
         printGreyHealthBar();
         printRedHealthBar();
+
     }
 
     public Sprite setSprite() {
@@ -68,14 +70,26 @@ public class Wither extends Enemy{
     }
     @Override
     public void update(float deltaTime){
-        counter += deltaTime;
-        if (counter >= COOLDOWN){
+        Random rand = new Random();
+        FireCounter += deltaTime;
+        MoveCounter += deltaTime;
+        if (FireCounter >= COOLDOWN){
             shootFire();
-            counter = 0;
+            FireCounter = 0;
+        }
+        if(MoveCounter >= COOLDOWN){
+            Integer [] arrays = {0,1,2,3};
+            Integer array = arrays[rand.nextInt(arrays.length)];
+            Orientation orientationMovement = Orientation.fromInt(array);
+            orientate(orientationMovement);
+            move(5);
+            MoveCounter = 0;
         }
         if (hp <= 0){
             die();
         }
+
+
 
         super.update(deltaTime);
     }
