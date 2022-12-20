@@ -67,6 +67,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private int meleeDamage;
     public final static float COOLDOWN = 1.f;
     private float counter = 1.f;
+    private int CoinCounter = 0;
     private Sprite[] spritesDOWN = new Sprite[4], spritesLEFT = new Sprite[4], spritesUP = new Sprite[4], spritesRIGHT = new Sprite[4];
     private final Animation animationsDOWN = new Animation(ANIMATION_DURATION/2, spritesDOWN);
     private final Animation animationsLEFT = new Animation(ANIMATION_DURATION/2, spritesLEFT);
@@ -141,11 +142,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             else if(getOwnerArea() instanceof ICRogueRoom){
                 ((ICRogueRoom) getOwnerArea()).draw(canvas,dialogue);
             }
-
-
         }
-
-
     }
 
     public String getTransitionArea(){
@@ -546,6 +543,17 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 cherry.collect();
             }
         }
+
+        public void interactWith(Coin coin, boolean isCellInteraction) {
+            if(wantsCellInteraction()){
+                increaseCoinCounter(1);
+                //todo add coin sound effect
+                soundFX=new SoundAcoustics(ResourcePath.getSound("health"),1,false,false,false,false);
+                hasSoundFX=true;
+                coin.collect();
+            }
+        }
+
         public void interactWith(Staff staff, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if(wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())){
@@ -670,5 +678,9 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             }
 
         }
+    }
+
+    private void increaseCoinCounter(int i) {
+        ++CoinCounter;
     }
 }

@@ -27,8 +27,9 @@ public interface ICRogueInteractionHandler extends AreaInteractionVisitor {
 
     default void interactWith(Bow bow, boolean isCellInteraction){
     }
-    default void interactWith(Cherry cherry, boolean isCellInteraction) {
-    }
+    default void interactWith(Cherry cherry, boolean isCellInteraction) {}
+
+    default void interactWith(Coin coin, boolean isCellInteraction) {}
     default void interactWith(ICRogueBehavior.ICRogueCell cell, boolean isCellInteraction) {
     }
     default void interactWith(ICRoguePlayer player, boolean isCellInteraction){
