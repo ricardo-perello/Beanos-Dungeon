@@ -15,6 +15,7 @@ import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.BossTurret;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.Wither;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Bow;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Cherry;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Staff;
@@ -31,15 +32,45 @@ public class Fire extends Projectile{
     private Sprite sprite;
     private ICRogueFireInteractionHandler handler;
 
-    public Fire(Area area, Orientation orientation, DiscreteCoordinates coordinates){
-        super(area,orientation,coordinates,DEFAULT_DAMAGE,5);
-        setSprite();
+    public Fire(Area area, Orientation orientation, DiscreteCoordinates coordinates, String spriteName, boolean isEnemy){
+        super(area,orientation,coordinates,DEFAULT_DAMAGE,5, isEnemy);
+        setSprite(spriteName,orientation);
         handler=new ICRogueFireInteractionHandler();
+        enterArea(area,coordinates);
     }
 
-    public void setSprite() {
-        sprite=new Sprite("zelda/fire",0.75f,0.75f,this,
-                new RegionOfInterest(0,0,16,16), new Vector(0,0));
+    public void setSprite(String name) {
+        if (name.equals("zelda/flameskull")){
+            sprite=new Sprite(name,0.75f,0.75f,this,
+                    new RegionOfInterest(0,0,16,16), new Vector(0,0));
+        }
+        else{
+            sprite=new Sprite("zelda/fire",0.75f,0.75f,this,
+                    new RegionOfInterest(0,0,16,16), new Vector(0,0));
+        }
+
+    }
+    public void setSprite(String name, Orientation orientation) {
+        if (name.equals("zelda/flameskull")){
+            if (orientation.equals(Orientation.DOWN)) {
+                sprite = new Sprite(name, .9f, .9f, this,
+                        new RegionOfInterest(0, 64, 32, 32), new Vector(.0f, 0.f));
+            } else if (orientation.equals(Orientation.RIGHT)) {
+                sprite = new Sprite(name, 0.9f, .9f, this,
+                        new RegionOfInterest(0, 96, 32, 32), new Vector(0.0f, .2f));
+            } else if (orientation.equals(Orientation.UP)) {
+                sprite = new Sprite(name, 0.9f, 0.9f, this,
+                        new RegionOfInterest(0, 0, 32, 32), new Vector(.0f, 0.0f));
+            } else if (orientation.equals(Orientation.LEFT)) {
+                sprite = new Sprite(name, 0.9f, .9f, this,
+                        new RegionOfInterest(0, 32, 32, 32), new Vector(0.0f, .2f));
+            }
+        }
+        else{
+            sprite=new Sprite("zelda/fire",0.75f,0.75f,this,
+                    new RegionOfInterest(0,0,16,16), new Vector(0,0));
+        }
+
     }
 
 
@@ -93,6 +124,18 @@ public class Fire extends Projectile{
             if(wantsViewInteraction()&&!isConsumed()) {
                 consume();
                 turret.decreaseHp(DEFAULT_DAMAGE);
+            }
+        }
+        public void interactWith(ICRoguePlayer player, boolean isCellInteraction) {
+            if (wantsViewInteraction() && !(isConsumed()) && getIsEnemy()) {
+                player.decreaseHp((float) DEFAULT_DAMAGE);
+                consume();
+            }
+        }
+        public void interactWith(Wither wither, boolean isCellInteraction) {
+            if (wantsViewInteraction() && !getIsEnemy()) {
+                consume();
+                wither.decreaseHp(getDamage());
             }
         }
 

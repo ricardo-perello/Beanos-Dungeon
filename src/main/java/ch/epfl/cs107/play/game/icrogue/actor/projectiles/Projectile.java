@@ -26,18 +26,20 @@ public abstract class Projectile extends ICRogueActor implements Consumable, Int
     private int frames;
     private int damage;
     private boolean isConsumed;
+    private boolean isEnemy;
     public static final int DEFAULT_MOVE_DURATION=10;
     public static final int DEFAULT_DAMAGE=1;
 
     public Projectile(Area area, Orientation orientation, DiscreteCoordinates coordinates,
-                      int damagepts, int nframes){
+                      int damagepts, int nframes, boolean isEnemy){
         super(area,orientation,coordinates);
         damage=damagepts;
         frames=nframes;
         isConsumed=false;
+        this.isEnemy = isEnemy;
     }
 
-    public abstract void setSprite();
+    public abstract void setSprite(String name);
 
     public Projectile(Area area, Orientation orientation, DiscreteCoordinates coordinates){
         super(area,orientation,coordinates);
@@ -59,6 +61,10 @@ public abstract class Projectile extends ICRogueActor implements Consumable, Int
         move(frames);
         super.update(deltaTime);
     }
+
+    public int getDamage(){return damage;}
+
+    public boolean getIsEnemy(){return isEnemy;}
 
     public List<DiscreteCoordinates> getCurrentCells(){
         return Collections.singletonList(getCurrentMainCellCoordinates());

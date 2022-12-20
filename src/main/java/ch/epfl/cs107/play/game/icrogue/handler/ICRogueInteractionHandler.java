@@ -8,6 +8,7 @@ import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
 import ch.epfl.cs107.play.game.icrogue.actor.Portal;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.BossTurret;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.Wither;
 import ch.epfl.cs107.play.game.icrogue.actor.items.*;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.*;
 
@@ -20,7 +21,6 @@ public interface ICRogueInteractionHandler extends AreaInteractionVisitor {
     }
     default void interactWith(Arrow arrow, boolean isCellInteraction) {}
 
-    default void interactWith(Arrow2 arrow, boolean isCellInteraction) {}
     default void interactWith(Staff staff, boolean isCellInteraction) {
     }
     default void interactWith(Sword sword, boolean isCellInteraction){
@@ -36,6 +36,8 @@ public interface ICRogueInteractionHandler extends AreaInteractionVisitor {
     }
     default void interactWith(Turret turret, boolean isCellInteraction){}
     default void interactWith(BossTurret turret, boolean isCellInteraction){}
+
+    default void interactWith(Wither wither, boolean isCellInteraction){}
     default void interactWith(Key key, boolean isCellInteraction){
     }
     default void interactWith(Connector connector, boolean isCellInteraction){

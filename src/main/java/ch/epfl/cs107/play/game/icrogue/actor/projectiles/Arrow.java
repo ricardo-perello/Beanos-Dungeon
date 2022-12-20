@@ -10,7 +10,9 @@ import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.BossTurret;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.Wither;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Bow;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Staff;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Sword;
@@ -21,20 +23,26 @@ import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
 public class Arrow extends Projectile {
-//todo add boolean to constructor to fix self damage.
+
     private Sprite sprite;
     private ICRogueArrowInteractionHandler handler;
 
-    private boolean isEnemy;
 
-    public Arrow(Area area, Orientation orientation, DiscreteCoordinates coordinates) {
-        super(area, orientation, coordinates, DEFAULT_DAMAGE, 5);
+
+    @Override
+    public void setSprite(String name) {}
+
+    public Arrow(Area area, Orientation orientation, DiscreteCoordinates coordinates, boolean isEnemy) {
+        super(area, orientation, coordinates, DEFAULT_DAMAGE, 5, isEnemy);
+        setSprite(orientation);
+        handler = new ICRogueArrowInteractionHandler();
+    }
+    public Arrow(Area area, Orientation orientation, DiscreteCoordinates coordinates,boolean isEnemy, int damage) {
+        super(area, orientation, coordinates, damage, 5, isEnemy);
         setSprite(orientation);
         handler = new ICRogueArrowInteractionHandler();
     }
 
-    public void setSprite() {
-    }
 
     public void setSprite(Orientation orientation) {
         if (orientation.equals(Orientation.DOWN)) {
@@ -93,14 +101,27 @@ public class Arrow extends Projectile {
         }
 
         public void interactWith(ICRoguePlayer player, boolean isCellInteraction) {
-            if (wantsViewInteraction() && !(isConsumed())) {
-                player.decreaseHp((float) DEFAULT_DAMAGE);
+            if (wantsViewInteraction() && !(isConsumed()) && getIsEnemy()) {
+                player.decreaseHp((float) getDamage());
                 consume();
             }
         }
         public void interactWith(Turret turret, boolean isCellInteraction) {
-            if (wantsViewInteraction()) {
+            if (wantsViewInteraction() && !getIsEnemy()) {
                 consume();
+                turret.decreaseHp(getDamage());
+            }
+        }
+        public void interactWith(BossTurret turret, boolean isCellInteraction) {
+            if (wantsViewInteraction() && !getIsEnemy()) {
+                consume();
+                turret.decreaseHp(getDamage());
+            }
+        }
+        public void interactWith(Wither wither, boolean isCellInteraction) {
+            if (wantsViewInteraction() && !getIsEnemy()) {
+                consume();
+                wither.decreaseHp(getDamage());
             }
         }
 
