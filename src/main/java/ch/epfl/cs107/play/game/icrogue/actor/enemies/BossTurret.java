@@ -6,7 +6,6 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
-import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow2;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;
@@ -26,6 +25,7 @@ public class BossTurret extends Enemy{
     public final static float COOLDOWN = 1.7f;
     private float counter = 0.f;
     private int hp = 5;
+    private int arrowDamage = 5;
 
     public BossTurret(Area owner, Orientation orientation, DiscreteCoordinates coordinates, boolean sUp
             , boolean sDown, boolean sLeft, boolean sRight) {
@@ -47,34 +47,34 @@ public class BossTurret extends Enemy{
 
     public void shootArrow(){
         if (shootUp){
-            Arrow2 arrow = new Arrow2(getOwnerArea(), Orientation.UP,
+            Arrow arrow = new Arrow(getOwnerArea(), Orientation.UP,
                 new DiscreteCoordinates(getCurrentMainCellCoordinates().x
-                ,(getCurrentMainCellCoordinates().y)+1));
+                ,(getCurrentMainCellCoordinates().y)+1), true, arrowDamage);
 
             arrow.enterArea(getOwnerArea(),new DiscreteCoordinates(getCurrentMainCellCoordinates().x
                     , (getCurrentMainCellCoordinates().y)+1));
         }
         if (shootDown){
-            Arrow2 arrow = new Arrow2(getOwnerArea(), Orientation.DOWN,
+            Arrow arrow = new Arrow(getOwnerArea(), Orientation.DOWN,
                     new DiscreteCoordinates(getCurrentMainCellCoordinates().x
-                    ,(getCurrentMainCellCoordinates().y)-1));
+                    ,(getCurrentMainCellCoordinates().y)-1), true,arrowDamage);
 
 
             arrow.enterArea(getOwnerArea(),new DiscreteCoordinates(getCurrentMainCellCoordinates().x
                     ,(getCurrentMainCellCoordinates().y)-1));
         }
         if (shootLeft){
-            Arrow2 arrow = new Arrow2(getOwnerArea(), Orientation.LEFT,
+            Arrow arrow = new Arrow(getOwnerArea(), Orientation.LEFT,
                     new DiscreteCoordinates((getCurrentMainCellCoordinates().x-1)
-                    ,(getCurrentMainCellCoordinates().y)));
+                    ,(getCurrentMainCellCoordinates().y)), true,arrowDamage);
 
             arrow.enterArea(getOwnerArea(),new DiscreteCoordinates((getCurrentMainCellCoordinates().x-1)
                     ,getCurrentMainCellCoordinates().y));
         }
         if (shootRight){
-            Arrow2 arrow = new Arrow2(getOwnerArea(), Orientation.RIGHT,
+            Arrow arrow = new Arrow(getOwnerArea(), Orientation.RIGHT,
                     new DiscreteCoordinates((getCurrentMainCellCoordinates().x+1)
-                    ,(getCurrentMainCellCoordinates().y)));
+                    ,(getCurrentMainCellCoordinates().y)), true,arrowDamage);
 
             arrow.enterArea(getOwnerArea(),new DiscreteCoordinates((getCurrentMainCellCoordinates().x+1)
                     ,(getCurrentMainCellCoordinates().y)));

@@ -9,6 +9,7 @@ import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.areagame.io.ResourcePath;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.BossTurret;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.Wither;
 import ch.epfl.cs107.play.game.icrogue.actor.items.*;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
@@ -211,9 +212,10 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             spriteName = "zelda/player.staff_water";
             isStaffAnimation = true;
             doStaffAnimation=true;
+            Fire fire = new Fire(getOwnerArea(),getOrientation(),getCurrentMainCellCoordinates(), "zelda/fire"
+                    ,false);
             soundFX=new SoundAcoustics(ResourcePath.getSound("fire"),0.3F,false,false,false,false);
             hasSoundFX=true;
-            Fire fire = new Fire(getOwnerArea(),getOrientation(),getCurrentMainCellCoordinates());
             fire.enterArea(getOwnerArea(),getCurrentMainCellCoordinates());
             counter = 0;
 
@@ -244,7 +246,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         if(keyboard.get(Keyboard.C).isPressed()&& hasBow){
             spriteName = "zelda/player.bow";
             bowSprite(getOrientation());
-            Arrow arrow = new Arrow(getOwnerArea(),getOrientation(),getCurrentMainCellCoordinates());
+            Arrow arrow = new Arrow(getOwnerArea(),getOrientation(),getCurrentMainCellCoordinates(), false);
             arrow.enterArea(getOwnerArea(),getCurrentMainCellCoordinates());
 
         }
@@ -602,6 +604,12 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 soundFX=new SoundAcoustics(ResourcePath.getSound("melee"),1,false,false,false,false);
                 hasSoundFX=true;
                 turret.decreaseHp(meleeDamage);
+            }
+        }
+        public void interactWith(Wither wither, boolean isCellInteraction){
+            Keyboard keyboard= getOwnerArea().getKeyboard();
+            if (wantsViewInteraction() && keyboard.get(Keyboard.Z).isPressed()){
+                wither.decreaseHp(meleeDamage);
             }
         }
         public void interactWith(Connector connector, boolean isCellInteraction){
