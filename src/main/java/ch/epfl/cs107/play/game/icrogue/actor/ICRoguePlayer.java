@@ -13,7 +13,9 @@ import ch.epfl.cs107.play.game.icrogue.actor.enemies.Wither;
 import ch.epfl.cs107.play.game.icrogue.actor.items.*;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
+import ch.epfl.cs107.play.game.icrogue.area.ICRogueRoom;
 import ch.epfl.cs107.play.game.icrogue.area.MainBase;
+import ch.epfl.cs107.play.game.icrogue.area.Shop;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Positionable;
@@ -22,6 +24,7 @@ import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Keyboard;
+import ch.epfl.cs107.play.window.Window;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -69,7 +72,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private final Animation animationsLEFT = new Animation(ANIMATION_DURATION/2, spritesLEFT);
     private final Animation animationsUP = new Animation(ANIMATION_DURATION/2, spritesUP);
     private final Animation animationsRIGHT = new Animation(ANIMATION_DURATION/2, spritesRIGHT);
-
+    private boolean hasSoundFX;
+    private SoundAcoustics soundFX;
+    private boolean dialogueStart;
+    private TextGraphics dialogue;
+    private boolean stopForDialogue;
 
     public ICRoguePlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates){
         super(owner,orientation,coordinates);
@@ -123,6 +130,20 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 currentAnimation.reset();
             }
         }
+        if(dialogueStart){
+            if(getOwnerArea() instanceof MainBase){
+                ((MainBase) getOwnerArea()).setParent(this);
+                ((MainBase) getOwnerArea()).draw(canvas,dialogue);
+            }
+            else if(getOwnerArea() instanceof Shop){
+                ((Shop) getOwnerArea()).draw(canvas,dialogue);
+            }
+            else if(getOwnerArea() instanceof ICRogueRoom){
+                ((ICRogueRoom) getOwnerArea()).draw(canvas,dialogue);
+            }
+
+
+        }
 
 
     }
@@ -156,7 +177,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     }
 
     private boolean moveIfPressed(Orientation orientation, Button b,float deltaTime) {
-        if (b.isDown()) {
+        if (b.isDown()&&!stopForDialogue) {
             if (!isDisplacementOccurs()) {
                 orientate(orientation);//change orientation
                 move(MOVE_DURATION);//moves in that orientation
@@ -193,6 +214,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             doStaffAnimation=true;
             Fire fire = new Fire(getOwnerArea(),getOrientation(),getCurrentMainCellCoordinates(), "zelda/fire"
                     ,false);
+            soundFX=new SoundAcoustics(ResourcePath.getSound("fire"),0.3F,false,false,false,false);
+            hasSoundFX=true;
             fire.enterArea(getOwnerArea(),getCurrentMainCellCoordinates());
             counter = 0;
 
@@ -232,6 +255,10 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         }
         else{
             meleeDamage = DEFAULT_MELEE_DAMAGE;
+        }
+        if(dialogueStart&&stopForDialogue&&keyboard.get(Keyboard.SPACE).isPressed()){
+            dialogueStart=false;
+            stopForDialogue=false;
         }
 
         super.update(deltaTime);
@@ -290,6 +317,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
     public void decreaseHp(float delta){
         hp -= delta;
+        soundFX=new SoundAcoustics(ResourcePath.getSound("damage"),1,false,false,false,false);
+        hasSoundFX=true;
         System.out.println(hp);
     }
 
@@ -335,7 +364,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     public boolean wantsViewInteraction() {
         Keyboard keyboard= getOwnerArea().getKeyboard();
         /*this means that the player only interacts with an object in front of him if you press W*/
-        return (keyboard.get(Keyboard.W).isPressed()) || (keyboard.get(Keyboard.Z).isPressed());
+        return (!stopForDialogue&&keyboard.get(Keyboard.W).isPressed()) || (keyboard.get(Keyboard.Z).isPressed());
     }
 
     public void transitioned(){
@@ -489,6 +518,15 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         }
     }
 
+    public boolean HasSoundFX(){
+        return hasSoundFX;
+    }
+
+    public void playSound(Window window){
+        soundFX.shouldBeStarted();
+        soundFX.bip(window);
+        hasSoundFX=false;
+    }
 
     public boolean getReceivedDamage(){return receivedDamage;}
 
@@ -503,6 +541,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         public void interactWith(Cherry cherry, boolean isCellInteraction) {
             if(wantsCellInteraction()&&canIncreaseHp()){
                 increaseHp(1);
+                soundFX=new SoundAcoustics(ResourcePath.getSound("health"),1,false,false,false,false);
+                hasSoundFX=true;
                 cherry.collect();
             }
         }
@@ -510,6 +550,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if(wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())){
                 staff.collect();
+                soundFX=new SoundAcoustics(ResourcePath.getSound("item"),1,false,false,false,false);
+                hasSoundFX=true;
                 hasStaff = true;
                 carrying.add(staff);
                 spriteName = "zelda/player.staff_water";
@@ -520,6 +562,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if(wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())){
                 sword.collect();
+                soundFX=new SoundAcoustics(ResourcePath.getSound("item"),1,false,false,false,false);
+                hasSoundFX=true;
                 hasSword = true;
                 carrying.add(sword);
                 spriteName = "zelda/player.sword";
@@ -530,6 +574,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if(wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())){
                 bow.collect();
+                soundFX=new SoundAcoustics(ResourcePath.getSound("item"),1,false,false,false,false);
+                hasSoundFX=true;
                 hasBow = true;
                 carrying.add(bow);
                 spriteName = "zelda/player.bow";
@@ -539,18 +585,24 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         public void interactWith(Key key, boolean isCellInteraction){
             if(isCellInteraction){
                 key.collect();
+                soundFX=new SoundAcoustics(ResourcePath.getSound("item"),1,false,false,false,false);
+                hasSoundFX=true;
                 carrying.add(key); /*adds key to carrying arraylist which represents the items the character is holding*/
             }
         }
         public void interactWith(Turret turret, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if (wantsViewInteraction() && keyboard.get(Keyboard.Z).isPressed()){
+                soundFX=new SoundAcoustics(ResourcePath.getSound("melee"),1,false,false,false,false);
+                hasSoundFX=true;
                 turret.decreaseHp(meleeDamage);
             }
         }
         public void interactWith(BossTurret turret, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if (wantsViewInteraction() && keyboard.get(Keyboard.Z).isPressed()){
+                soundFX=new SoundAcoustics(ResourcePath.getSound("melee"),1,false,false,false,false);
+                hasSoundFX=true;
                 turret.decreaseHp(meleeDamage);
             }
         }
@@ -567,10 +619,18 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 if(connector.compareState(Connector.ConnectorState.LOCKED)){
                     for(Item item:carrying){
                         if(item instanceof Key&&((Key) item).getIdentificator()==connector.getID()){
-                                connector.setState(Connector.ConnectorState.OPEN);
-                            }
+                            connector.setState(Connector.ConnectorState.OPEN);
+                            unlock=true;
+                            soundFX=new SoundAcoustics(ResourcePath.getSound("unlock"),1,false,false,false,false);
+                            hasSoundFX=true;
                         }
                     }
+                if(!unlock){
+                    soundFX=new SoundAcoustics(ResourcePath.getSound("locked"), 0.3F,false,false,false,false);
+                    hasSoundFX=true;
+                }
+                }
+
                 }
             if(isCellInteraction&&connector.compareState(Connector.ConnectorState.OPEN)){
                 coordinatesTransition=connector.getArrivalcoordinates();
@@ -590,6 +650,25 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             else{
                 isTransporting=false;
             }
+        }
+
+        public void interactWith(NPC npc, boolean isCellInteraction){
+            Keyboard keyboard= getOwnerArea().getKeyboard();
+            if(!dialogueStart&&wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())){
+                dialogue=npc.getDialogue();
+                dialogueStart=true;
+                stopForDialogue=true;
+            }
+
+        }
+        public void interactWith(Tota tota, boolean isCellInteraction){
+            Keyboard keyboard= getOwnerArea().getKeyboard();
+            if(!dialogueStart&&wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())){
+                dialogue=tota.getDialogue();
+                dialogueStart=true;
+                stopForDialogue=true;
+            }
+
         }
     }
 }

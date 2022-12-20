@@ -4,16 +4,18 @@ package ch.epfl.cs107.play.game.icrogue.area;
  *  Date:
  */
 
+import ch.epfl.cs107.play.game.actor.ImageGraphics;
+import ch.epfl.cs107.play.game.actor.TextGraphics;
 import ch.epfl.cs107.play.game.areagame.Area;
-import ch.epfl.cs107.play.game.areagame.actor.Background;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
-import ch.epfl.cs107.play.game.icrogue.ICRogueBehavior;
 import ch.epfl.cs107.play.game.icrogue.ICRogueBehavior;
 import ch.epfl.cs107.play.game.icrogue.actor.Connector;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.math.RegionOfInterest;
+import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.signal.logic.Logic;
-import ch.epfl.cs107.play.window.Keyboard;
+import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Window;
 
 import java.util.ArrayList;
@@ -24,6 +26,8 @@ public abstract class ICRogueRoom extends Area implements Logic {
     private DiscreteCoordinates coordinates;
     private String behaviourName;
     private boolean wasVisited;
+    private final ImageGraphics dialogueBox=new ImageGraphics("images/sprites/dialog.png",8,2,
+            new RegionOfInterest(0,0,235,42), new Vector(1,.8f));
     private ArrayList<Connector>connectors=new ArrayList<>();
     public ICRogueRoom(List<DiscreteCoordinates> connectorsCoordinates,
                        List<Orientation> orientations,List<DiscreteCoordinates>destinationCoordinates,
@@ -37,6 +41,11 @@ public abstract class ICRogueRoom extends Area implements Logic {
         }
         wasVisited=false;
 
+    }
+
+    public void draw(Canvas canvas, TextGraphics dialogue){
+        dialogueBox.draw(canvas);
+        dialogue.draw(canvas);
     }
 
     public String getCoordinatesString(){

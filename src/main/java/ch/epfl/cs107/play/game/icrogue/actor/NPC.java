@@ -20,16 +20,18 @@ import java.awt.*;
 
 public class NPC extends ICRogueActor {
     private Sprite sprite;
+    private TextGraphics dialogue;
     /**
      * Default DemoActor constructor
      * @param position (Vector): initial position vector of the ghost
      * @param text (String): initial text moving with the ghost
      */
-    public NPC(Area area, DiscreteCoordinates position, String spriteName) {
+    public NPC(Area area, DiscreteCoordinates position, String spriteName,TextGraphics dialogue) {
         //super(position, new ImageGraphics(ResourcePath.getSprite(spriteName),  1.0f,1.0f, null, Vector.ZERO, 1.0f, -Float.MAX_VALUE));
         super(area, Orientation.DOWN,position);
         sprite = new Sprite(spriteName, .75f,1f,this,
-                new RegionOfInterest(0,0,16,21), new Vector(.15f,-.15f));;
+                new RegionOfInterest(0,0,16,21), new Vector(.15f,-.15f));
+        this.dialogue=dialogue;
     }
     @Override
     public void draw(Canvas canvas) {
@@ -40,11 +42,23 @@ public class NPC extends ICRogueActor {
         super.update(deltaTime);
     }
 
+    public TextGraphics getDialogue(){
+        return dialogue;
+    }
+
+    protected void setDialogue(TextGraphics dialogue){
+        this.dialogue=dialogue;
+    }
+
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
         ((ICRogueInteractionHandler)v).interactWith(this, isCellInteraction);
     }
 
     public boolean takeCellSpace() {
+        return true;
+    }
+    @Override
+    public boolean isViewInteractable() {
         return true;
     }
 }

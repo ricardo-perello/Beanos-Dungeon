@@ -7,6 +7,7 @@ package ch.epfl.cs107.play.game.icrogue;
 import ch.epfl.cs107.play.game.actor.SoundAcoustics;
 import ch.epfl.cs107.play.game.areagame.AreaGame;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
+import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.io.ResourcePath;
 import ch.epfl.cs107.play.game.icrogue.actor.Portal;
 import ch.epfl.cs107.play.game.icrogue.area.Beanos.LevelBeanos;
@@ -24,6 +25,8 @@ import ch.epfl.cs107.play.game.tutosSolution.actor.GhostPlayer;
 import ch.epfl.cs107.play.game.tutosSolution.area.Tuto2Area;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.math.RegionOfInterest;
+import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Keyboard;
 import ch.epfl.cs107.play.window.Window;
@@ -36,6 +39,8 @@ public class ICRogue extends AreaGame {
     private ICRoguePlayer player; /*Main character*/
 
     private SoundAcoustics soundtrack;
+
+
 
     private Level level;
     private Shop shop;
@@ -73,6 +78,8 @@ public class ICRogue extends AreaGame {
         soundtrack=new SoundAcoustics(ResourcePath.getSound("dungeon"),1,true,false,true,false);
         soundtrack.shouldBeStarted();
         soundtrack.bip(getWindow());
+
+
 
 
 
@@ -177,6 +184,9 @@ public class ICRogue extends AreaGame {
         }
         switchRoom();
         switchArea();
+        if(player.HasSoundFX()){
+            player.playSound(getWindow());
+        }
         if((player.getHp() <= 0)&&(display==0)){
             System.out.println("Dead");
             display=1;
@@ -324,6 +334,9 @@ public class ICRogue extends AreaGame {
 
 
         }
+
+    }
+    private void playerSoundFX(){
 
     }
 
