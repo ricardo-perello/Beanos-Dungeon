@@ -68,7 +68,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private int meleeDamage;
     public final static float COOLDOWN = 1.f;
     private float counter = 1.f;
-    private float animationCounter=2.1f;
+    private float dialogueCounter=2.1f;
     private int CoinCounter = 5;
     private Sprite[] spritesDOWN = new Sprite[4], spritesLEFT = new Sprite[4], spritesUP = new Sprite[4], spritesRIGHT = new Sprite[4];
     private final Animation animationsDOWN = new Animation(ANIMATION_DURATION/2, spritesDOWN);
@@ -195,7 +195,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     public void update(float deltaTime) {
         boolean doStaffAnimation=false;
         counter += deltaTime;
-        animationCounter+=deltaTime;
+        dialogueCounter+=deltaTime;
         setSpriteAnimation();
         Keyboard keyboard= getOwnerArea().getKeyboard();
         setCurrentAnimation();
@@ -258,10 +258,10 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         else{
             meleeDamage = DEFAULT_MELEE_DAMAGE;
         }
-        if((dialogueStart&&stopForDialogue&&keyboard.get(Keyboard.W).isPressed())||animationCounter==1.f){
+        if((dialogueStart&&stopForDialogue&&keyboard.get(Keyboard.W).isPressed())||dialogueCounter==1.f){
             dialogueStart=false;
             stopForDialogue=false;
-            animationCounter=0;
+            dialogueCounter=0;
             if(merchantInteraction){
                 if (CoinCounter>=NPC.PRICE){
                     CoinCounter=CoinCounter-NPC.PRICE;
@@ -691,7 +691,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
         public void interactWith(NPC npc, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
-            if(!dialogueStart&&wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())&&animationCounter>=1.f){
+            if(!dialogueStart&&wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())&&dialogueCounter>=1.f){
                 dialogue=npc.getDialogue();
                 dialogueStart=true;
                 stopForDialogue=true;
@@ -700,7 +700,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         }
         public void interactWith(Tota tota, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
-            if(!dialogueStart&&wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())&&animationCounter>=1.f){
+            if(!dialogueStart&&wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())&&dialogueCounter>=1.f){
                 dialogue.clear();
                 dialogue.addAll(tota.getDialogue());
                 dialogueStart=true;
