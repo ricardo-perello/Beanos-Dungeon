@@ -43,9 +43,11 @@ public abstract class ICRogueRoom extends Area implements Logic {
 
     }
 
-    public void draw(Canvas canvas, TextGraphics dialogue){
+    public void draw(Canvas canvas, List<TextGraphics> dialogue){
         dialogueBox.draw(canvas);
-        dialogue.draw(canvas);
+        for(TextGraphics d:dialogue){
+            d.draw(canvas);
+        }
     }
 
     public String getCoordinatesString(){

@@ -21,6 +21,7 @@ import ch.epfl.cs107.play.window.Canvas;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainBase extends Tuto2Area {
 
@@ -43,13 +44,27 @@ public class MainBase extends Tuto2Area {
         portals.get(i).setState(Portal.PortalState.OPEN);
     }
 
-    public void draw(Canvas canvas, TextGraphics dialogue){
+    public void draw(Canvas canvas, List<TextGraphics> dialogue){
         dialogueBox.draw(canvas);
-        dialogue.draw(canvas);
+        for(TextGraphics d:dialogue){
+            d.draw(canvas);
+        }
+
     }
 
     public void setParent(ICRoguePlayer player){
         dialogueBox.setParent(player);
+        dialogueBox.setAnchor(new Vector(-3f,-3f));
+    }
+
+    public void setDialogue(ICRoguePlayer player, List<TextGraphics> dialogue){
+        for(int i=0;i<dialogue.size();++i){
+            dialogue.get(i).setParent(player);
+            double t=i;
+            float k= (float) (-1.4f-(t/2));
+            dialogue.get(i).setAnchor(new Vector(-2.8f,k));
+        }
+
     }
 
 
@@ -59,18 +74,44 @@ public class MainBase extends Tuto2Area {
 
         registerActor(new Background(this)) ;
         registerActor(new Foreground(this)) ;
-        String message = XMLTexts.getText("NPC1");
-        TextGraphics dialogue=new TextGraphics(message,0.3F, Color.BLACK);
-        registerActor(new NPC(this,new DiscreteCoordinates(20, 10), "assistant.fixed",dialogue));
-        message = XMLTexts.getText("NPC2");
-        dialogue=new TextGraphics(message,0.3F, Color.BLACK);
-        registerActor(new NPC(this,new DiscreteCoordinates(10, 10), "boy.1",dialogue));
-        message = XMLTexts.getText("NPC3");
-        dialogue=new TextGraphics(message,0.3F, Color.BLACK);
-        registerActor(new NPC(this,new DiscreteCoordinates(6, 10), "girl.1",dialogue));
-        message = XMLTexts.getText("NPC4");
-        dialogue=new TextGraphics(message,0.3F, Color.BLACK);
-        registerActor(new NPC(this,new DiscreteCoordinates(20, 10), "joel.fixed",dialogue));
+        String message = XMLTexts.getText("NPC11");
+        TextGraphics dialogue=new TextGraphics(message,0.5F, Color.BLACK);
+        List<TextGraphics>dialogues=new ArrayList<>();
+        dialogues.add(dialogue);
+        message = XMLTexts.getText("NPC12");
+        dialogue=new TextGraphics(message,0.5F, Color.BLACK);
+        dialogues.add(dialogue);
+        registerActor(new NPC(this,new DiscreteCoordinates(20, 10), "assistant.fixed",dialogues));
+        message = XMLTexts.getText("NPC21");
+        dialogue=new TextGraphics(message,0.5F, Color.BLACK);
+        dialogues.clear();
+        dialogues.add(dialogue);
+        message = XMLTexts.getText("NPC22");
+        dialogue=new TextGraphics(message,0.5F, Color.BLACK);
+        dialogues.add(dialogue);
+        registerActor(new NPC(this,new DiscreteCoordinates(6, 5), "boy.1",dialogues));
+        message = XMLTexts.getText("NPC31");
+        dialogue=new TextGraphics(message,0.5F, Color.BLACK);
+        dialogues.clear();
+        dialogues.add(dialogue);
+        message = XMLTexts.getText("NPC32");
+        dialogue=new TextGraphics(message,0.5F, Color.BLACK);
+        dialogues.add(dialogue);
+        registerActor(new NPC(this,new DiscreteCoordinates(6, 10), "girl.1",dialogues));
+        message = XMLTexts.getText("NPC41");
+        dialogue=new TextGraphics(message,0.47F, Color.BLACK);
+        dialogues.clear();
+        dialogues.add(dialogue);
+        message = XMLTexts.getText("NPC42");
+        dialogue=new TextGraphics(message,0.47F, Color.BLACK);
+        dialogues.add(dialogue);
+        message = XMLTexts.getText("NPC43");
+        dialogue=new TextGraphics(message,0.47F, Color.BLACK);
+        dialogues.add(dialogue);
+        message = XMLTexts.getText("NPC44");
+        dialogue=new TextGraphics(message,0.47F, Color.BLACK);
+        dialogues.add(dialogue);
+        registerActor(new NPC(this,new DiscreteCoordinates(14, 10), "joel.fixed",dialogues));
         Portal lvl1=new Portal(this,Orientation.UP,new DiscreteCoordinates(19,5),"level1");
         lvl1.setState(Portal.PortalState.LOCKED);
         Portal lvl2=new Portal(this,Orientation.UP,new DiscreteCoordinates(17,7),"level2");
@@ -87,6 +128,7 @@ public class MainBase extends Tuto2Area {
             this.registerActor(portal);
         }
     }
+
 
 
 

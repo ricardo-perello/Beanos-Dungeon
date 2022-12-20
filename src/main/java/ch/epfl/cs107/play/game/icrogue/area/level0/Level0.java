@@ -82,6 +82,7 @@ public class Level0 extends Level {
         System.out.println();
     }
 
+    //TODO create method
     public void generateRandomMap(){
         MapState[][]mapStates=generateRandomRoomPlacement();
         printMap(mapStates);
@@ -167,6 +168,7 @@ public class Level0 extends Level {
 
     }
 
+    //TODO create method
     protected void setUpConnector(MapState[][] roomsplacement,ICRogueRoom room){
         DiscreteCoordinates roomCoordinates=room.getCoordinates();
         int xcor=roomCoordinates.x;

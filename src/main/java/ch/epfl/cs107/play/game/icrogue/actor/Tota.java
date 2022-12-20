@@ -14,6 +14,7 @@ import ch.epfl.cs107.play.io.XMLTexts;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 import java.awt.*;
+import java.util.List;
 
 public class Tota extends NPC{
 
@@ -26,18 +27,13 @@ public class Tota extends NPC{
      * @param position   (Vector): initial position vector of the ghost
      * @param spriteName
      */
-    public Tota(Area area, DiscreteCoordinates position, String spriteName, TextGraphics dialogue) {
+    public Tota(Area area, DiscreteCoordinates position, String spriteName, List<TextGraphics> dialogue) {
         super(area, position, spriteName, dialogue);
     }
     public void update(float deltaTime){
         super.update(deltaTime);
     }
 
-    public void Dialogue(Canvas canvas){
-        String message =XMLTexts.getText("Tota_Introduction");
-        TextGraphics dialogue=new TextGraphics(message,1.2F,Color.BLACK);
-        setDialogue(dialogue);
-    }
 
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
             ((ICRogueInteractionHandler) v).interactWith(this, isCellInteraction);

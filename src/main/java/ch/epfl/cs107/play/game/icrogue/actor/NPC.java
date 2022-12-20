@@ -17,21 +17,25 @@ import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.window.Canvas;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NPC extends ICRogueActor {
     private Sprite sprite;
-    private TextGraphics dialogue;
-    /**
-     * Default DemoActor constructor
-     * @param position (Vector): initial position vector of the ghost
-     * @param text (String): initial text moving with the ghost
-     */
-    public NPC(Area area, DiscreteCoordinates position, String spriteName,TextGraphics dialogue) {
+    private List<TextGraphics> dialogue=new ArrayList<TextGraphics>();
+    public static final int PRICE=5;
+
+    public NPC(Area area, DiscreteCoordinates position, String spriteName,List<TextGraphics> dialogue) {
         //super(position, new ImageGraphics(ResourcePath.getSprite(spriteName),  1.0f,1.0f, null, Vector.ZERO, 1.0f, -Float.MAX_VALUE));
         super(area, Orientation.DOWN,position);
         sprite = new Sprite(spriteName, .75f,1f,this,
                 new RegionOfInterest(0,0,16,21), new Vector(.15f,-.15f));
-        this.dialogue=dialogue;
+
+        int i=0;
+        for(TextGraphics d:dialogue){
+            this.dialogue.add(d);
+            ++i;
+        }
     }
     @Override
     public void draw(Canvas canvas) {
@@ -42,12 +46,12 @@ public class NPC extends ICRogueActor {
         super.update(deltaTime);
     }
 
-    public TextGraphics getDialogue(){
+    public List<TextGraphics> getDialogue(){
         return dialogue;
     }
 
     protected void setDialogue(TextGraphics dialogue){
-        this.dialogue=dialogue;
+        this.dialogue.add(dialogue);
     }
 
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {

@@ -51,11 +51,21 @@ public class Shop extends Area {
 
         registerActor(new Background(this)) ;
         String message = XMLTexts.getText("Tota_upgrade");
-        TextGraphics dialogue=new TextGraphics(message,0.3F, Color.BLACK);
-        registerActor(new Tota(this,new DiscreteCoordinates(6,5), "boy.1",dialogue));
-        message = XMLTexts.getText("NPC1");
-        dialogue=new TextGraphics(message,0.3F, Color.BLACK);
-        registerActor(new NPC(this,new DiscreteCoordinates(3, 5), "girl.1",dialogue));
+        TextGraphics dialogue=new TextGraphics(message,0.5F, Color.BLACK);
+        dialogue.setAnchor(new Vector(1.5f,2.3f));
+        List<TextGraphics>dialogues=new ArrayList<>();
+        dialogues.add(dialogue);
+        registerActor(new Tota(this,new DiscreteCoordinates(6,5), "boy.1",dialogues));
+        message = XMLTexts.getText("NPC11");
+        dialogue=new TextGraphics(message,0.5F, Color.BLACK);
+        dialogue.setAnchor(new Vector(1.5f,2.3f));
+        dialogues.clear();
+        dialogues.add(dialogue);
+        message = XMLTexts.getText("NPC12");
+        dialogue=new TextGraphics(message,0.5F, Color.BLACK);
+        dialogue.setAnchor(new Vector(1.5f,2.3f));
+        dialogues.add(dialogue);
+        registerActor(new NPC(this,new DiscreteCoordinates(3, 5), "girl.1",dialogues));
         portals=new Portal(this,Orientation.DOWN,new DiscreteCoordinates(4,0),"shop");
         connectorList.add(new Connector(this,Orientation.DOWN,new DiscreteCoordinates(4,9)));
         connectorList.add(new Connector(this,Orientation.RIGHT,new DiscreteCoordinates(0,4)));
@@ -69,9 +79,12 @@ public class Shop extends Area {
         }
     }
 
-    public void draw(Canvas canvas, TextGraphics dialogue){
+    public void draw(Canvas canvas, List<TextGraphics> dialogue){
         dialogueBox.draw(canvas);
-        dialogue.draw(canvas);
+        for(TextGraphics d:dialogue){
+            d.draw(canvas);
+        }
+
     }
 
 

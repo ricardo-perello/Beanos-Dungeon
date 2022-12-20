@@ -17,6 +17,7 @@ import ch.epfl.cs107.play.game.icrogue.area.ICRogueRoom;
 import ch.epfl.cs107.play.game.icrogue.area.MainBase;
 import ch.epfl.cs107.play.game.icrogue.area.Shop;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
+import ch.epfl.cs107.play.io.XMLTexts;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Positionable;
 import ch.epfl.cs107.play.math.RegionOfInterest;
@@ -67,7 +68,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private int meleeDamage;
     public final static float COOLDOWN = 1.f;
     private float counter = 1.f;
-    private int CoinCounter = 0;
+    private float animationCounter=2.1f;
+    private int CoinCounter = 5;
     private Sprite[] spritesDOWN = new Sprite[4], spritesLEFT = new Sprite[4], spritesUP = new Sprite[4], spritesRIGHT = new Sprite[4];
     private final Animation animationsDOWN = new Animation(ANIMATION_DURATION/2, spritesDOWN);
     private final Animation animationsLEFT = new Animation(ANIMATION_DURATION/2, spritesLEFT);
@@ -76,8 +78,9 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private boolean hasSoundFX;
     private SoundAcoustics soundFX;
     private boolean dialogueStart;
-    private TextGraphics dialogue;
+    private List<TextGraphics> dialogue=new ArrayList<TextGraphics>();
     private boolean stopForDialogue;
+    private boolean merchantInteraction;
 
     public ICRoguePlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates){
         super(owner,orientation,coordinates);
@@ -112,7 +115,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
     public void draw(Canvas canvas) {
 
-        if (!(getOwnerArea() instanceof MainBase)){
+        if (!(getOwnerArea() instanceof MainBase)&&!(getOwnerArea() instanceof Shop)){
             printEmptyHearts().draw(canvas);
             if(hp>0){
                 printFullHearts().draw(canvas);
@@ -134,7 +137,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         if(dialogueStart){
             if(getOwnerArea() instanceof MainBase){
                 ((MainBase) getOwnerArea()).setParent(this);
-                ((MainBase) getOwnerArea()).draw(canvas,dialogue);
+                ((MainBase) getOwnerArea()).setDialogue(this,dialogue);
+                ((MainBase) getOwnerArea()).draw(canvas, dialogue);
             }
             else if(getOwnerArea() instanceof Shop){
                 ((Shop) getOwnerArea()).draw(canvas,dialogue);
@@ -191,6 +195,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     public void update(float deltaTime) {
         boolean doStaffAnimation=false;
         counter += deltaTime;
+        animationCounter+=deltaTime;
         setSpriteAnimation();
         Keyboard keyboard= getOwnerArea().getKeyboard();
         setCurrentAnimation();
@@ -253,9 +258,34 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         else{
             meleeDamage = DEFAULT_MELEE_DAMAGE;
         }
-        if(dialogueStart&&stopForDialogue&&keyboard.get(Keyboard.SPACE).isPressed()){
+        if((dialogueStart&&stopForDialogue&&keyboard.get(Keyboard.W).isPressed())||animationCounter==1.f){
             dialogueStart=false;
             stopForDialogue=false;
+            animationCounter=0;
+            if(merchantInteraction){
+                if (CoinCounter>=NPC.PRICE){
+                    CoinCounter=CoinCounter-NPC.PRICE;
+                    ++hp;
+                    String message = XMLTexts.getText("Health");
+                    dialogue.clear();
+                    dialogue.add(new TextGraphics(message,0.5F, Color.BLACK));
+                    dialogue.get(0).setAnchor(new Vector(1.5f,2.3f));
+                    dialogueStart=true;
+                    stopForDialogue=true;
+                    merchantInteraction=false;
+                }
+                else{
+                    String message = XMLTexts.getText("Not_enough");
+                    dialogue.clear();
+                    dialogue.add(new TextGraphics(message,0.5F, Color.BLACK));
+                    dialogue.get(0).setAnchor(new Vector(1.5f,2.3f));
+                    dialogueStart=true;
+                    stopForDialogue=true;
+                    merchantInteraction=false;
+
+                }
+            }
+
         }
 
         super.update(deltaTime);
@@ -547,8 +577,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         public void interactWith(Coin coin, boolean isCellInteraction) {
             if(wantsCellInteraction()){
                 increaseCoinCounter(1);
-                //todo add coin sound effect
-                soundFX=new SoundAcoustics(ResourcePath.getSound("health"),1,false,false,false,false);
+                soundFX=new SoundAcoustics(ResourcePath.getSound("coin"),1,false,false,false,false);
                 hasSoundFX=true;
                 coin.collect();
             }
@@ -662,7 +691,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
         public void interactWith(NPC npc, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
-            if(!dialogueStart&&wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())){
+            if(!dialogueStart&&wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())&&animationCounter>=1.f){
                 dialogue=npc.getDialogue();
                 dialogueStart=true;
                 stopForDialogue=true;
@@ -671,10 +700,12 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         }
         public void interactWith(Tota tota, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
-            if(!dialogueStart&&wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())){
-                dialogue=tota.getDialogue();
+            if(!dialogueStart&&wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())&&animationCounter>=1.f){
+                dialogue.clear();
+                dialogue.addAll(tota.getDialogue());
                 dialogueStart=true;
                 stopForDialogue=true;
+                merchantInteraction=true;
             }
 
         }

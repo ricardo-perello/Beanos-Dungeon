@@ -141,6 +141,7 @@ public abstract class Level implements Logic {
         bossPosition=coordinates;
     }
 
+    //TODO create method
     protected MapState[][] generateRandomRoomPlacement(){
         ArrayList<DiscreteCoordinates>placed=new ArrayList<>();
         ArrayList<DiscreteCoordinates>explored=new ArrayList<>();
