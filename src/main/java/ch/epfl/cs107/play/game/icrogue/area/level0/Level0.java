@@ -17,7 +17,7 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import java.util.ArrayList;
 
 public class Level0 extends Level {
-    public enum Level0RoomType{
+     enum Level0RoomType{
         TurretRoom,
         StaffRoom,
         Boss_Key,

@@ -60,6 +60,7 @@ public class MainBase extends Tuto2Area {
         portals.add(lvl1);
         portals.add(lvl2);
         portals.add(beanos);
+        portals.add(new Portal(this,Orientation.UP,new DiscreteCoordinates(10,6),"shop", Portal.PortalState.SHOP));
 
         for(Portal portal:portals){
             this.registerActor(portal);

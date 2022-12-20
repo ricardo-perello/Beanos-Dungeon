@@ -10,6 +10,21 @@
     <string name="riddle_1">Il parait que si tu as compris le sens de la vie, alors tu pourras passer</string>
     <string name="riddle_2">On dit qu'il faut savoir ce que l'on cherche pour pouvoir passer...le sais-tu ? Parce que moi pas vraiment...</string>
     <string name="mew_dialog">Mew...mew, mew mew !</string>
-    <string name=""></string>
-    <string name=""></string>
+    <string name="Alej_Introduction">Hello I'm Alejandro. I'm in charge of all your damange upgrades. Don't listen to Tota, he's an idiot.</string>
+    <string name="Tota_Introduction">Hello I'm Tota. I'm in charge of all your health upgrades, that is if you can afford my services...</string>
+    <string name="Tota_arguing1">ALEJANDRO, WHAT ARE YOU DOING!!! I TOLD YOU TO CLEAN THIS ROOM, EVEYTHING IS A MESS</string>
+    <string name="Alej_arguing1">WHAT DO YOU MEAN, YOU TOLD ME NOT TO TOUCH ANY OF YOUR "PRECIOUS BELONGINGS"</string>
+    <string name="Tota_conclusion1">Ah ouai, t'as raison... </string>
+    <string name="Tota_arguing2">ALEJANDRO, HOW MANY TIMES DID I TELL YOU NOT TO TOUCH MY PRECIOUS BELONGINGS!!!! YOU RUINED EVERYTHING.</string>
+    <string name="Alej_arguing2">YOU LITERALLY TOLD ME TO CLEAN UP SINCE "EVERYTHING IS A MESS"</string>
+    <string name="Tota_conclusion2">hmmm... I don't remember </string>
+    <string name="Tota_upgrade">Would you like to upgrade your health ?</string>
+    <string name="Alej_upgrade">Would you like to upgrade your damage ?</string>
+    <string name="Not_enough">It looks like you don't have enough coins</string>
+    <string name="NPC1">Be careful of poison, it can damage you even after getting hit</string>
+    <string name="NPC2">This land used to be very peaceful until He showed up...</string>
+    <string name="NPC3">I always hear Tota and Alejandro fighting, they sound like an old married couple</string>
+    <string name="NPC4">Be careful when exploring the dungeons, if your health ever gets low, try consumig cherries and hearts, I heard they help</string>
+
+
 </strings>

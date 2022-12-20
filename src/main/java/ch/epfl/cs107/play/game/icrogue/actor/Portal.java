@@ -20,6 +20,8 @@ public class Portal extends AreaEntity {
     public enum PortalState{
         OPEN,
         LOCKED,
+        INVISIBLE,
+        SHOP;
 
     }
     private String areaTitle;
@@ -41,8 +43,19 @@ public class Portal extends AreaEntity {
         levelname=level;
         setSprite();
     }
+    public Portal(Area area, Orientation orientation, DiscreteCoordinates position, String level,PortalState state){
+        super(area,orientation,position);
+        this.state= state;
+        ID=0;
+        this.orientation=orientation;
+        levelname=level;
+        setSprite();
+    }
     public void draw(Canvas canvas) {
+        if(!state.equals(PortalState.SHOP)){
             sprite.draw(canvas);
+        }
+
     }
 
     public void setArrivalcoordinates(DiscreteCoordinates coordinates){
@@ -72,7 +85,7 @@ public class Portal extends AreaEntity {
     }
 
     private void setSprite(){
-        if(state.equals(PortalState.OPEN)){
+        if(state.equals(PortalState.OPEN)||state.equals(PortalState.SHOP)){
             sprite=new Sprite("icrogue/door_2",
                     (orientation.ordinal()+1)%2+1,orientation.ordinal()%2+1,this);
         }
@@ -100,7 +113,7 @@ public class Portal extends AreaEntity {
     }
 
     public boolean takeCellSpace() {
-            return true;
+            return !(state.equals(PortalState.SHOP));
     }
 
     public boolean isCellInteractable() {

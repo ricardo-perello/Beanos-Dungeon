@@ -13,6 +13,7 @@ import ch.epfl.cs107.play.game.icrogue.area.Beanos.LevelBeanos;
 import ch.epfl.cs107.play.game.icrogue.area.ICRogueRoom;
 import ch.epfl.cs107.play.game.icrogue.area.Level;
 import ch.epfl.cs107.play.game.icrogue.area.MainBase;
+import ch.epfl.cs107.play.game.icrogue.area.Shop;
 import ch.epfl.cs107.play.game.icrogue.area.level0.Level0;
 import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0Room;
 import ch.epfl.cs107.play.game.icrogue.area.level1.Level1;
@@ -37,6 +38,7 @@ public class ICRogue extends AreaGame {
     private SoundAcoustics soundtrack;
 
     private Level level;
+    private Shop shop;
     private int lvl0clears;
     private int lvl1clears;
     private int lvl2clears;
@@ -58,6 +60,8 @@ public class ICRogue extends AreaGame {
         player=new ICRoguePlayer(base,Orientation.DOWN,base.getPlayerSpawnPosition());
         player.enterArea(base,base.getPlayerSpawnPosition());
         player.centerCamera();
+        shop=new Shop();
+        addArea(shop);
 
     }
     private void initLevel0(){
@@ -66,7 +70,7 @@ public class ICRogue extends AreaGame {
         level=new Level0(); /* creates first area*/
         level.addAreas(this); /*adds current room to the areas*/
 
-        soundtrack=new SoundAcoustics(ResourcePath.getSound("dungeon"),1,true,false,true,true);
+        soundtrack=new SoundAcoustics(ResourcePath.getSound("dungeon"),1,true,false,true,false);
         soundtrack.shouldBeStarted();
         soundtrack.bip(getWindow());
 
@@ -86,7 +90,7 @@ public class ICRogue extends AreaGame {
 
 
         level.addAreas(this); /*adds current room to the areas*/
-        soundtrack=new SoundAcoustics(ResourcePath.getSound("dungeon"),1,true,false,true,true);
+        soundtrack=new SoundAcoustics(ResourcePath.getSound("dungeon"),1,true,false,true,false);
         soundtrack.shouldBeStarted();
         soundtrack.bip(getWindow());
 
@@ -105,7 +109,7 @@ public class ICRogue extends AreaGame {
 
 
         level.addAreas(this); /*adds current room to the areas*/
-        soundtrack=new SoundAcoustics(ResourcePath.getSound("dungeon"),1,true,false,true,true);
+        soundtrack=new SoundAcoustics(ResourcePath.getSound("dungeon"),1,true,false,true,false);
         soundtrack.shouldBeStarted();
         soundtrack.bip(getWindow());
 
@@ -124,7 +128,7 @@ public class ICRogue extends AreaGame {
 
 
         level.addAreas(this); /*adds current room to the areas*/
-        soundtrack=new SoundAcoustics(ResourcePath.getSound("boss"),1,true,false,true,true);
+        soundtrack=new SoundAcoustics(ResourcePath.getSound("boss"),1,true,false,true,false);
         soundtrack.shouldBeStarted();
         soundtrack.bip(getWindow());
 
@@ -135,6 +139,7 @@ public class ICRogue extends AreaGame {
         player=level.addPlayer(LevelBeanos.startingroom);/* creates main character and adds to starting room*/
 
     }
+
 
     @Override
     public boolean begin(Window window, FileSystem fileSystem) {
@@ -216,6 +221,18 @@ public class ICRogue extends AreaGame {
 
     protected void switchArea() {
         if(player.getisTransporting()&&getCurrentArea() instanceof MainBase){
+            if(!player.getTransportArea().equals("shop")){
+                SoundAcoustics fx=new SoundAcoustics(ResourcePath.getSound("portal"), (float) 0.8,false,false,false,true);
+                fx.shouldBeStarted();
+                fx.bip(getWindow());
+
+            }
+            else{
+                SoundAcoustics fx=new SoundAcoustics(ResourcePath.getSound("door"),1,false,false,false,true);
+                fx.shouldBeStarted();
+                fx.bip(getWindow());
+            }
+
             previousCoorInBase=player.getCurrentCells().get(0);
             player.leaveArea();
             player.transported();
@@ -231,14 +248,38 @@ public class ICRogue extends AreaGame {
             else if(player.getTransportArea().equals("beanos")){
                 initLevelBeanos();
             }
+            else if(player.getTransportArea().equals("shop")){
+                setCurrentArea(shop.getTitle(), false); /* makes it the current area */
+
+                soundtrack=new SoundAcoustics(ResourcePath.getSound("shop"),1,true,false,true,false);
+                soundtrack.shouldBeStarted();
+                soundtrack.bip(getWindow());
+                player.enterArea(shop,shop.getPlayerSpawnPosition());
+
+
+            }
             display=0;
+
+        }
+        else if(player.getisTransporting()&&getCurrentArea() instanceof Shop){
+            player.leaveArea();
+            SoundAcoustics fx=new SoundAcoustics(ResourcePath.getSound("door"),1,false,false,false,true);
+            fx.shouldBeStarted();
+            fx.bip(getWindow());
+            player.transported();
+            setCurrentArea(base.getTitle(),false);
+            soundtrack=new SoundAcoustics(ResourcePath.getSound("home"),1,true,false,true,false);
+            soundtrack.shouldBeStarted();
+            soundtrack.bip(getWindow());
+            player.enterArea(base,previousCoorInBase);
+            player.centerCamera();
 
         }
         else if(level!=null&&(player.getHp() <= 0)&&(display==0)){
             player.leaveArea();
             player.clearCarrying();
             setCurrentArea(base.getTitle(),false);
-            soundtrack=new SoundAcoustics(ResourcePath.getSound("home"),1,true,false,true,true);
+            soundtrack=new SoundAcoustics(ResourcePath.getSound("home"),1,true,false,true,false);
             soundtrack.shouldBeStarted();
             soundtrack.bip(getWindow());
             player.enterArea(base,previousCoorInBase);
@@ -256,10 +297,13 @@ public class ICRogue extends AreaGame {
             else if(level instanceof Level2){
                 ++lvl2clears;
             }
+            SoundAcoustics fx=new SoundAcoustics(ResourcePath.getSound("clear"),1,false,false,false,true);
+            fx.shouldBeStarted();
+            fx.bip(getWindow());
             player.leaveArea();
             player.clearCarrying();
             setCurrentArea(base.getTitle(),false);
-            soundtrack=new SoundAcoustics(ResourcePath.getSound("home"),1,true,false,true,true);
+            soundtrack=new SoundAcoustics(ResourcePath.getSound("home"),1,true,false,true,false);
             soundtrack.shouldBeStarted();
             soundtrack.bip(getWindow());
             player.enterArea(base,previousCoorInBase);

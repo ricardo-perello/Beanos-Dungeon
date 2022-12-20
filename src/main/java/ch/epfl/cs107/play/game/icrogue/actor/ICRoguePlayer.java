@@ -1,10 +1,12 @@
 package ch.epfl.cs107.play.game.icrogue.actor;
 import ch.epfl.cs107.play.game.actor.ImageGraphics;
+import ch.epfl.cs107.play.game.actor.SoundAcoustics;
 import ch.epfl.cs107.play.game.actor.TextGraphics;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Animation;
 import ch.epfl.cs107.play.game.areagame.actor.*;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.areagame.io.ResourcePath;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.BossTurret;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.items.*;
@@ -573,7 +575,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         public void interactWith(Portal portal, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if(wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())&&
-                    portal.compareState(Portal.PortalState.OPEN)){
+                    (portal.compareState(Portal.PortalState.OPEN)||portal.compareState(Portal.PortalState.SHOP))){
                 transportArea=portal.getLevel();
                 isTransporting=true;
             }
