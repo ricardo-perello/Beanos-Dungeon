@@ -157,13 +157,7 @@ public class ICRogue extends AreaGame {
     @Override
     public void update(float deltaTime) {
         Keyboard keyboard = getWindow().getKeyboard() ;
-        Button key=keyboard.get(Keyboard.R);
-        /*resets current room for testing purposes*/
-        if(key.isPressed()){
-            initLevel0();
-        }
-
-        key=keyboard.get(Keyboard.P); //for testing purposes
+        Button key=keyboard.get(Keyboard.P); //for testing purposes
         if(key.isPressed()){
             ++lvl0clears;
             base.printGreenDots(lvl0clears,1);
@@ -330,9 +324,9 @@ public class ICRogue extends AreaGame {
 
 
 
-//todo add cherries/hearts
+
 //todo add damage display
 //todo change sprites for connector
-//todo add poison sprite
+
 
 

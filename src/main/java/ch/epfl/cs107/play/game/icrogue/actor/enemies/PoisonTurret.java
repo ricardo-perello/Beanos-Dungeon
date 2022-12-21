@@ -18,7 +18,7 @@ public class PoisonTurret extends Enemy{
     private Sprite sprite;
     private ImageGraphics greyHealthBar;
     private ImageGraphics redHealthBar;
-    private String spriteName = "icrogue/blue_static_npc";
+    private String spriteName = "icrogue/green_static_npc";
     private boolean shootUp;
     private boolean shootDown;
     private boolean shootLeft;

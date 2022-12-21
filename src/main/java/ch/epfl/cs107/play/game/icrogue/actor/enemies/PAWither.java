@@ -117,14 +117,14 @@ public class PAWither extends Enemy{
 
     private ImageGraphics printRedHealthBar(){
         redHealthBar = new ImageGraphics("images/sprites/zelda/red.health.bar.png", ((.9f) * ((float)getHp()/10)) ,
-                .03f, new RegionOfInterest(0,0,(int)(100 * ((double)getHp()/10)),5), new Vector(((getPosition().x)+0.1f),((getPosition().y) -0.5f)));
+                .03f, new RegionOfInterest(0,0,(int)(100 * ((double)getHp()/10)),5), new Vector(((getPosition().x)+0.25f),((getPosition().y) -0.1f)));
         return redHealthBar;
     }
     private ImageGraphics printGreyHealthBar(){
         greyHealthBar = new ImageGraphics("images/sprites/zelda/grey.health.bar.png", .9f,.03f,
-                new RegionOfInterest(0,0,100,5),  new Vector(((getPosition().x)+0.1f),((getPosition().y) - 0.5f)));
+                new RegionOfInterest(0,0,100,5),  new Vector(((getPosition().x)+0.25f),((getPosition().y) - 0.1f)));
         return greyHealthBar;
-    }
+    }//todo disable r
     public float getHp(){
         return hp;
     }
