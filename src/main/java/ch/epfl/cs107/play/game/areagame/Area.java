@@ -7,6 +7,8 @@ import ch.epfl.cs107.play.game.actor.Actor;
 import ch.epfl.cs107.play.game.actor.Draggable;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Interactor;
+import ch.epfl.cs107.play.game.areagame.actor.Orientation;
+import ch.epfl.cs107.play.game.icrogue.actor.items.Coin;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Transform;
@@ -14,6 +16,7 @@ import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Keyboard;
 import ch.epfl.cs107.play.window.Mouse;
 import ch.epfl.cs107.play.window.Window;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.Enemy;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -266,7 +269,10 @@ public abstract class Area implements Playable, PauseMenu.Pausable {
     @Override
     public void update(float deltaTime) {    	
     	purgeRegistration();
-
+        if (Enemy.wantsAddCoin){
+            this.registerActor(new Coin(this, Orientation.DOWN, Enemy.lastCoordinates));
+            Enemy.wantsAddCoin = false;
+        }
         // Decide if we update the contextual menu or this content
         if(paused && menu != null) {
             menu.update(deltaTime);

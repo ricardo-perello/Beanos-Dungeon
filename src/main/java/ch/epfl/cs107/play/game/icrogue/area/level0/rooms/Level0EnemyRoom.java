@@ -15,6 +15,7 @@ import java.util.List;
 public class Level0EnemyRoom extends Level0Room{
     private List<Enemy> enemies;
 
+
     public Level0EnemyRoom(DiscreteCoordinates coordinates) {
         super(coordinates);
         enemies=new ArrayList<>();
