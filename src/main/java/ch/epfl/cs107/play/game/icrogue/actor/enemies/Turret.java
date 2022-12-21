@@ -52,7 +52,7 @@ public class Turret extends Enemy{
         if (shootUp){
             Arrow arrow = new Arrow(getOwnerArea(), Orientation.UP,
                 new DiscreteCoordinates(getCurrentMainCellCoordinates().x
-                ,(getCurrentMainCellCoordinates().y)+1), true);
+                ,(getCurrentMainCellCoordinates().y)+1), true, 1);
 
             arrow.enterArea(getOwnerArea(),new DiscreteCoordinates(getCurrentMainCellCoordinates().x
                     , (getCurrentMainCellCoordinates().y)+1));
@@ -60,7 +60,7 @@ public class Turret extends Enemy{
         if (shootDown){
             Arrow arrow = new Arrow(getOwnerArea(), Orientation.DOWN,
                     new DiscreteCoordinates(getCurrentMainCellCoordinates().x
-                    ,(getCurrentMainCellCoordinates().y)-1), true);
+                    ,(getCurrentMainCellCoordinates().y)-1), true, 1);
 
 
             arrow.enterArea(getOwnerArea(),new DiscreteCoordinates(getCurrentMainCellCoordinates().x
@@ -69,7 +69,7 @@ public class Turret extends Enemy{
         if (shootLeft){
             Arrow arrow = new Arrow(getOwnerArea(), Orientation.LEFT,
                     new DiscreteCoordinates((getCurrentMainCellCoordinates().x-1)
-                    ,(getCurrentMainCellCoordinates().y)), true);
+                    ,(getCurrentMainCellCoordinates().y)), true,1);
 
             arrow.enterArea(getOwnerArea(),new DiscreteCoordinates((getCurrentMainCellCoordinates().x-1)
                     ,getCurrentMainCellCoordinates().y));
@@ -77,7 +77,7 @@ public class Turret extends Enemy{
         if (shootRight){
             Arrow arrow = new Arrow(getOwnerArea(), Orientation.RIGHT,
                     new DiscreteCoordinates((getCurrentMainCellCoordinates().x+1)
-                    ,(getCurrentMainCellCoordinates().y)), true);
+                    ,(getCurrentMainCellCoordinates().y)), true,1);
 
             arrow.enterArea(getOwnerArea(),new DiscreteCoordinates((getCurrentMainCellCoordinates().x+1)
                     ,(getCurrentMainCellCoordinates().y)));

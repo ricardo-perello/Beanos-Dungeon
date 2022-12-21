@@ -38,6 +38,12 @@ public class Fire extends Projectile{
         handler=new ICRogueFireInteractionHandler();
         enterArea(area,coordinates);
     }
+    public Fire(Area area, Orientation orientation, DiscreteCoordinates coordinates, String spriteName, int damage, boolean isEnemy){
+        super(area,orientation,coordinates,damage,5, isEnemy);
+        setSprite(spriteName,orientation);
+        handler=new ICRogueFireInteractionHandler();
+        enterArea(area,coordinates);
+    }
 
     public void setSprite(String name) {
         if (name.equals("zelda/flameskull")){
@@ -117,7 +123,7 @@ public class Fire extends Projectile{
         public void interactWith(Turret turret, boolean isCellInteraction) {
             if(wantsViewInteraction()&&!isConsumed() && !getIsEnemy()) {
                 consume();
-                turret.decreaseHp(DEFAULT_DAMAGE);
+                turret.decreaseHp(getDamage());
             }
             else if(wantsViewInteraction()&&!isConsumed() && getIsEnemy()) {
                 consume();
@@ -126,7 +132,7 @@ public class Fire extends Projectile{
         public void interactWith(BossTurret turret, boolean isCellInteraction) {
             if(wantsViewInteraction()&&!isConsumed() && !getIsEnemy()) {
                 consume();
-                turret.decreaseHp(DEFAULT_DAMAGE);
+                turret.decreaseHp(getDamage());
             }
             else if(wantsViewInteraction()&&!isConsumed() && getIsEnemy()) {
                 consume();
@@ -134,12 +140,12 @@ public class Fire extends Projectile{
         }
         public void interactWith(ICRoguePlayer player, boolean isCellInteraction) {
             if (wantsViewInteraction() && !(isConsumed()) && getIsEnemy()) {
-                player.decreaseHp((float) DEFAULT_DAMAGE);
+                player.decreaseHp((float) getDamage());
                 consume();
             }
         }
         public void interactWith(Wither wither, boolean isCellInteraction) {
-            if (wantsViewInteraction() && !getIsEnemy()) {
+            if (wantsViewInteraction() &&!(isConsumed()) && !getIsEnemy()) {
                 consume();
                 wither.decreaseHp(getDamage());
             }

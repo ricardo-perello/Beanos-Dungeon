@@ -111,7 +111,7 @@ public class Wither extends Enemy{
             else{
                 spawnPosition = new DiscreteCoordinates(getCurrentMainCellCoordinates().x-1 , getCurrentMainCellCoordinates().y);
             }
-            Fire fire = new Fire(getOwnerArea(),i, spawnPosition, "zelda/flameskull",true);
+            Fire fire = new Fire(getOwnerArea(),i, spawnPosition, "zelda/flameskull", 2,true);
 
         }
     }

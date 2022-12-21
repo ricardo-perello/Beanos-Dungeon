@@ -18,7 +18,7 @@ import java.util.List;
 
 public class Sword extends Item{
     private Sprite sprite;
-    public final static int DEFAULT_DAMAGE = 2;
+    public static int DEFAULT_DAMAGE = 2;
     public Sword(Area area,Orientation orientation, DiscreteCoordinates coordinates){
         super(area,orientation,coordinates);
         setSprite();

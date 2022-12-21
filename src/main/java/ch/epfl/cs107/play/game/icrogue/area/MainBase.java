@@ -82,50 +82,35 @@ public class MainBase extends MainBaseArea {
 
     }
 
+    //sets up the dialogue for each character
+    public void setUpDialogue(List<TextGraphics>dialogues,String name,float size){
+        String message = XMLTexts.getText(name);
+        TextGraphics dialogue=new TextGraphics(message,size, Color.BLACK);
+        dialogue.setAnchor(new Vector(1.5f,2.3f));
+        dialogues.add(dialogue);
+    }
 
     protected void createArea() {
         // Base
-
-
         registerActor(new Background(this)) ;
         registerActor(new Foreground(this)) ;
-        String message = XMLTexts.getText("NPC11");
-        TextGraphics dialogue=new TextGraphics(message,0.5F, Color.BLACK);
         List<TextGraphics>dialogues=new ArrayList<>();
-        dialogues.add(dialogue);
-        message = XMLTexts.getText("NPC12");
-        dialogue=new TextGraphics(message,0.5F, Color.BLACK);
-        dialogues.add(dialogue);
+        setUpDialogue(dialogues,"NPC11",0.5F);
+        setUpDialogue(dialogues,"NPC12",0.5F);
         registerActor(new NPC(this,new DiscreteCoordinates(20, 10), "assistant.fixed",dialogues));
-        message = XMLTexts.getText("NPC21");
-        dialogue=new TextGraphics(message,0.5F, Color.BLACK);
         dialogues.clear();
-        dialogues.add(dialogue);
-        message = XMLTexts.getText("NPC22");
-        dialogue=new TextGraphics(message,0.5F, Color.BLACK);
-        dialogues.add(dialogue);
+        setUpDialogue(dialogues,"NPC21",0.5F);
+        setUpDialogue(dialogues,"NPC22",0.5F);
         registerActor(new NPC(this,new DiscreteCoordinates(6, 5), "boy.1",dialogues));
-        message = XMLTexts.getText("NPC31");
-        dialogue=new TextGraphics(message,0.5F, Color.BLACK);
         dialogues.clear();
-        dialogues.add(dialogue);
-        message = XMLTexts.getText("NPC32");
-        dialogue=new TextGraphics(message,0.5F, Color.BLACK);
-        dialogues.add(dialogue);
+        setUpDialogue(dialogues,"NPC31",0.5F);
+        setUpDialogue(dialogues,"NPC12",0.5F);
         registerActor(new NPC(this,new DiscreteCoordinates(6, 10), "girl.1",dialogues));
-        message = XMLTexts.getText("NPC41");
-        dialogue=new TextGraphics(message,0.47F, Color.BLACK);
         dialogues.clear();
-        dialogues.add(dialogue);
-        message = XMLTexts.getText("NPC42");
-        dialogue=new TextGraphics(message,0.47F, Color.BLACK);
-        dialogues.add(dialogue);
-        message = XMLTexts.getText("NPC43");
-        dialogue=new TextGraphics(message,0.47F, Color.BLACK);
-        dialogues.add(dialogue);
-        message = XMLTexts.getText("NPC44");
-        dialogue=new TextGraphics(message,0.47F, Color.BLACK);
-        dialogues.add(dialogue);
+        setUpDialogue(dialogues,"NPC41",0.47F);
+        setUpDialogue(dialogues,"NPC42",0.47F);
+        setUpDialogue(dialogues,"NPC43",0.47F);
+        setUpDialogue(dialogues,"NPC44",0.47F);
         registerActor(new NPC(this,new DiscreteCoordinates(14, 10), "joel.fixed",dialogues));
         Portal lvl1=new Portal(this,Orientation.UP,new DiscreteCoordinates(19,5),"level1");
         lvl1.setState(Portal.PortalState.LOCKED);

@@ -10,10 +10,7 @@ import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Background;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.icrogue.ICRogueBehavior;
-import ch.epfl.cs107.play.game.icrogue.actor.Connector;
-import ch.epfl.cs107.play.game.icrogue.actor.NPC;
-import ch.epfl.cs107.play.game.icrogue.actor.Portal;
-import ch.epfl.cs107.play.game.icrogue.actor.Tota;
+import ch.epfl.cs107.play.game.icrogue.actor.*;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.io.XMLTexts;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -46,26 +43,23 @@ public class Shop extends Area {
         return new DiscreteCoordinates(4,1);
     }
 
+    public void setUpDialogue(List<TextGraphics>dialogues,String name){
+        String message = XMLTexts.getText(name);
+        TextGraphics dialogue=new TextGraphics(message,0.5F, Color.BLACK);
+        dialogue.setAnchor(new Vector(1.5f,2.3f));
+        dialogues.add(dialogue);
+    }
+
     protected void createArea() {
         // Shop
 
         registerActor(new Background(this)) ;
-        String message = XMLTexts.getText("Tota_upgrade");
-        TextGraphics dialogue=new TextGraphics(message,0.5F, Color.BLACK);
-        dialogue.setAnchor(new Vector(1.5f,2.3f));
         List<TextGraphics>dialogues=new ArrayList<>();
-        dialogues.add(dialogue);
-        registerActor(new Tota(this,new DiscreteCoordinates(6,5), "boy.1",dialogues));
-        message = XMLTexts.getText("NPC11");
-        dialogue=new TextGraphics(message,0.5F, Color.BLACK);
-        dialogue.setAnchor(new Vector(1.5f,2.3f));
+        setUpDialogue(dialogues,"Tota_upgrade");
+        registerActor(new Tota(this,new DiscreteCoordinates(6,5), "policeman",dialogues));
         dialogues.clear();
-        dialogues.add(dialogue);
-        message = XMLTexts.getText("NPC12");
-        dialogue=new TextGraphics(message,0.5F, Color.BLACK);
-        dialogue.setAnchor(new Vector(1.5f,2.3f));
-        dialogues.add(dialogue);
-        registerActor(new NPC(this,new DiscreteCoordinates(3, 5), "girl.1",dialogues));
+        setUpDialogue(dialogues,"Alej_upgrade");
+        registerActor(new Alejandro(this,new DiscreteCoordinates(3, 5), "max",dialogues));
         portals=new Portal(this,Orientation.DOWN,new DiscreteCoordinates(4,0),"shop");
         connectorList.add(new Connector(this,Orientation.DOWN,new DiscreteCoordinates(4,9)));
         connectorList.add(new Connector(this,Orientation.RIGHT,new DiscreteCoordinates(0,4)));

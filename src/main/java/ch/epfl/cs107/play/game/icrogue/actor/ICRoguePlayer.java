@@ -40,7 +40,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     public static int DEFAULT_PLAYER_HP = 6;
     /// Animation duration in frame number
     private final static int MOVE_DURATION = 6;
-    public final static int DEFAULT_MELEE_DAMAGE = 1;
+    public static int DEFAULT_MELEE_DAMAGE = 1;
     private static final int ANIMATION_DURATION = 2;
     private Sprite sprite;
     private ImageGraphics fullHearts;
@@ -69,6 +69,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private static int hp = maxHp;
     private boolean receivedDamage = false;
     private int meleeDamage;
+    private float damageMultiplyer = 1;
     public final static float COOLDOWN = 1.f;
     private float counter = 1.f;
     private float dialogueCounter=2.1f;
@@ -84,6 +85,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private List<TextGraphics> dialogue=new ArrayList<TextGraphics>();
     private boolean stopForDialogue;
     private boolean merchantInteraction;
+    private boolean healthInteraction; //checks if interaction is with Tota
+    private boolean damageInteraction; //checks if interaction is with Alejandro
 
     public ICRoguePlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates){
         super(owner,orientation,coordinates);
@@ -208,7 +211,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         return false;
     }
 
-
+    private boolean isDoingAnimation=false;
     public void update(float deltaTime) {
         boolean doStaffAnimation=false;
         counter += deltaTime;//increases counter for projectiles
@@ -230,6 +233,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         if(keyboard.get(Keyboard.X).isPressed()&& hasStaff && (counter >= COOLDOWN)){
             spriteName = "zelda/player.staff_water";
             isStaffAnimation = true;
+            isDoingAnimation=false;
             doStaffAnimation=true;
             Fire fire = new Fire(getOwnerArea(),getOrientation(),getCurrentMainCellCoordinates(), "zelda/fire"
                     ,false);
@@ -240,11 +244,14 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
         }
         if(doStaffAnimation){
-            setStaffAnimation();
-            setCurrentStaffAnimation();
-            currentAnimation.setSpeedFactor(1);
+            if(!isDoingAnimation){
+                setStaffAnimation();
+                setCurrentStaffAnimation();
+                currentAnimation.setSpeedFactor(1);
+                isDoingAnimation=true;
+            }
             currentAnimation.update(deltaTime);
-            if(currentAnimation.isCompleted()){
+            if(currentAnimation.isCompleted()&&counter<COOLDOWN){
                 doStaffAnimation=false;
                 setSpriteAnimation();
             }
@@ -285,15 +292,27 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 if (CoinCounter>=NPC.PRICE){
                     CoinCounter=CoinCounter-NPC.PRICE;
                     System.out.println("coins: "+CoinCounter);
-                    setMaxHp(getMaxHp()+2);
-                    setHp(getMaxHp());
-                    String message = XMLTexts.getText("Health");
-                    dialogue.clear();
-                    dialogue.add(new TextGraphics(message,0.5F, Color.BLACK));
-                    dialogue.get(0).setAnchor(new Vector(1.5f,2.3f));
+                    if(healthInteraction){
+                        setMaxHp(getMaxHp()+2);
+                        setHp(getMaxHp());
+                        String message = XMLTexts.getText("Health");
+                        dialogue.clear();
+                        dialogue.add(new TextGraphics(message,0.5F, Color.BLACK));
+                        dialogue.get(0).setAnchor(new Vector(1.5f,2.3f));
+                    }
+                    if(damageInteraction){
+                        increaseDamage();
+                        String message = XMLTexts.getText("Damage");
+                        dialogue.clear();
+                        dialogue.add(new TextGraphics(message,0.5F, Color.BLACK));
+                        dialogue.get(0).setAnchor(new Vector(1.5f,2.3f));
+                    }
+
                     dialogueStart=true;
                     stopForDialogue=true;
                     merchantInteraction=false;
+                    damageInteraction=false;
+                    healthInteraction=false;
                 }
                 else{
                     String message = XMLTexts.getText("Not_enough");
@@ -348,6 +367,13 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     }
     public static void setMaxHp(int newMaxHp){
         maxHp = newMaxHp;
+    }
+    public static void increaseDamage(){
+        ++DEFAULT_MELEE_DAMAGE;
+        ++Sword.DEFAULT_DAMAGE;
+        ++Fire.DEFAULT_DAMAGE;
+
+
     }
     public int getHp(){return hp;}
     public int getMaxHp(){return maxHp;}
@@ -755,6 +781,21 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 dialogueStart=true;
                 stopForDialogue=true;
                 merchantInteraction=true;//specifies that its a merchant interaction
+                healthInteraction=true;
+            }
+
+        }
+        public void interactWith(Alejandro alejandro, boolean isCellInteraction){
+            Keyboard keyboard= getOwnerArea().getKeyboard();
+            if(!dialogueStart&&wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())&&dialogueCounter>=1.f){
+                dialogue.clear();
+                alejandro.getDialogue(dialogue);
+                //starts the dialogue interaction
+                dialogueStart=true;
+                stopForDialogue=true;
+                merchantInteraction=true;//specifies that its a merchant interaction
+                damageInteraction=true;
+
             }
 
         }

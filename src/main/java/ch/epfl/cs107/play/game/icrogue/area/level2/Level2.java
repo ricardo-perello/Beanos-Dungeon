@@ -9,6 +9,7 @@ import ch.epfl.cs107.play.game.icrogue.RandomHelper;
 import ch.epfl.cs107.play.game.icrogue.area.ICRogueRoom;
 import ch.epfl.cs107.play.game.icrogue.area.Level;
 import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0Room;
+import ch.epfl.cs107.play.game.icrogue.area.level1.rooms.Level1Room;
 import ch.epfl.cs107.play.game.icrogue.area.level2.rooms.*;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
@@ -26,7 +27,7 @@ public class Level2 extends Level {
         public static int[] setroomArrangement(){
             int size=Level2RoomType.values().length;
             int[] roomArrangement = new int[size];
-            roomArrangement[0]=RandomHelper.roomGenerator.nextInt(1,2);
+            roomArrangement[0]=RandomHelper.roomGenerator.nextInt(3,4);
             roomArrangement[1]=1;
             roomArrangement[2]=1;
             roomArrangement[3]=1;
@@ -80,6 +81,7 @@ public class Level2 extends Level {
         System.out.println();
     }
 
+    //works the same as in level0
     public void generateRandomMap(){
         MapState[][]mapStates=generateRandomRoomPlacement();
         printMap(mapStates);
@@ -165,49 +167,37 @@ public class Level2 extends Level {
 
     }
 
+    //works the same as in level0
+    private void setConnectorsGeneral(Orientation orientation, Level2Room.Level2Connectors connectors, DiscreteCoordinates coordinates){
+        DiscreteCoordinates destination=coordinates.jump(orientation.toVector());
+        String destinationName= getRoomName(destination);
+        setRoomConnector(coordinates,destinationName,connectors);
+        boolean bossDestination=isNextToBossRoom(destination);
+        if(bossDestination){//checks if the next room is a boss room
+            lockRoomConnector(coordinates,connectors,getBossRoomKeyID());
+        }
+    }
+
+    //works the same as in level0
     protected void setUpConnector(MapState[][] roomsplacement,ICRogueRoom room){
         DiscreteCoordinates roomCoordinates=room.getCoordinates();
         int xcor=roomCoordinates.x;
         int ycor=roomCoordinates.y;
         if(xcor<roomsplacement.length-1&&(roomsplacement[xcor+1][ycor].equals(MapState.CREATED)||
                 roomsplacement[xcor+1][ycor].equals(MapState.EXPLORED)||roomsplacement[xcor+1][ycor].equals(MapState.PLACED))){
-            DiscreteCoordinates destination=roomCoordinates.jump(Orientation.RIGHT.toVector());
-            String destinationName= getRoomName(destination);
-            setRoomConnector(roomCoordinates,destinationName, Level2Room.Level2Connectors.E);
-            boolean bossDestination=isNextToBossRoom(destination);
-            if(bossDestination){
-                lockRoomConnector(roomCoordinates, Level2Room.Level2Connectors.E,getBossRoomKeyID());
-            }
+            setConnectorsGeneral(Orientation.RIGHT,Level2Room.Level2Connectors.E,roomCoordinates);
         }
         if(xcor>0&&(roomsplacement[xcor-1][ycor].equals(MapState.CREATED)||
                 roomsplacement[xcor-1][ycor].equals(MapState.EXPLORED)||roomsplacement[xcor-1][ycor].equals(MapState.PLACED))){
-            DiscreteCoordinates destination=roomCoordinates.jump(Orientation.LEFT.toVector());
-            String destinationName= getRoomName(destination);
-            setRoomConnector(roomCoordinates,destinationName, Level2Room.Level2Connectors.W);
-            boolean bossDestination=isNextToBossRoom(destination);
-            if(bossDestination){
-                lockRoomConnector(roomCoordinates, Level2Room.Level2Connectors.W,getBossRoomKeyID());
-            }
+            setConnectorsGeneral(Orientation.LEFT,Level2Room.Level2Connectors.W,roomCoordinates);
         }
         if(ycor<roomsplacement[0].length-1&&(roomsplacement[xcor][ycor+1].equals(MapState.CREATED)||
                 roomsplacement[xcor][ycor+1].equals(MapState.EXPLORED)||roomsplacement[xcor][ycor+1].equals(MapState.PLACED))){
-            DiscreteCoordinates destination=roomCoordinates.jump(Orientation.UP.toVector());
-            String destinationName= getRoomName(destination);
-            setRoomConnector(roomCoordinates,destinationName, Level2Room.Level2Connectors.N);
-            boolean bossDestination=isNextToBossRoom(destination);
-            if(bossDestination){
-                lockRoomConnector(roomCoordinates, Level2Room.Level2Connectors.N,getBossRoomKeyID());
-            }
+            setConnectorsGeneral(Orientation.UP,Level2Room.Level2Connectors.N,roomCoordinates);
         }
         if(ycor>0 &&(roomsplacement[xcor][ycor-1].equals(MapState.CREATED)||
                 roomsplacement[xcor][ycor-1].equals(MapState.EXPLORED)||roomsplacement[xcor][ycor-1].equals(MapState.PLACED))){
-            DiscreteCoordinates destination=roomCoordinates.jump(Orientation.DOWN.toVector());
-            boolean bossDestination=isNextToBossRoom(destination);
-            String destinationName= getRoomName(destination);
-            setRoomConnector(roomCoordinates,destinationName, Level2Room.Level2Connectors.S);
-            if(bossDestination){
-                lockRoomConnector(roomCoordinates, Level2Room.Level2Connectors.S,getBossRoomKeyID());
-            }
+            setConnectorsGeneral(Orientation.DOWN,Level2Room.Level2Connectors.N,roomCoordinates);
         }
 
 

@@ -22,6 +22,7 @@
     <string name="Alej_upgrade">Would you like to upgrade your damage ?</string>
     <string name="Not_enough">It looks like you don't have enough coins</string>
     <string name="Health">You now have more health</string>
+    <string name="Damage">You are now stronger</string>
     <string name="NPC11">Be careful of poison,</string>
     <string name="NPC12">it can damage you even after getting hit</string>
     <string name="NPC21">This land used to be very peaceful,</string>

@@ -28,7 +28,7 @@ public abstract class Projectile extends ICRogueActor implements Consumable, Int
     private boolean isConsumed;
     private boolean isEnemy;
     public static final int DEFAULT_MOVE_DURATION=10;
-    public static final int DEFAULT_DAMAGE=1;
+    public static int DEFAULT_DAMAGE = 1;
 
     public Projectile(Area area, Orientation orientation, DiscreteCoordinates coordinates,
                       int damagepts, int nframes, boolean isEnemy){
