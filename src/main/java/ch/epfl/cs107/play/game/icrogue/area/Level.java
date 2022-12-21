@@ -141,30 +141,33 @@ public abstract class Level implements Logic {
         bossPosition=coordinates;
     }
 
-    //TODO create method
     protected MapState[][] generateRandomRoomPlacement(){
-        ArrayList<DiscreteCoordinates>placed=new ArrayList<>();
-        ArrayList<DiscreteCoordinates>explored=new ArrayList<>();
+        ArrayList<DiscreteCoordinates>placed=new ArrayList<>();//arraylist with the coordinates of all the placed rooms
+        ArrayList<DiscreteCoordinates>explored=new ArrayList<>();//arraylist with the coordinates of explored rooms
 
 
-        MapState[][]output=new MapState[map.length][map[0].length];
+        MapState[][]output=new MapState[map.length][map[0].length];//creates MapState array with same size as the final map with rooms
+        //decides the room to place based on the size of the map (since we decided the size of the map will be [n of rooms][n of rooms]
         int roomsToPlace=map.length;
-        for(int i=0;i<map.length;++i){
+        for(int i=0;i<map.length;++i){//makes all the entries of MapState table into MapState.NULL
             for(int k=0;k<map[i].length;++k){
                 output[i][k]=MapState.NULL;
             }
         }
-        output[(map.length+1)/2][(map[(map.length+1)/2].length+1)/2]=MapState.PLACED;
-        placed.add(new DiscreteCoordinates ((map.length+1)/2,(map[(map.length+1)/2].length+1)/2));
+        output[(map.length+1)/2][(map[(map.length+1)/2].length+1)/2]=MapState.PLACED;//makes middle room placed
+        placed.add(new DiscreteCoordinates ((map.length+1)/2,(map[(map.length+1)/2].length+1)/2));//adds the coordinates to the placed array
         --roomsToPlace;
 
         while (roomsToPlace>0){
+            //goes through the placed array and everytime a new room is placed, the array increases
+            //this means that it will go through the array until no more rooms are added and it reaches the end
             for(int i=0;i<placed.size();++i){
                 int xcor=placed.get(i).x;
                 int ycor=placed.get(i).y;
                 output[xcor][ycor]=MapState.EXPLORED;
-                explored.add(new DiscreteCoordinates(xcor,ycor));
+                explored.add(new DiscreteCoordinates(xcor,ycor));//adds coordinates to explored array
 
+                //checks the free spots
                 int freeSlots=4;
                 ArrayList<DiscreteCoordinates>roomCoorAvailable= new ArrayList<>();
                 if(xcor+1>=output.length||!output[xcor+1][ycor].equals(MapState.NULL)){
@@ -191,14 +194,18 @@ public abstract class Level implements Logic {
                 else{
                     roomCoorAvailable.add(new DiscreteCoordinates(xcor,ycor-1));
                 }
+                //if the n of rooms that can be placed(Min(freeSlots,roomsToPlace)) is greater than 1, a random number between one and the min will be picked
                 if(freeSlots>1&&roomsToPlace>1){
                     int rooms= RandomHelper.roomGenerator.nextInt(1,Math.min(freeSlots,roomsToPlace));
 
                     if(roomCoorAvailable.size()>0){
+                        //creates and int array that has all the possible indexes of the coordinates array
+                        //this is done so the chooseKInList method can be used since it takes an int array as parameter
                         ArrayList<Integer>nOfCoor=new ArrayList<>();
                         for(int z=0;z<roomCoorAvailable.size();++z){
                             nOfCoor.add(z);
                         }
+                        //picks random indexes from the coordinate array using the random function (to place random rooms around the current room)
                         List<Integer> indexFromCoorArray=RandomHelper.chooseKInList(rooms,nOfCoor);
                             for (Integer integer : indexFromCoorArray) {
                                 int x=roomCoorAvailable.get(integer).x;

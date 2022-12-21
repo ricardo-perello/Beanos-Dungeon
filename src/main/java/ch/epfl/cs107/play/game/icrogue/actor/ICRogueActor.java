@@ -40,7 +40,7 @@ public abstract class ICRogueActor extends MovableAreaEntity {
     public void enterArea(Area area, DiscreteCoordinates position){
         area.registerActor(this);
         setOwnerArea(area);
-        setCurrentPosition(position.toVector());//todo fix when you beat level 0 there is a null pointer exception because position is null when you switch area.
+        setCurrentPosition(position.toVector());
         resetMotion();
     }
     @Override

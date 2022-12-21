@@ -177,7 +177,8 @@ public class ICRogue extends AreaGame {
         if(player.HasSoundFX()){
             player.playSound(getWindow()); //plays the player soundFx if it exists
         }
-        if((player.getHp() <= 0)||(level!=null&&level.isResolved())){ //sends player back to base if dead or if level cleared
+        if(((player.getHp() <= 0)||(level!=null&&level.isResolved()))&&(!(getCurrentArea()instanceof MainBase)&&!(getCurrentArea()instanceof Shop))){
+            //sends player back to base if dead or if level cleared and the current area is a level
             player.setTransportArea("base");
             player.transport();
         }
@@ -269,12 +270,13 @@ public class ICRogue extends AreaGame {
         }
         else if(level!=null&&((player.getHp() <= 0)||level.isResolved())&&player.getisTransporting()){
             //if player dies or level is cleared it sets the main Base as the current area again
+            player.transported();
             player.leaveArea();
             player.clearCarrying();
-            setCurrentArea(base.getTitle(),false);
             if((player.getHp() <= 0)){
                 setSoundFx("beanos",0.6F,true);
                 setSoundtrack("home",1);
+                player.strengthen();
             }
             else if(level.isResolved()){
                 if(level instanceof Level0){
@@ -288,11 +290,11 @@ public class ICRogue extends AreaGame {
                 }
                 setSoundFx("clear",1,true);
                 setSoundtrack("home",1);
+                player.strengthen();
             }
-            player.strengthen();
+            setCurrentArea(base.getTitle(),false);
             player.enterArea(base,previousCoorInBase);
             player.centerCamera();
-            player.transported();
 
         }
     }
