@@ -166,14 +166,17 @@ public class ICRogue extends AreaGame {
         key=keyboard.get(Keyboard.P); //for testing purposes
         if(key.isPressed()){
             ++lvl0clears;
+            base.printGreenDots(lvl0clears,1);
         }
         key=keyboard.get(Keyboard.O); //for testing purposes
         if(key.isPressed()){
             ++lvl1clears;
+            base.printGreenDots(lvl1clears,2);
         }
         key=keyboard.get(Keyboard.I); //for testing purposes
         if(key.isPressed()){
             ++lvl2clears;
+            base.printGreenDots(lvl2clears,3);
         }
         switchRoom();//used to switch rooms in level
         switchArea();//used to switch main areas (between Main Base, Shop and ICRogueRoom)
@@ -327,4 +330,6 @@ public class ICRogue extends AreaGame {
 
 //TODO enemies(one that moves and one that spawns other enemies)
 //todo signal rooms
+//todo add cherries/hearts
+//todo add damage display
 
