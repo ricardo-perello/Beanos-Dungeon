@@ -315,25 +315,24 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             dialogueCounter=0;//resets the dialogue counter
             //this dialogue counter prevents the player from infinitelly restarting a dialogue since W is the same button used to start a dialogue
             if(merchantInteraction&&!introductionInteraction){ //interaction with Tota and Alejandro class (the merchants)
-                if (CoinCounter>=NPC.PRICE){
-                    CoinCounter=CoinCounter-NPC.PRICE;
-                    System.out.println("coins: "+CoinCounter);
-                    if(healthInteraction){
-                        setMaxHp(getMaxHp()+2);
-                        setHp(getMaxHp());
-                        String message = XMLTexts.getText("Health");
-                        dialogue.clear();
-                        dialogue.add(new TextGraphics(message,0.5F, Color.BLACK));
-                        dialogue.get(0).setAnchor(new Vector(1.5f,2.3f));
-                    }
-                    else if(damageInteraction){
-                        increaseDamage();
-                        String message = XMLTexts.getText("Damage");
-                        dialogue.clear();
-                        dialogue.add(new TextGraphics(message,0.5F, Color.BLACK));
-                        dialogue.get(0).setAnchor(new Vector(1.5f,2.3f));
-                    }
-
+                if(hp>=10&&healthInteraction){
+                    String message = XMLTexts.getText("MaxH");
+                    dialogue.clear();
+                    dialogue.add(new TextGraphics(message,0.5F, Color.BLACK));
+                    dialogue.get(0).setAnchor(new Vector(1.5f,2.3f));
+                    dialogueStart=true;
+                    setSoundFX("dialogNext",1);
+                    hasSoundFX=true;
+                    stopForDialogue=true;
+                    merchantInteraction=false;
+                    damageInteraction=false;
+                    healthInteraction=false;
+                }
+                else if(DEFAULT_MELEE_DAMAGE>=3&&damageInteraction){
+                    String message = XMLTexts.getText("MaxD");
+                    dialogue.clear();
+                    dialogue.add(new TextGraphics(message,0.5F, Color.BLACK));
+                    dialogue.get(0).setAnchor(new Vector(1.5f,2.3f));
                     dialogueStart=true;
                     setSoundFX("dialogNext",1);
                     hasSoundFX=true;
@@ -343,16 +342,45 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                     healthInteraction=false;
                 }
                 else{
-                    String message = XMLTexts.getText("Not_enough");
-                    dialogue.clear();
-                    dialogue.add(new TextGraphics(message,0.5F, Color.BLACK));
-                    dialogue.get(0).setAnchor(new Vector(1.5f,2.3f));
-                    dialogueStart=true;
-                    setSoundFX("dialogNext",1);
-                    hasSoundFX=true;
-                    stopForDialogue=true;
-                    merchantInteraction=false;
+                    if (CoinCounter>=NPC.PRICE){
+                        CoinCounter=CoinCounter-NPC.PRICE;
+                        System.out.println("coins: "+CoinCounter);
+                        if(healthInteraction){
+                            setMaxHp(getMaxHp()+2);
+                            setHp(getMaxHp());
+                            String message = XMLTexts.getText("Health");
+                            dialogue.clear();
+                            dialogue.add(new TextGraphics(message,0.5F, Color.BLACK));
+                            dialogue.get(0).setAnchor(new Vector(1.5f,2.3f));
+                        }
+                        else if(damageInteraction){
+                            increaseDamage();
+                            String message = XMLTexts.getText("Damage");
+                            dialogue.clear();
+                            dialogue.add(new TextGraphics(message,0.5F, Color.BLACK));
+                            dialogue.get(0).setAnchor(new Vector(1.5f,2.3f));
+                        }
 
+                        dialogueStart=true;
+                        setSoundFX("dialogNext",1);
+                        hasSoundFX=true;
+                        stopForDialogue=true;
+                        merchantInteraction=false;
+                        damageInteraction=false;
+                        healthInteraction=false;
+                    }
+                    else{
+                        String message = XMLTexts.getText("Not_enough");
+                        dialogue.clear();
+                        dialogue.add(new TextGraphics(message,0.5F, Color.BLACK));
+                        dialogue.get(0).setAnchor(new Vector(1.5f,2.3f));
+                        dialogueStart=true;
+                        setSoundFX("dialogNext",1);
+                        hasSoundFX=true;
+                        stopForDialogue=true;
+                        merchantInteraction=false;
+
+                    }
                 }
             }
             if(introductionInteraction){
@@ -404,7 +432,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             currentAnimation = animationsRIGHT;
         }
     }
-
+//todo fix last coin not being able to pick up
     private void setCurrentStaffAnimation() {
         if (spriteName.equals("zelda/player.staff_water")){
             if (getOrientation().equals(Orientation.DOWN)){
@@ -908,6 +936,13 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 merchantInteraction=true;//specifies that its a merchant interaction
                 damageInteraction=true;
 
+            }
+
+        }
+        public void interactWith(Lever lever, boolean isCellInteraction){
+            Keyboard keyboard= getOwnerArea().getKeyboard();
+            if(wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())){
+                lever.interactWith();
             }
 
         }

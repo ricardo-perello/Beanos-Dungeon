@@ -21,6 +21,7 @@ public class Level1 extends Level {
         Boss_Key,
         Boss,
         Spawn,
+        LeverRoom,
         Normal;
 
         public static int[] setroomArrangement(){
@@ -31,7 +32,8 @@ public class Level1 extends Level {
             roomArrangement[2]=1;
             roomArrangement[3]=1;
             roomArrangement[4]=1;
-            roomArrangement[5]=RandomHelper.roomGenerator.nextInt(1,3);
+            roomArrangement[5]=RandomHelper.roomGenerator.nextInt(1,2);
+            roomArrangement[6]=RandomHelper.roomGenerator.nextInt(1,3);
             return roomArrangement;
         }
     }
@@ -144,6 +146,18 @@ public class Level1 extends Level {
         roomsToCreate.remove(randomcoor);
 
         for(int i=0;i<roomArrangement[5];++i){
+            randomcoor=RandomHelper.roomGenerator.nextInt(0, roomsToCreate.size());
+            coordinates=roomsToCreate.get(randomcoor);
+            xcor=roomsToCreate.get(randomcoor).x;
+            ycor=roomsToCreate.get(randomcoor).y;
+            Level1Room Room=new Level1PuzzleRoom(coordinates);
+            rooms.add(Room);
+            setRoom(coordinates,Room);
+            mapStates[xcor][ycor]=MapState.CREATED;
+            roomsToCreate.remove(randomcoor);
+        }
+
+        for(int i=0;i<roomArrangement[6];++i){
             randomcoor=RandomHelper.roomGenerator.nextInt(0, roomsToCreate.size());
             coordinates=roomsToCreate.get(randomcoor);
             xcor=roomsToCreate.get(randomcoor).x;
