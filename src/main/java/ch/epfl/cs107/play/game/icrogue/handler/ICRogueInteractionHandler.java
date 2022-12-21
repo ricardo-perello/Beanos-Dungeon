@@ -50,4 +50,6 @@ public interface ICRogueInteractionHandler extends AreaInteractionVisitor {
     }
     default void interactWith(Alejandro alejandro, boolean isCellInteraction){
     }
+    default void interactWith(Lever lever, boolean isCellInteraction){
+    }
 }

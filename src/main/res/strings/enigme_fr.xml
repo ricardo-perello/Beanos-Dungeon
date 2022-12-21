@@ -83,4 +83,7 @@
     <string name="Game_Start83"></string>
     <string name="Game_Start84"></string>
 
+    <string name="MaxH">Your HEALTH is already MAXED !!!!</string>
+    <string name="MaxD">Your DAMAGE is already MAXED !!!!</string>
+
 </strings>
