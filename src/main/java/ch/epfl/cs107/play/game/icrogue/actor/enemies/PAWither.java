@@ -124,7 +124,7 @@ public class PAWither extends Enemy{
         greyHealthBar = new ImageGraphics("images/sprites/zelda/grey.health.bar.png", .9f,.03f,
                 new RegionOfInterest(0,0,100,5),  new Vector(((getPosition().x)+0.25f),((getPosition().y) - 0.1f)));
         return greyHealthBar;
-    }//todo disable r
+    }
     public float getHp(){
         return hp;
     }

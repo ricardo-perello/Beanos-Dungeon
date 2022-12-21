@@ -217,7 +217,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     }
 
     private boolean moveIfPressed(Orientation orientation, Button b,float deltaTime) {
-        //the stopForDialogue boolean indicates wether or not the player is in the middle of interacting through dialogue
+        //the stopForDialogue boolean indicates whether the player is in the middle of interacting through dialogue
         //the player should not move if it is in the middle of a dialogue
         if (b.isDown()&&!stopForDialogue) {
             if (!isDisplacementOccurs()) {
@@ -287,7 +287,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         if(keyboard.get(Keyboard.Z).isPressed()) {
             if (hasSword) {
                 spriteName = "zelda/player.sword";
-                swordSprite(getOrientation());
+
             } else {
                 spriteName = "zelda/player";
                 defaultSprite(getOrientation());
@@ -297,7 +297,6 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
         if(keyboard.get(Keyboard.C).isPressed()&& hasBow && (counter >= COOLDOWN)){
             spriteName = "zelda/player.bow";
-            bowSprite(getOrientation());
             Arrow arrow = new Arrow(getOwnerArea(),getOrientation(),getCurrentMainCellCoordinates(), false);
             arrow.enterArea(getOwnerArea(),getCurrentMainCellCoordinates());
             counter = 0;
@@ -438,7 +437,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             currentAnimation = animationsRIGHT;
         }
     }
-//todo fix last coin not being able to pick up
+//todo fix last coin not being able to be picked up
     private void setCurrentStaffAnimation() {
         if (spriteName.equals("zelda/player.staff_water")){
             if (getOrientation().equals(Orientation.DOWN)){
@@ -473,7 +472,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     }
     public int getHp(){return hp;}
     public int getMaxHp(){return maxHp;}
-
+//displays an image of 5 hearts but changes the roi depending on the current hp so that the hp is displayed in the hearts
+//if player has been hit by poison, hearts turn green
     private ImageGraphics printFullHearts(){
         if(!isPoisoned){
             fullHearts = new ImageGraphics("images/sprites/zelda/5.full.red.hearts.png", ((2.5f) * ((float)getHp()/10)) ,.5f,
@@ -486,6 +486,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
         return fullHearts;
     }
+    //empty hearts display the maxhp possible
     private ImageGraphics printEmptyHearts(){
         if(!isPoisoned) {
             emptyHearts = new ImageGraphics("images/sprites/zelda/5.empty.red.hearts.png", ((2.5f) * ((float) getMaxHp() / 10)), .5f,
@@ -497,11 +498,13 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         }
         return emptyHearts;
     }
+    //displays a graphic where we will show how many coins we have
     private ImageGraphics printCoinsDisplay(){
         CoinsDisplay = new ImageGraphics("images/sprites/zelda/coinsDisplay.png", 1.75f,0.875f,
                 new RegionOfInterest(0,0,64,32), new Vector(0.5f,9.1f));
         return CoinsDisplay;
     }
+    //displays a number of coins on the graphic mentioned before
     private TextGraphics printCoinsNumber(){
         CoinsNumber = new TextGraphics( String.valueOf(CoinCounter), 0.5f, Color.black, Color.black,0.f,
                 true, false, new Vector(CoinsDisplay.getAnchor().x+1, CoinsDisplay.getAnchor().y+0.33f));
@@ -526,7 +529,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         }
 
     }
-
+//turns all the carrying booleans to false (i.e. so you cant use fireball in the next level until you find staff)
     public void clearCarrying(){
         carrying.clear();
         hasStaff=false;
@@ -570,8 +573,9 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     }
 
 
-    private Vector anchor = new Vector(0.15f, -0.15f);
+
     public void setSpriteAnimation(){
+       Vector anchor = new Vector(0.15f, -0.15f);
             for(int i = 0; i<4; i++){
 
                 spritesDOWN[i] = new Sprite("zelda/player", 0.75f, 1.5f,
@@ -655,68 +659,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         }
     }
 
-    public void staffSprite(Orientation orientation){
-        if(orientation.equals(Orientation.DOWN)){
-            sprite=new Sprite(spriteName, .75f,1.5f,this,
-                    new RegionOfInterest(40,0,16,32), new Vector(.15f,-.15f));
-        }
-        else if(orientation.equals(Orientation.RIGHT)){
-            sprite=new Sprite(spriteName, 0.95f,1.5f,this,
-                    new RegionOfInterest(42,64,19,32), new Vector(.2f,-.15f));
-        }
-        else if(orientation.equals(Orientation.UP)){
-            sprite=new Sprite(spriteName, .75f,1.5f,this,
-                    new RegionOfInterest(40,32,16,32), new Vector(.15f,-.15f));
-        }
-        else if(orientation.equals(Orientation.LEFT)){
-            sprite=new Sprite(spriteName, 0.95f,1.5f,this,
-                    new RegionOfInterest(35,96,19,32), new Vector(.2f,-.15f));
-        }
-    }
-
-    public void bowSprite(Orientation orientation){
-        if(orientation.equals(Orientation.DOWN)){
-            sprite=new Sprite(spriteName, .75f,1.5f,this,
-                    new RegionOfInterest(40,0,16,32), new Vector(.15f,-.15f));
-        }
-        else if(orientation.equals(Orientation.RIGHT)){
-            sprite=new Sprite(spriteName, 0.95f,1.5f,this,
-                    new RegionOfInterest(42,64,19,32), new Vector(.25f,-.15f));
-        }
-        else if(orientation.equals(Orientation.UP)){
-            sprite=new Sprite(spriteName, .75f,1.5f,this,
-                    new RegionOfInterest(40,32,16,32), new Vector(.15f,-.15f));
-        }
-        else if(orientation.equals(Orientation.LEFT)){
-            sprite=new Sprite(spriteName, 0.95f,1.5f,this,
-                    new RegionOfInterest(34,96,19,32), new Vector(-.1f,-.15f));
-        }
-    }
 
     private void setSoundFX(String name,float vol){ //sets the sound fx
         soundFX=new SoundAcoustics(ResourcePath.getSound(name),vol,false,false,false,false);
         hasSoundFX=true;
     }
-
-    public void swordSprite(Orientation orientation){
-        if(orientation.equals(Orientation.DOWN)){
-            sprite=new Sprite(spriteName, .75f,1.5f,this,
-                    new RegionOfInterest(40,0,16,32), new Vector(.15f,-.15f));
-        }
-        else if(orientation.equals(Orientation.RIGHT)){
-            sprite=new Sprite(spriteName, 0.95f,1.5f,this,
-                    new RegionOfInterest(42,64,19,32), new Vector(.15f,-.15f));
-        }
-        else if(orientation.equals(Orientation.UP)){
-            sprite=new Sprite(spriteName, .75f,1.5f,this,
-                    new RegionOfInterest(40,32,16,32), new Vector(.15f,-.15f));
-        }
-        else if(orientation.equals(Orientation.LEFT)){
-            sprite=new Sprite(spriteName, 0.95f,1.5f,this,
-                    new RegionOfInterest(34,96,19,32), new Vector(.15f,-.15f));
-        }
-    }
-
     public boolean HasSoundFX(){
         return hasSoundFX;
     }
@@ -772,7 +719,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 hasStaff = true;
                 carrying.add(staff);
                 spriteName = "zelda/player.staff_water";
-                staffSprite(getOrientation());
+
             }
         }
         public void interactWith(Sword sword, boolean isCellInteraction){
@@ -784,7 +731,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 hasSword = true;
                 carrying.add(sword);
                 spriteName = "zelda/player.sword";
-                swordSprite(getOrientation());
+
             }
         }
         public void interactWith(Bow bow, boolean isCellInteraction){
@@ -796,7 +743,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 hasBow = true;
                 carrying.add(bow);
                 spriteName = "zelda/player.bow";
-                staffSprite(getOrientation());
+
             }
         }
         public void interactWith(Key key, boolean isCellInteraction){
