@@ -300,13 +300,13 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             meleeDamage = DEFAULT_MELEE_DAMAGE;
         }
         //if the player is undergoing a dialogue and W is pressed the dialogue progresses (and ends if thats the case)
-        if((dialogueStart&&stopForDialogue&&keyboard.get(Keyboard.W).isPressed())||dialogueCounter==1.f){
+        if((dialogueStart&&stopForDialogue&&(keyboard.get(Keyboard.W).isPressed())||keyboard.get(Keyboard.X).isPressed())||dialogueCounter==1.f){
             dialogueStart=false;
             stopForDialogue=false;
             dialogueCounter=0;//resets the dialogue counter
             //this dialogue counter prevents the player from infinitelly restarting a dialogue since W is the same button used to start a dialogue
-            if(merchantInteraction&&!introductionInteraction){ //interaction with Tota and Alejandro class (the merchants)
-                if(hp>=10&&healthInteraction){
+            if(merchantInteraction&&!introductionInteraction&&(keyboard.get(Keyboard.W).isPressed())){ //interaction with Tota and Alejandro class (the merchants)
+                if(hp>=10&&healthInteraction){//if the health is maxed, health does not increase and warning message shows
                     String message = XMLTexts.getText("MaxH");
                     dialogue.clear();
                     dialogue.add(new TextGraphics(message,0.5F, Color.BLACK));
@@ -319,7 +319,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                     damageInteraction=false;
                     healthInteraction=false;
                 }
-                else if(DEFAULT_MELEE_DAMAGE>=3&&damageInteraction){
+                else if(DEFAULT_MELEE_DAMAGE>=3&&damageInteraction){//same as for max health but for damage
                     String message = XMLTexts.getText("MaxD");
                     dialogue.clear();
                     dialogue.add(new TextGraphics(message,0.5F, Color.BLACK));
@@ -336,7 +336,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                     if (CoinCounter>=NPC.PRICE){
                         CoinCounter=CoinCounter-NPC.PRICE;
                         System.out.println("coins: "+CoinCounter);
-                        if(healthInteraction){
+                        if(healthInteraction){//if interaction with tota, health increases and conclusion message shows
                             setMaxHp(getMaxHp()+2);
                             setHp(getMaxHp());
                             String message = XMLTexts.getText("Health");
@@ -344,7 +344,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                             dialogue.add(new TextGraphics(message,0.5F, Color.BLACK));
                             dialogue.get(0).setAnchor(new Vector(1.5f,2.3f));
                         }
-                        else if(damageInteraction){
+                        else if(damageInteraction){//if interaction with alejandro, damage increases and conclusion message shows
                             increaseDamage();
                             String message = XMLTexts.getText("Damage");
                             dialogue.clear();
@@ -360,7 +360,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                         damageInteraction=false;
                         healthInteraction=false;
                     }
-                    else{
+                    else{//message displayed if not enough coins
                         String message = XMLTexts.getText("Not_enough");
                         dialogue.clear();
                         dialogue.add(new TextGraphics(message,0.5F, Color.BLACK));
@@ -374,12 +374,13 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                     }
                 }
             }
-            if(introductionInteraction){
+            if(introductionInteraction){//it sets introduction interaction to false if it happened once
 
                 introductionInteraction=false;
             }
 
         }
+        //creates the dialogue for when the game starts
         if((gameStartDialogue&&stopForDialogue&&keyboard.get(Keyboard.W).isPressed())||dialogueCounter==1.f){
             gameStartDialogue=false;
             stopForDialogue=false;
@@ -399,7 +400,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
     }
 
-    public void gameStartDialogue(){
+    public void gameStartDialogue(){//sets up the game start dialogue
         dialogue.clear();
         for(int i=1;i<5;++i){
             String key="Game_Start"+gameStartDialogueStep+""+i;
@@ -874,6 +875,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 }
                 else{
                     tota.getDialogue(dialogue);
+                    healthInteraction=true;
                 }
 
                 //starts the dialogue interaction
@@ -881,7 +883,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 setSoundFX("dialogNext",1);
                 stopForDialogue=true;
                 merchantInteraction=true;//specifies that its a merchant interaction
-                healthInteraction=true;
+
             }
 
         }
@@ -896,13 +898,13 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 }
                 else {
                     alejandro.getDialogue(dialogue);
+                    damageInteraction=true;
                 }
                 //starts the dialogue interaction
                 dialogueStart=true;
                 setSoundFX("dialogNext",1);
                 stopForDialogue=true;
                 merchantInteraction=true;//specifies that its a merchant interaction
-                damageInteraction=true;
 
             }
 
