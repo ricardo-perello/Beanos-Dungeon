@@ -105,24 +105,40 @@ public class Arrow extends Projectile {
             }
         }
         public void interactWith(Turret turret, boolean isCellInteraction) {
-            if (wantsViewInteraction() && !getIsEnemy()) {
+            if (wantsViewInteraction() ){
                 consume();
-                turret.decreaseHp(getDamage());
+                if(!getIsEnemy()) {
+                    turret.decreaseHp(getDamage());
+                }
             }
+
         }
         public void interactWith(PoisonTurret turret, boolean isCellInteraction) {
-            if (wantsViewInteraction() && !getIsEnemy()) {
+            if (wantsViewInteraction()) {
                 consume();
-                turret.decreaseHp(getDamage());
+                if (!getIsEnemy()) {
+                    turret.decreaseHp(getDamage());
+                }
             }
         }
         public void interactWith(BossTurret turret, boolean isCellInteraction) {
-            if (wantsViewInteraction() && !getIsEnemy()) {
+            if (wantsViewInteraction() ){
                 consume();
-                turret.decreaseHp(getDamage());
+                if(!getIsEnemy()) {
+                    turret.decreaseHp(getDamage());
+                }
             }
         }
         public void interactWith(Wither wither, boolean isCellInteraction) {
+            if (wantsViewInteraction() && !getIsEnemy()) {
+                consume();
+                wither.decreaseHp(getDamage());
+            }
+            if (wantsViewInteraction() && getIsEnemy()) {
+                consume();
+            }
+        }
+        public void interactWith(PAWither wither, boolean isCellInteraction) {
             if (wantsViewInteraction() && !getIsEnemy()) {
                 consume();
                 wither.decreaseHp(getDamage());

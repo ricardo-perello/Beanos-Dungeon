@@ -6,6 +6,7 @@ package ch.epfl.cs107.play.game.icrogue.area.level0.rooms;
 
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.BossTurret;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.PAWither;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Wither;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -13,10 +14,10 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 public class Level0BossRoom extends Level0EnemyRoom{
     public Level0BossRoom(DiscreteCoordinates coordinates){
         super(coordinates);
-        addEnemy(new BossTurret(this, Orientation.UP,new DiscreteCoordinates(1,8),
+        addEnemy(new Turret(this, Orientation.UP,new DiscreteCoordinates(1,8),
                 false,true,false,true));
-        addEnemy(new BossTurret(this, Orientation.UP,new DiscreteCoordinates(8,1),
+        addEnemy(new Turret(this, Orientation.UP,new DiscreteCoordinates(8,1),
                 true,false,true,false));
-        addEnemy(new Wither(this, Orientation.DOWN,new DiscreteCoordinates(3,4)));
+        addEnemy(new PAWither(this, Orientation.DOWN,new DiscreteCoordinates(3,4)));
     }
 }

@@ -5,45 +5,45 @@ import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
+
 import java.util.Random;
 
-public class Beanos extends Enemy{
+public class PAWither extends Enemy{
 
     private Sprite sprite;
-    private ImageGraphics fullHearts;
-    private ImageGraphics emptyHearts;
-    private String spriteName = "beanos";
+    private ImageGraphics greyHealthBar;
+    private ImageGraphics redHealthBar;
+    private String spriteName = "icrogue/yellow_static_npc";
     private boolean shootUp;
     private boolean shootDown;
     private boolean shootLeft;
     private boolean shootRight;
-    public final static float COOLDOWN = 1.5f;
+    public final static float COOLDOWN = 2.f;
     private float FireCounter = 2.f;
     private float MoveCounter = 1.f;
     private int hp = 10;
 
-    public Beanos(Area owner, Orientation orientation, DiscreteCoordinates coordinates) {
+    public PAWither(Area owner, Orientation orientation, DiscreteCoordinates coordinates) {
         super(owner, orientation, coordinates);
 
         isAlive = true;
         sprite= setSprite();
 
-        printEmptyHearts();
-        printFullHearts();
+        printGreyHealthBar();
+        printRedHealthBar();
 
     }
 
     public Sprite setSprite() {
         Sprite witherSprite;
-        witherSprite = new Sprite(spriteName,2.5f,2.f, this
-                    ,new RegionOfInterest(200,50,400, 300), new Vector(0,0));
-
+        witherSprite = new Sprite(spriteName,1.5f,1.5f, this);
         return witherSprite;
     }
 
@@ -51,8 +51,8 @@ public class Beanos extends Enemy{
     public void draw(Canvas canvas) {
         sprite.draw(canvas);
         if (getHp() > 0){
-            printEmptyHearts().draw(canvas);
-            printFullHearts().draw(canvas);
+            printGreyHealthBar().draw(canvas);
+            printRedHealthBar().draw(canvas);
         }
     }
     @Override
@@ -61,7 +61,7 @@ public class Beanos extends Enemy{
         FireCounter += deltaTime;
         MoveCounter += deltaTime;
         if (FireCounter >= COOLDOWN){
-            shootFire();
+            shootArrow();
             FireCounter = 0;
         }
         if(MoveCounter >= COOLDOWN){
@@ -77,13 +77,10 @@ public class Beanos extends Enemy{
         if (hp <= 0){
             die();
         }
-
-
-
         super.update(deltaTime);
     }
 
-    private void shootFire() {
+    private void shootArrow() {
         for(Orientation i : Orientation.values()){
             DiscreteCoordinates spawnPosition;
             if(i.equals(Orientation.UP)){
@@ -98,7 +95,8 @@ public class Beanos extends Enemy{
             else{
                 spawnPosition = new DiscreteCoordinates(getCurrentMainCellCoordinates().x-1 , getCurrentMainCellCoordinates().y);
             }
-            Fire fire = new Fire(getOwnerArea(),i, spawnPosition, "zelda/flameskull", 2,true);
+            Arrow arrow = new Arrow(getOwnerArea(),i, spawnPosition,  true, 1);
+            arrow.enterArea(getOwnerArea(),spawnPosition);
 
         }
     }
@@ -109,7 +107,7 @@ public class Beanos extends Enemy{
         else{
             hp = 0;
         }
-        System.out.println("beanos: "+hp);
+        System.out.println("PA wither: "+hp);
     }
 
     public void increaseHp(float delta){
@@ -117,15 +115,15 @@ public class Beanos extends Enemy{
     }
 
 
-    private ImageGraphics printFullHearts(){
-        fullHearts = new ImageGraphics("images/sprites/zelda/5.full.purple.hearts.png", ((2.5f) * ((float)getHp()/10)) ,.5f,
-                new RegionOfInterest(0,0,(int)(80 * ((double)getHp()/10)),16), new Vector(7.f,.25f));
-        return fullHearts;
+    private ImageGraphics printRedHealthBar(){
+        redHealthBar = new ImageGraphics("images/sprites/zelda/red.health.bar.png", ((.9f) * ((float)getHp()/10)) ,
+                .03f, new RegionOfInterest(0,0,(int)(100 * ((double)getHp()/10)),5), new Vector(((getPosition().x)+0.1f),((getPosition().y) -0.5f)));
+        return redHealthBar;
     }
-    private ImageGraphics printEmptyHearts() {
-        emptyHearts = new ImageGraphics("images/sprites/zelda/5.empty.purple.hearts.png", (2.5f), .5f,
-                new RegionOfInterest(0, 0, 80 , 16), new Vector(7.f, .25f));
-        return emptyHearts;
+    private ImageGraphics printGreyHealthBar(){
+        greyHealthBar = new ImageGraphics("images/sprites/zelda/grey.health.bar.png", .9f,.03f,
+                new RegionOfInterest(0,0,100,5),  new Vector(((getPosition().x)+0.1f),((getPosition().y) - 0.5f)));
+        return greyHealthBar;
     }
     public float getHp(){
         return hp;

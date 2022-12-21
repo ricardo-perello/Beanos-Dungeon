@@ -328,9 +328,11 @@ public class ICRogue extends AreaGame {
 
 }
 
-//TODO enemies(one that moves and one that spawns other enemies)
-//todo finish poison turret
+
+
 //todo add cherries/hearts
 //todo add damage display
 //todo change sprites for connector
+//todo add poison sprite
+
 

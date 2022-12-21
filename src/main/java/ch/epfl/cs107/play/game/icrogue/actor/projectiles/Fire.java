@@ -157,6 +157,12 @@ public class Fire extends Projectile{
                 wither.decreaseHp(getDamage());
             }
         }
+        public void interactWith(PAWither wither, boolean isCellInteraction) {
+            if (wantsViewInteraction() &&!(isConsumed()) && !getIsEnemy()) {
+                consume();
+                wither.decreaseHp(getDamage());
+            }
+        }
         public void interactWith(Beanos beanos, boolean isCellInteraction) {
             if (wantsViewInteraction() &&!(isConsumed()) && !getIsEnemy()) {
                 consume();

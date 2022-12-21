@@ -5,10 +5,7 @@ package ch.epfl.cs107.play.game.icrogue.area.level0.rooms;
  */
 
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
-import ch.epfl.cs107.play.game.icrogue.actor.items.Bow;
-import ch.epfl.cs107.play.game.icrogue.actor.items.Coin;
-import ch.epfl.cs107.play.game.icrogue.actor.items.Key;
-import ch.epfl.cs107.play.game.icrogue.actor.items.Staff;
+import ch.epfl.cs107.play.game.icrogue.actor.items.*;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.swing.Item;
 
@@ -16,8 +13,8 @@ public class Level0StaffRoom extends Level0ItemRoom{
     public Level0StaffRoom(DiscreteCoordinates coordinates) {
         super(coordinates);
 
-        addItem(new Staff(this, Orientation.DOWN,new DiscreteCoordinates(5,5)));
-        addItem(new Bow(this, Orientation.DOWN,new DiscreteCoordinates(5,5)));
-        addItem(new Coin(this, Orientation.DOWN,new DiscreteCoordinates(6,5)));
+        addItem(new Staff(this, Orientation.DOWN,new DiscreteCoordinates(4,5)));
+        addItem(new Bow(this, Orientation.DOWN,new DiscreteCoordinates(4,5)));
+        addItem(new Cherry(this, Orientation.DOWN,new DiscreteCoordinates(6,5)));
     }
 }

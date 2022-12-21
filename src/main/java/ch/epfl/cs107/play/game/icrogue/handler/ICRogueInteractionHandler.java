@@ -37,6 +37,7 @@ public interface ICRogueInteractionHandler extends AreaInteractionVisitor {
     default void interactWith(BossTurret turret, boolean isCellInteraction){}
 
     default void interactWith(Wither wither, boolean isCellInteraction){}
+    default void interactWith(PAWither wither, boolean isCellInteraction){}
     default void interactWith(Beanos beanos, boolean isCellInteraction){}
     default void interactWith(Key key, boolean isCellInteraction){
     }

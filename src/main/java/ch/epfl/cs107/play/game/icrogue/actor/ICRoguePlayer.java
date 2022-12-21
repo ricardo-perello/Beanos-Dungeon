@@ -583,7 +583,6 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     //ANIMATIONS
     //todo fix animations for staff
     //todo add animations for sword
-    //todo add poison enemy
     public void setStaffAnimation() {
         String name = "zelda/player.staff_water";
 
@@ -828,6 +827,14 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             }
         }
         public void interactWith(Wither wither, boolean isCellInteraction){
+            Keyboard keyboard= getOwnerArea().getKeyboard();
+            if (wantsViewInteraction() && keyboard.get(Keyboard.Z).isPressed()){
+                //sets the sound fx
+                setSoundFX("melee",1);
+                wither.decreaseHp(meleeDamage);
+            }
+        }
+        public void interactWith(PAWither wither, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if (wantsViewInteraction() && keyboard.get(Keyboard.Z).isPressed()){
                 //sets the sound fx
