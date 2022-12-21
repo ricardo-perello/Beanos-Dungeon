@@ -22,7 +22,6 @@ import ch.epfl.cs107.play.game.icrogue.area.level1.rooms.Level1Room;
 import ch.epfl.cs107.play.game.icrogue.area.level2.Level2;
 import ch.epfl.cs107.play.game.icrogue.area.level2.rooms.Level2Room;
 import ch.epfl.cs107.play.game.tutosSolution.actor.GhostPlayer;
-import ch.epfl.cs107.play.game.tutosSolution.area.Tuto2Area;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;

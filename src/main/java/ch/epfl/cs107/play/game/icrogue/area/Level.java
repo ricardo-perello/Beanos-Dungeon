@@ -207,17 +207,20 @@ public abstract class Level implements Logic {
                         }
                         //picks random indexes from the coordinate array using the random function (to place random rooms around the current room)
                         List<Integer> indexFromCoorArray=RandomHelper.chooseKInList(rooms,nOfCoor);
+                        //places the rooms in the coordinates picked from the previous line
+                        // (indexFromCoorArray represents the indexes that will be picked from the roomCoorAvailable)
                             for (Integer integer : indexFromCoorArray) {
                                 int x=roomCoorAvailable.get(integer).x;
                                 int y=roomCoorAvailable.get(integer).y;
-                                if(roomsToPlace>0){
-                                    output[x][y] = MapState.PLACED;
+                                if(roomsToPlace>0){//only places the room if there are still rooms to be placed
+                                    output[x][y] = MapState.PLACED;//places the room
                                     roomsToPlace--;
-                                    placed.add(new DiscreteCoordinates(x,y));
+                                    placed.add(new DiscreteCoordinates(x,y));//adds the new placed room coordinates to the placed array
                                 }
                             }
                     }
                 }
+                //there is only one coordinate available, then it chooses that one coordinate and does the same as above but with 1 room
                 else if(freeSlots==1||(roomsToPlace==1&&freeSlots!=0)){
                     int rooms= 1;
 
@@ -243,6 +246,8 @@ public abstract class Level implements Logic {
             }
         }
 
+        //places the special rooms in random places, the bossRoom is placed the furthest away from the spawn room
+        //this is done to avoid unplayable maps where the key is inaccessible and the level is impossible to complete
         int spawnindx=RandomHelper.roomGenerator.nextInt(0,placed.size());
         DiscreteCoordinates spawnroomCoords=placed.get(spawnindx);
         placed.remove(spawnindx);
@@ -264,6 +269,7 @@ public abstract class Level implements Logic {
         return output;
     }
 
+    //finds fartherst room from a give coordinate in a given array
     private DiscreteCoordinates farthestRoom(List<DiscreteCoordinates>placed,DiscreteCoordinates room){
         double dist=0;
         DiscreteCoordinates output=room;
