@@ -22,7 +22,9 @@ public class Level1 extends Level {
         Boss,
         Spawn,
         LeverRoom,
-        Normal;
+        Normal,
+        BowRoom,
+        CherryRoom;
 
         public static int[] setroomArrangement(){
             int size=Level1RoomType.values().length;
@@ -34,6 +36,8 @@ public class Level1 extends Level {
             roomArrangement[4]=1;
             roomArrangement[5]=RandomHelper.roomGenerator.nextInt(1,2);
             roomArrangement[6]=RandomHelper.roomGenerator.nextInt(1,3);
+            roomArrangement[7]=1;
+            roomArrangement[8]=RandomHelper.roomGenerator.nextInt(1,2);
             return roomArrangement;
         }
     }
@@ -168,7 +172,27 @@ public class Level1 extends Level {
             mapStates[xcor][ycor]=MapState.CREATED;
             roomsToCreate.remove(randomcoor);
         }
+        randomcoor=RandomHelper.roomGenerator.nextInt(0, roomsToCreate.size());
+        coordinates=roomsToCreate.get(randomcoor);
+        xcor=roomsToCreate.get(randomcoor).x;
+        ycor=roomsToCreate.get(randomcoor).y;
+        Level1BowRoom bowRoom=new Level1BowRoom(roomsToCreate.get(randomcoor));
+        rooms.add(bowRoom);
+        setRoom(coordinates,staffRoom);
+        mapStates[xcor][ycor]=MapState.CREATED;
+        roomsToCreate.remove(randomcoor);
 
+        for(int i=0;i<roomArrangement[8];++i){
+            randomcoor=RandomHelper.roomGenerator.nextInt(0, roomsToCreate.size());
+            coordinates=roomsToCreate.get(randomcoor);
+            xcor=roomsToCreate.get(randomcoor).x;
+            ycor=roomsToCreate.get(randomcoor).y;
+            Level1CherryRoom CherryRoom=new Level1CherryRoom(coordinates);
+            rooms.add(CherryRoom);
+            setRoom(coordinates,CherryRoom);
+            mapStates[xcor][ycor]=MapState.CREATED;
+            roomsToCreate.remove(randomcoor);
+        }
 
         printMap(mapStates);
 

@@ -966,6 +966,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if(wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())){
                 lever.interactWith();
+                setSoundFX("lever",1);
             }
 
         }

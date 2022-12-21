@@ -36,10 +36,20 @@ public abstract class Level2ItemRoom extends Level2Room {
     }
 
     public boolean isOn() {
-        return super.isOn()||(items.size()>0);
+        if(this instanceof Level2HeartRoom){
+            return super.isOn();
+        }
+        else{
+            return super.isOn()||(items.size()>0);
+        }
     }
 
     public boolean isOff() {
-        return super.isOff()&&(items.size()==0);
+        if(this instanceof  Level2HeartRoom){
+            return super.isOff();
+        }
+        else{
+            return super.isOff()&&(items.size()==0);
+        }
     }
 }

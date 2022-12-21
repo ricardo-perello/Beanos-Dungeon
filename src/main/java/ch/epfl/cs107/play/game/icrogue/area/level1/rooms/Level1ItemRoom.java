@@ -36,10 +36,20 @@ public abstract class Level1ItemRoom extends Level1Room {
     }
 
     public boolean isOn() {
-        return super.isOn()||(items.size()>0);
+        if(this instanceof Level1CherryRoom){
+            return super.isOn();
+        }
+        else{
+            return super.isOn()||(items.size()>0);
+        }
     }
 
     public boolean isOff() {
-        return super.isOff()&&(items.size()==0);
+        if(this instanceof Level1CherryRoom){
+            return super.isOff();
+        }
+        else{
+            return super.isOff()&&(items.size()==0);
+        }
     }
 }
