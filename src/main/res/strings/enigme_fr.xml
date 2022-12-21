@@ -86,4 +86,7 @@
     <string name="MaxH">Your HEALTH is already MAXED !!!!</string>
     <string name="MaxD">Your DAMAGE is already MAXED !!!!</string>
 
+    <string name="Y/N">W: YES         X: NO</string>
+    <string name="price">PRICE: 5 COINS</string>
+
 </strings>

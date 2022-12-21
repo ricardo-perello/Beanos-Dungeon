@@ -43,10 +43,18 @@ public class Shop extends Area {
         return new DiscreteCoordinates(4,1);
     }
 
-    public void setUpDialogue(List<TextGraphics>dialogues,String name){
+    public void setUpDialogue(List<TextGraphics>dialogues,String name,int i){
         String message = XMLTexts.getText(name);
         TextGraphics dialogue=new TextGraphics(message,0.5F, Color.BLACK);
-        dialogue.setAnchor(new Vector(1.5f,2.3f));
+        if(i==1){
+            dialogue.setAnchor(new Vector(1.5f,2.3f));
+        }
+        else if(i==2){
+            dialogue.setAnchor(new Vector(1.5f,1.7f));
+        }
+        else if(i==3){
+            dialogue.setAnchor(new Vector(1.5f,1.4f));
+        }
         dialogues.add(dialogue);
     }
 
@@ -55,10 +63,14 @@ public class Shop extends Area {
 
         registerActor(new Background(this)) ;
         List<TextGraphics>dialogues=new ArrayList<>();
-        setUpDialogue(dialogues,"Tota_upgrade");
+        setUpDialogue(dialogues,"Tota_upgrade",1);
+        setUpDialogue(dialogues,"price",2);
+        setUpDialogue(dialogues,"Y/N",3);
         registerActor(new Tota(this,new DiscreteCoordinates(6,5), "policeman",dialogues));
         dialogues.clear();
-        setUpDialogue(dialogues,"Alej_upgrade");
+        setUpDialogue(dialogues,"Alej_upgrade",1);
+        setUpDialogue(dialogues,"price",2);
+        setUpDialogue(dialogues,"Y/N",3);
         registerActor(new Alejandro(this,new DiscreteCoordinates(3, 5), "max",dialogues));
         portals=new Portal(this,Orientation.DOWN,new DiscreteCoordinates(4,0),"shop");
         connectorList.add(new Connector(this,Orientation.DOWN,new DiscreteCoordinates(4,9)));
