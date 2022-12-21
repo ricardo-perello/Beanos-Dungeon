@@ -4,6 +4,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.ICRogueBehavior;
 import ch.epfl.cs107.play.game.icrogue.actor.*;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.Beanos;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.BossTurret;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Wither;
@@ -38,6 +39,7 @@ public interface ICRogueInteractionHandler extends AreaInteractionVisitor {
     default void interactWith(BossTurret turret, boolean isCellInteraction){}
 
     default void interactWith(Wither wither, boolean isCellInteraction){}
+    default void interactWith(Beanos beanos, boolean isCellInteraction){}
     default void interactWith(Key key, boolean isCellInteraction){
     }
     default void interactWith(Connector connector, boolean isCellInteraction){

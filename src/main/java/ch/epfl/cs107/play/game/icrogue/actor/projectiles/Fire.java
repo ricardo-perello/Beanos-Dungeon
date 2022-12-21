@@ -13,6 +13,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.Beanos;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.BossTurret;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Wither;
@@ -148,6 +149,12 @@ public class Fire extends Projectile{
             if (wantsViewInteraction() &&!(isConsumed()) && !getIsEnemy()) {
                 consume();
                 wither.decreaseHp(getDamage());
+            }
+        }
+        public void interactWith(Beanos beanos, boolean isCellInteraction) {
+            if (wantsViewInteraction() &&!(isConsumed()) && !getIsEnemy()) {
+                consume();
+                beanos.decreaseHp(getDamage());
             }
         }
 

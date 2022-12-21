@@ -5,6 +5,7 @@ package ch.epfl.cs107.play.game.icrogue.area.Beanos.rooms;
  */
 
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.Beanos;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Wither;
 import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0EnemyRoom;
@@ -17,6 +18,6 @@ public class BeanosBossRoom extends BeanosEnemyRoom {
                 false,true,false,true));
         addEnemy(new Turret(this, Orientation.UP,new DiscreteCoordinates(8,1),
                 true,false,true,false));
-        addEnemy(new Wither(this, Orientation.DOWN,new DiscreteCoordinates(3,4)));
+        addEnemy(new Beanos(this, Orientation.DOWN,new DiscreteCoordinates(3,4)));
     }
 }

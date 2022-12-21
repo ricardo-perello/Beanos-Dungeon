@@ -322,6 +322,6 @@ public class ICRogue extends AreaGame {
 
 }
 
-//TODO new signal rooms, enemies(one that moves and one that spawns other enemies), new levels, merchant room,
-//TODO create TOTA and alejandro, dialogue, sounds, add portals for new levels and do the key spawn in  base,
-//TODO progress bar for levels
+//TODO enemies(one that moves and one that spawns other enemies)
+//todo signal rooms
+

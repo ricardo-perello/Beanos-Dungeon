@@ -10,6 +10,7 @@ import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.Beanos;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.BossTurret;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Wither;
@@ -122,6 +123,15 @@ public class Arrow extends Projectile {
             if (wantsViewInteraction() && !getIsEnemy()) {
                 consume();
                 wither.decreaseHp(getDamage());
+            }
+            if (wantsViewInteraction() && getIsEnemy()) {
+                consume();
+            }
+        }
+        public void interactWith(Beanos beanos, boolean isCellInteraction) {
+            if (wantsViewInteraction() && !getIsEnemy()) {
+                consume();
+                beanos.decreaseHp(getDamage());
             }
             if (wantsViewInteraction() && getIsEnemy()) {
                 consume();

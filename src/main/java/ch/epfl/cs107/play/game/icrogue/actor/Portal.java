@@ -42,14 +42,14 @@ public class Portal extends AreaEntity {
     private ImageGraphics GreenDots;
 
     public ImageGraphics printGreenDots(int count){
-        GreenDots = new ImageGraphics("images/sprites/zelda/3.green.dots.png", ((2.5f) * ((float)count/3)) ,.5f,
-                new RegionOfInterest(0,32,(int)(96 * ((double)count/3)),32), this.getPosition());
+        GreenDots = new ImageGraphics("images/sprites/zelda/3.green.dots.png", ((1.5f) * ((float)count/3)) ,.5f,
+                new RegionOfInterest(0,32,(int)(96 * ((double)count/3)),32), new Vector(this.getPosition().x+0.25f, this.getPosition().y-0.5f));
         this.count=count;
         return GreenDots;
     }
     private ImageGraphics printRedDots() {
-        RedDots = new ImageGraphics("images/sprites/zelda/3.red.dots.png", ((2.5f)), .5f,
-                new RegionOfInterest(0, 64, 96, 32), this.getPosition());
+        RedDots = new ImageGraphics("images/sprites/zelda/3.red.dots.png", ((1.5f)), .5f,
+                new RegionOfInterest(0, 64, 96, 32), new Vector(this.getPosition().x+0.25f, this.getPosition().y-0.5f));
         return RedDots;
     }
 
@@ -72,7 +72,7 @@ public class Portal extends AreaEntity {
     public void draw(Canvas canvas) {
         if(!state.equals(PortalState.SHOP)){
             sprite.draw(canvas);
-            if(!levelname.equals("shop")){
+            if(!levelname.equals("shop")&&!levelname.equals("level0")){
                 printRedDots().draw(canvas);
                 if(count>0){
                     printGreenDots(count).draw(canvas);

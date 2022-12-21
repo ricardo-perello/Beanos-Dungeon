@@ -7,6 +7,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Animation;
 import ch.epfl.cs107.play.game.areagame.actor.*;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.areagame.io.ResourcePath;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.Beanos;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.BossTurret;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Wither;
@@ -719,6 +720,13 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             if (wantsViewInteraction() && keyboard.get(Keyboard.Z).isPressed()){
                 //sets the sound fx
                 wither.decreaseHp(meleeDamage);
+            }
+        }
+        public void interactWith(Beanos beanos, boolean isCellInteraction){
+            Keyboard keyboard= getOwnerArea().getKeyboard();
+            if (wantsViewInteraction() && keyboard.get(Keyboard.Z).isPressed()){
+                //sets the sound fx
+                beanos.decreaseHp(meleeDamage);
             }
         }
         public void interactWith(Connector connector, boolean isCellInteraction){
