@@ -36,7 +36,7 @@ import static ch.epfl.cs107.play.game.areagame.actor.Animation.createAnimations;
 import static ch.epfl.cs107.play.game.areagame.io.ResourcePath.getSprite;
 
 public class ICRoguePlayer extends ICRogueActor implements Interactor {
-    public static int DEFAULT_PLAYER_HP = 10;
+    public static int DEFAULT_PLAYER_HP = 6;
     /// Animation duration in frame number
     private final static int MOVE_DURATION = 6;
     public final static int DEFAULT_MELEE_DAMAGE = 1;
@@ -51,7 +51,6 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             staffAnimationsUP,
             staffAnimationsRIGHT;
     private boolean isStaffAnimation;
-
     private boolean hasStaff;
     private boolean hasSword;
     private boolean hasBow;
@@ -63,7 +62,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private ICRoguePlayerInteractionHandler handler;
     private String spriteName = "zelda/player";
     private ArrayList<Item> carrying = new ArrayList<>();
-    private int hp = DEFAULT_PLAYER_HP;
+    private static int maxHp = DEFAULT_PLAYER_HP;
+    private static int hp = maxHp;
     private boolean receivedDamage = false;
     private int meleeDamage;
     public final static float COOLDOWN = 1.f;
@@ -170,7 +170,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     }
 
     public void strengthen() {
-        hp = DEFAULT_PLAYER_HP;
+        hp = maxHp;
     }
 
     public DiscreteCoordinates getCoordinatesTransition(){
@@ -265,7 +265,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             if(merchantInteraction){
                 if (CoinCounter>=NPC.PRICE){
                     CoinCounter=CoinCounter-NPC.PRICE;
-                    ++hp;
+                    setMaxHp(getMaxHp()+2);
+                    setHp(getMaxHp());
                     String message = XMLTexts.getText("Health");
                     dialogue.clear();
                     dialogue.add(new TextGraphics(message,0.5F, Color.BLACK));
@@ -322,13 +323,14 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     }
 
 
-    public void setHp(int hp){
-        this.hp = hp;
+    public static void setHp(int newHp){
+        hp = newHp;
     }
-
-    public int getHp(){
-        return hp;
+    public static void setMaxHp(int newMaxHp){
+        maxHp = newMaxHp;
     }
+    public int getHp(){return hp;}
+    public int getMaxHp(){return maxHp;}
 
     private ImageGraphics printFullHearts(){
         fullHearts = new ImageGraphics("images/sprites/zelda/5.full.red.hearts.png", ((2.5f) * ((float)getHp()/10)) ,.5f,
@@ -336,8 +338,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         return fullHearts;
     }
     private ImageGraphics printEmptyHearts(){
-        emptyHearts = new ImageGraphics("images/sprites/zelda/5.empty.red.hearts.png", 2.5f,.5f,
-                new RegionOfInterest(0,0,80,16), new Vector(0.5f,.25f));
+        emptyHearts = new ImageGraphics("images/sprites/zelda/5.empty.red.hearts.png", ((2.5f) * ((float)getMaxHp()/10)),.5f,
+                new RegionOfInterest(0,0,(int)(80 * ((double)getMaxHp()/10)),16), new Vector(0.5f,.25f));
         return emptyHearts;
     }
 
@@ -350,11 +352,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     }
 
     public boolean canIncreaseHp(){
-        return hp < DEFAULT_PLAYER_HP;
+        return hp < maxHp;
     }
 
     public void increaseHp(float delta){
-        if (hp < 10){
+        if (canIncreaseHp()){
             hp += delta;
         }
 
@@ -692,7 +694,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         public void interactWith(NPC npc, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if(!dialogueStart&&wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())&&dialogueCounter>=1.f){
-                dialogue=npc.getDialogue();
+                dialogue=npc.getDialogue(dialogue);
                 dialogueStart=true;
                 stopForDialogue=true;
             }
@@ -702,7 +704,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if(!dialogueStart&&wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())&&dialogueCounter>=1.f){
                 dialogue.clear();
-                dialogue.addAll(tota.getDialogue());
+                dialogue.addAll(tota.getDialogue(dialogue));
                 dialogueStart=true;
                 stopForDialogue=true;
                 merchantInteraction=true;
