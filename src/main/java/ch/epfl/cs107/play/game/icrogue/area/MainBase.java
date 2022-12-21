@@ -76,7 +76,7 @@ public class MainBase extends MainBaseArea {
         for(int i=0;i<dialogue.size();++i){
             dialogue.get(i).setParent(player);
             double t=i;
-            float k= (float) (-1.4f-(t/2));
+            float k= (float) (-1.4f-(t/2.2));
             dialogue.get(i).setAnchor(new Vector(-2.8f,k));
         }
 
@@ -104,7 +104,7 @@ public class MainBase extends MainBaseArea {
         registerActor(new NPC(this,new DiscreteCoordinates(6, 5), "boy.1",dialogues));
         dialogues.clear();
         setUpDialogue(dialogues,"NPC31",0.5F);
-        setUpDialogue(dialogues,"NPC12",0.5F);
+        setUpDialogue(dialogues,"NPC32",0.5F);
         registerActor(new NPC(this,new DiscreteCoordinates(6, 10), "girl.1",dialogues));
         dialogues.clear();
         setUpDialogue(dialogues,"NPC41",0.47F);

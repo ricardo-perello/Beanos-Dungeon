@@ -10,8 +10,15 @@
     <string name="riddle_1">Il parait que si tu as compris le sens de la vie, alors tu pourras passer</string>
     <string name="riddle_2">On dit qu'il faut savoir ce que l'on cherche pour pouvoir passer...le sais-tu ? Parce que moi pas vraiment...</string>
     <string name="mew_dialog">Mew...mew, mew mew !</string>
-    <string name="Alej_Introduction">Hello I'm Alejandro. I'm in charge of all your damange upgrades. Don't listen to Tota, he's an idiot.</string>
-    <string name="Tota_Introduction">Hello I'm Tota. I'm in charge of all your health upgrades, that is if you can afford my services...</string>
+
+    <string name="Alej_Introduction1">Hello I'm Alejandro. I'm in charge</string>
+    <string name="Alej_Introduction2">of all your DAMAGE upgrades.</string>
+    <string name="Alej_Introduction3">Don't listen to Tota, he's an idiot.</string>
+
+    <string name="Tota_Introduction1">Hello I'm Tota. I'm in charge</string>
+    <string name="Tota_Introduction2">of all your HEALTH upgrades,</string>
+    <string name="Tota_Introduction3">that is if you can afford my services...</string>
+
     <string name="Tota_arguing1">ALEJANDRO, WHAT ARE YOU DOING!!! I TOLD YOU TO CLEAN THIS ROOM, EVEYTHING IS A MESS</string>
     <string name="Alej_arguing1">WHAT DO YOU MEAN, YOU TOLD ME NOT TO TOUCH ANY OF YOUR "PRECIOUS BELONGINGS"</string>
     <string name="Tota_conclusion1">Ah ouai, t'as raison... </string>
@@ -33,5 +40,47 @@
     <string name="NPC42">if your health ever gets low,</string>
     <string name="NPC43">try consumig cherries and hearts,</string>
     <string name="NPC44">I heard they help</string>
+
+    <string name="Game_Start11">Welcome to Beanos Dungeon !!!</string>
+    <string name="Game_Start12">This is your Village BozoTown</string>
+    <string name="Game_Start13"></string>
+    <string name="Game_Start14">(press W to continue)</string>
+
+    <string name="Game_Start21">This town used to be very peaceful...</string>
+    <string name="Game_Start22">That is until the ultimate evil,</string>
+    <string name="Game_Start23">LORD BEANOS appeared and darkness</string>
+    <string name="Game_Start24">fell on this land...</string>
+
+
+
+    <string name="Game_Start31">To stop BEANOS and free this town</string>
+    <string name="Game_Start32">you first need to enter the portals</string>
+    <string name="Game_Start33">placed throughout this Town and beat them</string>
+    <string name="Game_Start34">the red dots indicate how many</string>
+
+    <string name="Game_Start41">more times you need to beat them to</string>
+    <string name="Game_Start42">unlock the next level</string>
+    <string name="Game_Start43"></string>
+    <string name="Game_Start44"></string>
+
+    <string name="Game_Start51">The portal to take you to BEANOS</string>
+    <string name="Game_Start52">is placed on the top right of BozoTown</string>
+    <string name="Game_Start53">and inside the left house is where Tota</string>
+    <string name="Game_Start54">and Alejandro live.</string>
+
+    <string name="Game_Start61">Interact with them to upgrade your</string>
+    <string name="Game_Start62">HEALTH and your DAMAGE</string>
+    <string name="Game_Start63">That is, if you have enough COINS</string>
+    <string name="Game_Start64"></string>
+
+    <string name="Game_Start71">You can interact with the Villagers,</string>
+    <string name="Game_Start72">the portals and the house by pressing W</string>
+    <string name="Game_Start73"></string>
+    <string name="Game_Start74"></string>
+
+    <string name="Game_Start81">HAVE FUN !!!!</string>
+    <string name="Game_Start82"></string>
+    <string name="Game_Start83"></string>
+    <string name="Game_Start84"></string>
 
 </strings>

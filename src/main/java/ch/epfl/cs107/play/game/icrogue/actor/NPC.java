@@ -25,6 +25,16 @@ public class NPC extends ICRogueActor {
     private List<TextGraphics> dialogue=new ArrayList<TextGraphics>();
     public static final int PRICE=5;
 
+    private boolean isFirstInteraction=true;
+
+    public void interacted(){
+        isFirstInteraction=false;
+    }
+
+    public boolean isFirstInteraction(){
+        return isFirstInteraction;
+    }
+
     public NPC(Area area, DiscreteCoordinates position, String spriteName,List<TextGraphics> dialogue) {
         //super(position, new ImageGraphics(ResourcePath.getSprite(spriteName),  1.0f,1.0f, null, Vector.ZERO, 1.0f, -Float.MAX_VALUE));
         super(area, Orientation.DOWN,position);
@@ -47,7 +57,6 @@ public class NPC extends ICRogueActor {
     }
 
     public List<TextGraphics> getDialogue(List<TextGraphics> dialogue){//returns the current player dialogue so it can be displayed through player
-        dialogue.clear();
         for(int i=0;i<this.dialogue.size();++i){
             dialogue.add(this.dialogue.get(i));
         }

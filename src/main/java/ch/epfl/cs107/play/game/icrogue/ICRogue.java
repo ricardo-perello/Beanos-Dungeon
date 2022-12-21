@@ -65,6 +65,8 @@ public class ICRogue extends AreaGame {
         player.centerCamera();
         shop=new Shop();
         addArea(shop);
+        player.startDialogue();
+
 
     }
     private void initLevel0(){
@@ -186,6 +188,7 @@ public class ICRogue extends AreaGame {
         if(getCurrentArea() instanceof MainBase){ //checks to see if portals can be unlocked and does so
             unlockPortals();
         }
+
         super.update(deltaTime);
 
     }

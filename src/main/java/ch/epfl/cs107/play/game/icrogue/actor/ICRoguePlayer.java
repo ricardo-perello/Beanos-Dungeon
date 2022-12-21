@@ -88,6 +88,9 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private boolean merchantInteraction;
     private boolean healthInteraction; //checks if interaction is with Tota
     private boolean damageInteraction; //checks if interaction is with Alejandro
+    private boolean introductionInteraction;
+    private boolean gameStartDialogue;
+    private int gameStartDialogueStep=1;
 
     public ICRoguePlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates){
         super(owner,orientation,coordinates);
@@ -121,6 +124,12 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         resetMotion();
     }
 
+    public void startDialogue(){
+        gameStartDialogue=true;
+        stopForDialogue=true;
+        gameStartDialogue();
+        ++gameStartDialogueStep;
+    }
 
     public void draw(Canvas canvas) {
 
@@ -164,6 +173,13 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 //draws the dialogue and the dialogue box for ICRogueRoom
                 ((ICRogueRoom) getOwnerArea()).draw(canvas,dialogue);
             }
+        }
+        if(gameStartDialogue){
+            ((MainBase) getOwnerArea()).setParent(this);
+            //sets the placement and size of the dialogue (text) based on the players position
+            ((MainBase) getOwnerArea()).setDialogue(this,dialogue);
+            //draws the dialogue box and the current player dialogue
+            ((MainBase) getOwnerArea()).draw(canvas, dialogue);
         }
     }
 
@@ -289,7 +305,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             stopForDialogue=false;
             dialogueCounter=0;//resets the dialogue counter
             //this dialogue counter prevents the player from infinitelly restarting a dialogue since W is the same button used to start a dialogue
-            if(merchantInteraction){ //interaction with Tota and Alejandro class (the merchants
+            if(merchantInteraction&&!introductionInteraction){ //interaction with Tota and Alejandro class (the merchants)
                 if (CoinCounter>=NPC.PRICE){
                     CoinCounter=CoinCounter-NPC.PRICE;
                     System.out.println("coins: "+CoinCounter);
@@ -301,7 +317,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                         dialogue.add(new TextGraphics(message,0.5F, Color.BLACK));
                         dialogue.get(0).setAnchor(new Vector(1.5f,2.3f));
                     }
-                    if(damageInteraction){
+                    else if(damageInteraction){
                         increaseDamage();
                         String message = XMLTexts.getText("Damage");
                         dialogue.clear();
@@ -310,6 +326,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                     }
 
                     dialogueStart=true;
+                    setSoundFX("dialogNext",1);
+                    hasSoundFX=true;
                     stopForDialogue=true;
                     merchantInteraction=false;
                     damageInteraction=false;
@@ -321,15 +339,48 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                     dialogue.add(new TextGraphics(message,0.5F, Color.BLACK));
                     dialogue.get(0).setAnchor(new Vector(1.5f,2.3f));
                     dialogueStart=true;
+                    setSoundFX("dialogNext",1);
+                    hasSoundFX=true;
                     stopForDialogue=true;
                     merchantInteraction=false;
 
+                }
+            }
+            if(introductionInteraction){
+
+                introductionInteraction=false;
+            }
+
+        }
+        if((gameStartDialogue&&stopForDialogue&&keyboard.get(Keyboard.W).isPressed())||dialogueCounter==1.f){
+            gameStartDialogue=false;
+            stopForDialogue=false;
+            if(gameStartDialogueStep<9){
+                gameStartDialogue();
+                dialogueCounter=0;
+                if(gameStartDialogueStep<=8){
+                    ++gameStartDialogueStep;
+                    gameStartDialogue=true;
+                    stopForDialogue=true;
                 }
             }
 
         }
 
         super.update(deltaTime);
+
+    }
+
+    public void gameStartDialogue(){
+        dialogue.clear();
+        for(int i=1;i<5;++i){
+            String key="Game_Start"+gameStartDialogueStep+""+i;
+            String message = XMLTexts.getText(key);
+            TextGraphics dialogue=new TextGraphics(message,0.46F, Color.BLACK);
+            dialogue.setAnchor(new Vector(1.5f,2.3f));
+            this.dialogue.add(dialogue);
+        }
+        ((MainBase)getOwnerArea()).setDialogue(this,dialogue);
 
     }
     public void setCurrentAnimation(){
@@ -772,10 +823,12 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         public void interactWith(NPC npc, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if(!dialogueStart&&wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())&&dialogueCounter>=1.f){
+                dialogue.clear();
                 //gets dialogue from the npc
                 npc.getDialogue(dialogue);
                 //starts the dialogue interaction
                 dialogueStart=true;
+                setSoundFX("dialogNext",1);
                 stopForDialogue=true;
             }
 
@@ -784,9 +837,18 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if(!dialogueStart&&wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())&&dialogueCounter>=1.f){
                 dialogue.clear();
-               tota.getDialogue(dialogue);
+                if(tota.isFirstInteraction()){
+                    introductionInteraction=true;
+                    tota.interacted();
+                    tota.startingDialogue(dialogue);
+                }
+                else{
+                    tota.getDialogue(dialogue);
+                }
+
                 //starts the dialogue interaction
                 dialogueStart=true;
+                setSoundFX("dialogNext",1);
                 stopForDialogue=true;
                 merchantInteraction=true;//specifies that its a merchant interaction
                 healthInteraction=true;
@@ -797,9 +859,17 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if(!dialogueStart&&wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())&&dialogueCounter>=1.f){
                 dialogue.clear();
-                alejandro.getDialogue(dialogue);
+                if(alejandro.isFirstInteraction()){
+                    introductionInteraction=true;
+                    alejandro.interacted();
+                    alejandro.startingDialogue(dialogue);
+                }
+                else {
+                    alejandro.getDialogue(dialogue);
+                }
                 //starts the dialogue interaction
                 dialogueStart=true;
+                setSoundFX("dialogNext",1);
                 stopForDialogue=true;
                 merchantInteraction=true;//specifies that its a merchant interaction
                 damageInteraction=true;

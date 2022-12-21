@@ -12,6 +12,7 @@ import ch.epfl.cs107.play.game.icrogue.area.MainBase;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.io.XMLTexts;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.math.Vector;
 
 import java.awt.*;
 import java.util.List;
@@ -38,6 +39,17 @@ public class Tota extends NPC{
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
             ((ICRogueInteractionHandler) v).interactWith(this, isCellInteraction);
 
+    }
+    public void startingDialogue(List<TextGraphics> dialogue){
+        String message = XMLTexts.getText("Tota_Introduction1");
+        dialogue.add(new TextGraphics(message,0.5F, Color.BLACK));
+        dialogue.get(0).setAnchor(new Vector(1.5f,2.3f));
+        message = XMLTexts.getText("Tota_Introduction2");
+        dialogue.add(new TextGraphics(message,0.5F, Color.BLACK));
+        dialogue.get(1).setAnchor(new Vector(1.5f,1.85f));
+        message = XMLTexts.getText("Tota_Introduction3");
+        dialogue.add(new TextGraphics(message,0.5F, Color.BLACK));
+        dialogue.get(2).setAnchor(new Vector(1.5f,1.4f));
     }
 
 }
