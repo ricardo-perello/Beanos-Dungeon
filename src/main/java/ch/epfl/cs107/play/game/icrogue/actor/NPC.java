@@ -46,7 +46,11 @@ public class NPC extends ICRogueActor {
         super.update(deltaTime);
     }
 
-    public List<TextGraphics> getDialogue(){
+    public List<TextGraphics> getDialogue(List<TextGraphics> dialogue){//returns the current player dialogue so it can be displayed through player
+        dialogue.clear();
+        for(int i=0;i<this.dialogue.size();++i){
+            dialogue.add(this.dialogue.get(i));
+        }
         return dialogue;
     }
 

@@ -187,15 +187,14 @@ public class ICRogue extends AreaGame {
         if(player.HasSoundFX()){
             player.playSound(getWindow());
         }
-        if((player.getHp() <= 0)&&(display==0)){
-            System.out.println("Dead");
-            display=1;
+        if((player.getHp() <= 0)){
+            player.setTransportArea("base");
+            player.transport();
         }
 
-        if(level!=null&&level.isResolved()&&(display==0)){
-            System.out.println("Win");
-
-            display=1;
+        if(level!=null&&level.isResolved()){
+            player.setTransportArea("base");
+            player.transport();
         }
         if(getCurrentArea() instanceof MainBase){
             unlockPortals();
@@ -229,21 +228,22 @@ public class ICRogue extends AreaGame {
         return "Beanos' Dungeon";
     } /*returns the title of our game */
 
+    public void setSoundtrack(String name, float vol, boolean stop){
+        SoundAcoustics fx=new SoundAcoustics(ResourcePath.getSound(name), vol,false,false,false,stop);
+        fx.shouldBeStarted();
+        fx.bip(getWindow());
+    }
+
     protected void switchArea() {
         if(player.getisTransporting()&&getCurrentArea() instanceof MainBase){
+            previousCoorInBase=player.getCurrentCells().get(0);
             if(!player.getTransportArea().equals("shop")){
-                SoundAcoustics fx=new SoundAcoustics(ResourcePath.getSound("portal"), (float) 0.8,false,false,false,true);
-                fx.shouldBeStarted();
-                fx.bip(getWindow());
-
+                setSoundtrack("portal",(float) 0.8,true);
             }
             else{
-                SoundAcoustics fx=new SoundAcoustics(ResourcePath.getSound("door"),1,false,false,false,true);
-                fx.shouldBeStarted();
-                fx.bip(getWindow());
+                setSoundtrack("door",1,true);
             }
 
-            previousCoorInBase=player.getCurrentCells().get(0);
             player.leaveArea();
             player.transported();
             if(player.getTransportArea().equals("level0")){
@@ -260,10 +260,7 @@ public class ICRogue extends AreaGame {
             }
             else if(player.getTransportArea().equals("shop")){
                 setCurrentArea(shop.getTitle(), false); /* makes it the current area */
-
-                soundtrack=new SoundAcoustics(ResourcePath.getSound("shop"),1,true,false,true,false);
-                soundtrack.shouldBeStarted();
-                soundtrack.bip(getWindow());
+                setSoundtrack("shop",1,false);
                 player.enterArea(shop,shop.getPlayerSpawnPosition());
 
 
@@ -273,31 +270,28 @@ public class ICRogue extends AreaGame {
         }
         else if(player.getisTransporting()&&getCurrentArea() instanceof Shop){
             player.leaveArea();
-            SoundAcoustics fx=new SoundAcoustics(ResourcePath.getSound("door"),1,false,false,false,true);
-            fx.shouldBeStarted();
-            fx.bip(getWindow());
+            setSoundtrack("door",1,true);
             player.transported();
             setCurrentArea(base.getTitle(),false);
-            soundtrack=new SoundAcoustics(ResourcePath.getSound("home"),1,true,false,true,false);
-            soundtrack.shouldBeStarted();
-            soundtrack.bip(getWindow());
+            setSoundtrack("home",1,false);
             player.enterArea(base,previousCoorInBase);
             player.centerCamera();
 
         }
-        else if(level!=null&&(player.getHp() <= 0)&&(display==0)){
+        else if(level!=null&&(player.getHp() <= 0)&&player.getisTransporting()){
             player.leaveArea();
+            player.strengthen();
             player.clearCarrying();
+            setSoundtrack("beanos",0.6F,true);
+            player.transported();
             setCurrentArea(base.getTitle(),false);
-            soundtrack=new SoundAcoustics(ResourcePath.getSound("home"),1,true,false,true,false);
-            soundtrack.shouldBeStarted();
-            soundtrack.bip(getWindow());
+            setSoundtrack("home",1,false);
             player.enterArea(base,previousCoorInBase);
             player.centerCamera();
-            display=0;
+            player.transported();
 
         }
-        else if(level!=null&&level.isResolved()&&(display==0)){
+        else if(level!=null&&level.isResolved()&&player.getisTransporting()){
             if(level instanceof Level0){
                 ++lvl0clears;
             }
@@ -307,18 +301,15 @@ public class ICRogue extends AreaGame {
             else if(level instanceof Level2){
                 ++lvl2clears;
             }
-            SoundAcoustics fx=new SoundAcoustics(ResourcePath.getSound("clear"),1,false,false,false,true);
-            fx.shouldBeStarted();
-            fx.bip(getWindow());
             player.leaveArea();
+            player.strengthen();
             player.clearCarrying();
+            setSoundtrack("clear",1,true);
+            player.transported();
             setCurrentArea(base.getTitle(),false);
-            soundtrack=new SoundAcoustics(ResourcePath.getSound("home"),1,true,false,true,false);
-            soundtrack.shouldBeStarted();
-            soundtrack.bip(getWindow());
+            setSoundtrack("home",1,false);
             player.enterArea(base,previousCoorInBase);
             player.centerCamera();
-            display=0;
 
         }
     }
