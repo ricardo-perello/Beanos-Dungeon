@@ -11,6 +11,8 @@ import ch.epfl.cs107.play.game.icrogue.actor.Connector;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
 import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0BossRoom;
 import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0KeyRoom;
+import ch.epfl.cs107.play.game.icrogue.area.level1.rooms.Level1BossRoom;
+import ch.epfl.cs107.play.game.icrogue.area.level2.rooms.Level2BossRoom;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.signal.logic.Logic;
 
@@ -46,7 +48,7 @@ public abstract class Level implements Logic {
     }
 
     public boolean isNextToBossRoom(DiscreteCoordinates coordinates){
-        return (map[coordinates.x][coordinates.y] instanceof Level0BossRoom);
+        return (map[coordinates.x][coordinates.y] instanceof Level0BossRoom)||(map[coordinates.x][coordinates.y] instanceof Level1BossRoom)||(map[coordinates.x][coordinates.y] instanceof Level2BossRoom);
     }
 
     public void setArrivalcoordinates(DiscreteCoordinates coordinates){

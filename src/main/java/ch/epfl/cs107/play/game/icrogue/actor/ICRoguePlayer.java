@@ -7,10 +7,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Animation;
 import ch.epfl.cs107.play.game.areagame.actor.*;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.areagame.io.ResourcePath;
-import ch.epfl.cs107.play.game.icrogue.actor.enemies.Beanos;
-import ch.epfl.cs107.play.game.icrogue.actor.enemies.BossTurret;
-import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
-import ch.epfl.cs107.play.game.icrogue.actor.enemies.Wither;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.*;
 import ch.epfl.cs107.play.game.icrogue.actor.items.*;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
@@ -91,6 +88,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private boolean introductionInteraction;
     private boolean gameStartDialogue;
     private int gameStartDialogueStep=1;
+    private boolean isPoisoned;
+    private float poisonCounter;
 
     public ICRoguePlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates){
         super(owner,orientation,coordinates);
@@ -183,6 +182,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         }
     }
 
+    public void poison(){
+        isPoisoned=true;
+        poisonCounter=0;
+    }
+
     public String getTransitionArea(){
         return transitionArea;
     }
@@ -230,6 +234,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
     private boolean isDoingAnimation=false;
     public void update(float deltaTime) {
+        poisonCounter+=deltaTime;
         boolean doStaffAnimation=false;
         counter += deltaTime;//increases counter for projectiles
         dialogueCounter+=deltaTime;//increases counter for dialogue
@@ -259,6 +264,10 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             fire.enterArea(getOwnerArea(),getCurrentMainCellCoordinates());
             counter = 0;
 
+        }
+        if(isPoisoned&&(poisonCounter>=1.0f)){
+            decreaseHp(1);
+            isPoisoned=false;
         }
         if(doStaffAnimation){
             if(!isDoingAnimation){
@@ -461,13 +470,26 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     public int getMaxHp(){return maxHp;}
 
     private ImageGraphics printFullHearts(){
-        fullHearts = new ImageGraphics("images/sprites/zelda/5.full.red.hearts.png", ((2.5f) * ((float)getHp()/10)) ,.5f,
-                new RegionOfInterest(0,0,(int)(80 * ((double)getHp()/10)),16), new Vector(0.5f,.25f));
+        if(!isPoisoned){
+            fullHearts = new ImageGraphics("images/sprites/zelda/5.full.red.hearts.png", ((2.5f) * ((float)getHp()/10)) ,.5f,
+                    new RegionOfInterest(0,0,(int)(80 * ((double)getHp()/10)),16), new Vector(0.5f,.25f));
+        }
+        else{
+            fullHearts = new ImageGraphics("images/sprites/zelda/5.full.green.hearts.png", ((2.5f) * ((float)getHp()/10)) ,.5f,
+                    new RegionOfInterest(0,0,(int)(80 * ((double)getHp()/10)),16), new Vector(0.5f,.25f));
+        }
+
         return fullHearts;
     }
     private ImageGraphics printEmptyHearts(){
-        emptyHearts = new ImageGraphics("images/sprites/zelda/5.empty.red.hearts.png", ((2.5f) * ((float)getMaxHp()/10)),.5f,
-                new RegionOfInterest(0,0,(int)(80 * ((double)getMaxHp()/10)),16), new Vector(0.5f,.25f));
+        if(!isPoisoned) {
+            emptyHearts = new ImageGraphics("images/sprites/zelda/5.empty.red.hearts.png", ((2.5f) * ((float) getMaxHp() / 10)), .5f,
+                    new RegionOfInterest(0, 0, (int) (80 * ((double) getMaxHp() / 10)), 16), new Vector(0.5f, .25f));
+        }
+        else{
+            emptyHearts = new ImageGraphics("images/sprites/zelda/5.empty.green.hearts.png", ((2.5f) * ((float) getMaxHp() / 10)), .5f,
+                    new RegionOfInterest(0, 0, (int) (80 * ((double) getMaxHp() / 10)), 16), new Vector(0.5f, .25f));
+        }
         return emptyHearts;
     }
     private ImageGraphics printCoinsDisplay(){
@@ -792,6 +814,14 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                     setSoundFX("melee",1);
                 }
 
+                turret.decreaseHp(meleeDamage);
+            }
+        }
+        public void interactWith(PoisonTurret turret, boolean isCellInteraction){
+            Keyboard keyboard= getOwnerArea().getKeyboard();
+            if (wantsViewInteraction() && keyboard.get(Keyboard.Z).isPressed()){
+                //sets the sound fx
+                setSoundFX("melee",1);
                 turret.decreaseHp(meleeDamage);
             }
         }
