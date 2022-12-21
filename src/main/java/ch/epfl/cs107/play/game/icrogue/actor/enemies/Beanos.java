@@ -41,7 +41,7 @@ public class Beanos extends Enemy{
 
     public Sprite setSprite() {
         Sprite witherSprite;
-        witherSprite = new Sprite(spriteName,2.f,2.f, this
+        witherSprite = new Sprite(spriteName,2.5f,2.f, this
                     ,new RegionOfInterest(200,50,400, 300), new Vector(0,0));
 
         return witherSprite;

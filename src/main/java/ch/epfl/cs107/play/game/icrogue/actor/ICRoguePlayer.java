@@ -532,6 +532,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     //ANIMATIONS
     //todo fix animations for staff
     //todo add animations for sword
+    //todo add poison enemy
     public void setStaffAnimation() {
         String name = "zelda/player.staff_water";
 
