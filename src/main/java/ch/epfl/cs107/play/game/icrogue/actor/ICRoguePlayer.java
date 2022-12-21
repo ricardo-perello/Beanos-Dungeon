@@ -806,7 +806,13 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if (wantsViewInteraction() && keyboard.get(Keyboard.Z).isPressed()){
                 //sets the sound fx
-                setSoundFX("melee",1);
+                if(hasSword){
+                    setSoundFX("sword",1);
+                }
+                else{
+                    setSoundFX("melee",1);
+                }
+
                 turret.decreaseHp(meleeDamage);
             }
         }
@@ -822,7 +828,12 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if (wantsViewInteraction() && keyboard.get(Keyboard.Z).isPressed()){
                 //sets the sound fx
-                setSoundFX("melee",1);
+                if(hasSword){
+                    setSoundFX("sword",1);
+                }
+                else{
+                    setSoundFX("melee",1);
+                }
                 turret.decreaseHp(meleeDamage);
             }
         }
@@ -830,7 +841,12 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if (wantsViewInteraction() && keyboard.get(Keyboard.Z).isPressed()){
                 //sets the sound fx
-                setSoundFX("melee",1);
+                if(hasSword){
+                    setSoundFX("sword",1);
+                }
+                else{
+                    setSoundFX("melee",1);
+                }
                 wither.decreaseHp(meleeDamage);
             }
         }
@@ -846,7 +862,12 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if (wantsViewInteraction() && keyboard.get(Keyboard.Z).isPressed()){
                 //sets the sound fx
-                setSoundFX("melee",1);
+                if(hasSword){
+                    setSoundFX("sword",1);
+                }
+                else{
+                    setSoundFX("melee",1);
+                }
                 beanos.decreaseHp(meleeDamage);
             }
         }
@@ -952,6 +973,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if(wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())){
                 lever.interactWith();
+                setSoundFX("lever",1);
             }
 
         }

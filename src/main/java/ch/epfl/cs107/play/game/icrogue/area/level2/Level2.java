@@ -23,7 +23,10 @@ public class Level2 extends Level {
         Boss,
         Spawn,
         Normal,
-        PoisonTurretRoom;
+        BowRoom,
+        SwordRoom,
+        PoisonTurretRoom,
+        CherryRoom;
 
         public static int[] setroomArrangement(){
             int size=Level2RoomType.values().length;
@@ -34,7 +37,10 @@ public class Level2 extends Level {
             roomArrangement[3]=1;
             roomArrangement[4]=1;
             roomArrangement[5]=RandomHelper.roomGenerator.nextInt(1,3);
-            roomArrangement[6]=RandomHelper.roomGenerator.nextInt(1,2);
+            roomArrangement[6]=1;
+            roomArrangement[7]=1;
+            roomArrangement[8]=RandomHelper.roomGenerator.nextInt(1,2);
+            roomArrangement[9]=RandomHelper.roomGenerator.nextInt(1,2);
             return roomArrangement;
         }
     }
@@ -158,12 +164,44 @@ public class Level2 extends Level {
             roomsToCreate.remove(randomcoor);
         }
 
-        for(int i=0;i<roomArrangement[6];++i){
+        randomcoor=RandomHelper.roomGenerator.nextInt(0, roomsToCreate.size());
+        coordinates=roomsToCreate.get(randomcoor);
+        xcor=roomsToCreate.get(randomcoor).x;
+        ycor=roomsToCreate.get(randomcoor).y;
+        Level2BowRoom bowRoom=new Level2BowRoom(roomsToCreate.get(randomcoor));
+        rooms.add(bowRoom);
+        setRoom(coordinates,staffRoom);
+        mapStates[xcor][ycor]=MapState.CREATED;
+        roomsToCreate.remove(randomcoor);
+
+        randomcoor=RandomHelper.roomGenerator.nextInt(0, roomsToCreate.size());
+        coordinates=roomsToCreate.get(randomcoor);
+        xcor=roomsToCreate.get(randomcoor).x;
+        ycor=roomsToCreate.get(randomcoor).y;
+        Level2SwordRoom swordRoom=new Level2SwordRoom(roomsToCreate.get(randomcoor));
+        rooms.add(swordRoom);
+        setRoom(coordinates,staffRoom);
+        mapStates[xcor][ycor]=MapState.CREATED;
+        roomsToCreate.remove(randomcoor);
+
+        for(int i=0;i<roomArrangement[8];++i){
             randomcoor=RandomHelper.roomGenerator.nextInt(0, roomsToCreate.size());
             coordinates=roomsToCreate.get(randomcoor);
             xcor=roomsToCreate.get(randomcoor).x;
             ycor=roomsToCreate.get(randomcoor).y;
             Level2PoisonTurretRoom Room=new Level2PoisonTurretRoom(coordinates);
+            rooms.add(Room);
+            setRoom(coordinates,Room);
+            mapStates[xcor][ycor]=MapState.CREATED;
+            roomsToCreate.remove(randomcoor);
+        }
+
+        for(int i=0;i<roomArrangement[9];++i){
+            randomcoor=RandomHelper.roomGenerator.nextInt(0, roomsToCreate.size());
+            coordinates=roomsToCreate.get(randomcoor);
+            xcor=roomsToCreate.get(randomcoor).x;
+            ycor=roomsToCreate.get(randomcoor).y;
+            Level2HeartRoom Room=new Level2HeartRoom(coordinates);
             rooms.add(Room);
             setRoom(coordinates,Room);
             mapStates[xcor][ycor]=MapState.CREATED;
