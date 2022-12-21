@@ -19,13 +19,18 @@ import java.util.List;
 
 public abstract class Level0ItemRoom extends Level0Room {
     private List<Item>items;
+    private List<Cherry>cherries;
 
     public Level0ItemRoom(DiscreteCoordinates coordinates) {
         super(coordinates);
         items=new ArrayList<>();
+        cherries=new ArrayList<>();
     }
     public void addItem(ch.epfl.cs107.play.game.icrogue.actor.items.Item item){
         items.add(item);
+    }
+    public void addCherry(ch.epfl.cs107.play.game.icrogue.actor.items.Cherry item){
+        cherries.add(item);
     }
 
     protected void createArea() {
@@ -33,6 +38,9 @@ public abstract class Level0ItemRoom extends Level0Room {
         // Base
         for(Item item:items){
             registerActor(item);
+        }
+        for(Cherry cherry:cherries){
+            registerActor(cherry);
         }
     }
 

@@ -15,6 +15,6 @@ public class Level0StaffRoom extends Level0ItemRoom{
 
         addItem(new Staff(this, Orientation.DOWN,new DiscreteCoordinates(4,5)));
         addItem(new Bow(this, Orientation.DOWN,new DiscreteCoordinates(4,5)));
-        addItem(new Cherry(this, Orientation.DOWN,new DiscreteCoordinates(6,5)));
+        addCherry(new Cherry(this, Orientation.DOWN,new DiscreteCoordinates(6,5)));
     }
 }
