@@ -69,7 +69,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     public final static float COOLDOWN = 1.f;
     private float counter = 1.f;
     private float dialogueCounter=2.1f;
-    private int CoinCounter = 5;
+    private static int CoinCounter = 5;
     private Sprite[] spritesDOWN = new Sprite[4], spritesLEFT = new Sprite[4], spritesUP = new Sprite[4], spritesRIGHT = new Sprite[4];
     private final Animation animationsDOWN = new Animation(ANIMATION_DURATION/2, spritesDOWN);
     private final Animation animationsLEFT = new Animation(ANIMATION_DURATION/2, spritesLEFT);
@@ -277,6 +277,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             if(merchantInteraction){ //interaction with Tota and Alejandro class (the merchants
                 if (CoinCounter>=NPC.PRICE){
                     CoinCounter=CoinCounter-NPC.PRICE;
+                    System.out.println("coins: "+CoinCounter);
                     setMaxHp(getMaxHp()+2);
                     setHp(getMaxHp());
                     String message = XMLTexts.getText("Health");
@@ -744,5 +745,6 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
     private void increaseCoinCounter(int i) {
         ++CoinCounter;
+        System.out.println("coins: "+CoinCounter);
     }
 }

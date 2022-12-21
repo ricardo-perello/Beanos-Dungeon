@@ -26,7 +26,7 @@ public class Coin extends Item {
 
     public void setSprite() {
         sprite = new Sprite("zelda/coin", 0.6f, 0.6f, this,
-                new RegionOfInterest(0,0,16,16), new Vector(0,0));
+                new RegionOfInterest(0,0,16,16), new Vector(.3f,0.1f));
     }
 //todo add animation for coin
     @Override

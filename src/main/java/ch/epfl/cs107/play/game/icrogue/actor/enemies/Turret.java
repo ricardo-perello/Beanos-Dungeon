@@ -13,7 +13,7 @@ import ch.epfl.cs107.play.math.Rectangle;
 import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
-
+import ch.epfl.cs107.play.game.icrogue.actor.items.Coin;
 import java.awt.*;
 
 public class Turret extends Enemy{
