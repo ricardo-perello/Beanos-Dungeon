@@ -13,10 +13,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
-import ch.epfl.cs107.play.game.icrogue.actor.enemies.Beanos;
-import ch.epfl.cs107.play.game.icrogue.actor.enemies.BossTurret;
-import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
-import ch.epfl.cs107.play.game.icrogue.actor.enemies.Wither;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.*;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Bow;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Cherry;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Staff;
@@ -122,6 +119,15 @@ public class Fire extends Projectile{
         }
 
         public void interactWith(Turret turret, boolean isCellInteraction) {
+            if(wantsViewInteraction()&&!isConsumed() && !getIsEnemy()) {
+                consume();
+                turret.decreaseHp(getDamage());
+            }
+            else if(wantsViewInteraction()&&!isConsumed() && getIsEnemy()) {
+                consume();
+            }
+        }
+        public void interactWith(PoisonTurret turret, boolean isCellInteraction) {
             if(wantsViewInteraction()&&!isConsumed() && !getIsEnemy()) {
                 consume();
                 turret.decreaseHp(getDamage());

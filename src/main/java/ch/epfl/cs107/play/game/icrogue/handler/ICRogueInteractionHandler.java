@@ -4,12 +4,10 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.ICRogueBehavior;
 import ch.epfl.cs107.play.game.icrogue.actor.*;
-import ch.epfl.cs107.play.game.icrogue.actor.enemies.Beanos;
-import ch.epfl.cs107.play.game.icrogue.actor.enemies.BossTurret;
-import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
-import ch.epfl.cs107.play.game.icrogue.actor.enemies.Wither;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.*;
 import ch.epfl.cs107.play.game.icrogue.actor.items.*;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.*;
+import ch.epfl.cs107.play.game.icrogue.area.level2.rooms.Level2PoisonTurretRoom;
 import ch.epfl.cs107.play.window.Keyboard;
 
 public interface ICRogueInteractionHandler extends AreaInteractionVisitor {
@@ -49,5 +47,9 @@ public interface ICRogueInteractionHandler extends AreaInteractionVisitor {
     default void interactWith(Tota tota, boolean isCellInteraction){
     }
     default void interactWith(Alejandro alejandro, boolean isCellInteraction){
+    }
+    default void interactWith(PoisonTurret turret, boolean isCellInteraction){
+    }
+    default void interactWith(poisonBalls balls, boolean isCellInteraction){
     }
 }

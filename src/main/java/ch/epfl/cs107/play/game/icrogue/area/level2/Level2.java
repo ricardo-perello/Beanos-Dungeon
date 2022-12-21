@@ -22,7 +22,8 @@ public class Level2 extends Level {
         Boss_Key,
         Boss,
         Spawn,
-        Normal;
+        Normal,
+        PoisonTurretRoom;
 
         public static int[] setroomArrangement(){
             int size=Level2RoomType.values().length;
@@ -33,6 +34,7 @@ public class Level2 extends Level {
             roomArrangement[3]=1;
             roomArrangement[4]=1;
             roomArrangement[5]=RandomHelper.roomGenerator.nextInt(1,3);
+            roomArrangement[6]=RandomHelper.roomGenerator.nextInt(1,2);
             return roomArrangement;
         }
     }
@@ -156,6 +158,18 @@ public class Level2 extends Level {
             roomsToCreate.remove(randomcoor);
         }
 
+        for(int i=0;i<roomArrangement[6];++i){
+            randomcoor=RandomHelper.roomGenerator.nextInt(0, roomsToCreate.size());
+            coordinates=roomsToCreate.get(randomcoor);
+            xcor=roomsToCreate.get(randomcoor).x;
+            ycor=roomsToCreate.get(randomcoor).y;
+            Level2PoisonTurretRoom Room=new Level2PoisonTurretRoom(coordinates);
+            rooms.add(Room);
+            setRoom(coordinates,Room);
+            mapStates[xcor][ycor]=MapState.CREATED;
+            roomsToCreate.remove(randomcoor);
+        }
+
 
         printMap(mapStates);
 
@@ -178,11 +192,11 @@ public class Level2 extends Level {
         }
     }
 
-    //works the same as in level0
     protected void setUpConnector(MapState[][] roomsplacement,ICRogueRoom room){
         DiscreteCoordinates roomCoordinates=room.getCoordinates();
         int xcor=roomCoordinates.x;
         int ycor=roomCoordinates.y;
+        //checks the neighboring rooms
         if(xcor<roomsplacement.length-1&&(roomsplacement[xcor+1][ycor].equals(MapState.CREATED)||
                 roomsplacement[xcor+1][ycor].equals(MapState.EXPLORED)||roomsplacement[xcor+1][ycor].equals(MapState.PLACED))){
             setConnectorsGeneral(Orientation.RIGHT,Level2Room.Level2Connectors.E,roomCoordinates);
@@ -197,7 +211,7 @@ public class Level2 extends Level {
         }
         if(ycor>0 &&(roomsplacement[xcor][ycor-1].equals(MapState.CREATED)||
                 roomsplacement[xcor][ycor-1].equals(MapState.EXPLORED)||roomsplacement[xcor][ycor-1].equals(MapState.PLACED))){
-            setConnectorsGeneral(Orientation.DOWN,Level2Room.Level2Connectors.N,roomCoordinates);
+            setConnectorsGeneral(Orientation.DOWN,Level2Room.Level2Connectors.S,roomCoordinates);
         }
 
 

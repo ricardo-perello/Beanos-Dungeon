@@ -176,26 +176,26 @@ public class Level1 extends Level {
         }
     }
 
-    //works the same as in level0
     protected void setUpConnector(MapState[][] roomsplacement,ICRogueRoom room){
         DiscreteCoordinates roomCoordinates=room.getCoordinates();
         int xcor=roomCoordinates.x;
         int ycor=roomCoordinates.y;
+        //checks the neighboring rooms
         if(xcor<roomsplacement.length-1&&(roomsplacement[xcor+1][ycor].equals(MapState.CREATED)||
                 roomsplacement[xcor+1][ycor].equals(MapState.EXPLORED)||roomsplacement[xcor+1][ycor].equals(MapState.PLACED))){
-            setConnectorsGeneral(Orientation.RIGHT, Level1Room.Level1Connectors.E,roomCoordinates);
+            setConnectorsGeneral(Orientation.RIGHT,Level1Room.Level1Connectors.E,roomCoordinates);
         }
         if(xcor>0&&(roomsplacement[xcor-1][ycor].equals(MapState.CREATED)||
                 roomsplacement[xcor-1][ycor].equals(MapState.EXPLORED)||roomsplacement[xcor-1][ycor].equals(MapState.PLACED))){
-            setConnectorsGeneral(Orientation.LEFT, Level1Room.Level1Connectors.W,roomCoordinates);
+            setConnectorsGeneral(Orientation.LEFT,Level1Room.Level1Connectors.W,roomCoordinates);
         }
         if(ycor<roomsplacement[0].length-1&&(roomsplacement[xcor][ycor+1].equals(MapState.CREATED)||
                 roomsplacement[xcor][ycor+1].equals(MapState.EXPLORED)||roomsplacement[xcor][ycor+1].equals(MapState.PLACED))){
-            setConnectorsGeneral(Orientation.UP, Level1Room.Level1Connectors.N,roomCoordinates);
+            setConnectorsGeneral(Orientation.UP,Level1Room.Level1Connectors.N,roomCoordinates);
         }
         if(ycor>0 &&(roomsplacement[xcor][ycor-1].equals(MapState.CREATED)||
                 roomsplacement[xcor][ycor-1].equals(MapState.EXPLORED)||roomsplacement[xcor][ycor-1].equals(MapState.PLACED))){
-            setConnectorsGeneral(Orientation.DOWN, Level1Room.Level1Connectors.S,roomCoordinates);
+            setConnectorsGeneral(Orientation.DOWN,Level1Room.Level1Connectors.S,roomCoordinates);
         }
 
 
