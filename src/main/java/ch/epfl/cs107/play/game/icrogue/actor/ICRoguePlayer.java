@@ -380,6 +380,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             dialogue.setAnchor(new Vector(1.5f,2.3f));
             this.dialogue.add(dialogue);
         }
+        setSoundFX("book",1);
         ((MainBase)getOwnerArea()).setDialogue(this,dialogue);
 
     }
