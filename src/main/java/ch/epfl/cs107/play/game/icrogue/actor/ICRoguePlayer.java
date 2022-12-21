@@ -277,7 +277,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 isDoingAnimation=true;
             }
             currentAnimation.update(deltaTime);
-            if(currentAnimation.isCompleted()&&counter<COOLDOWN){
+            if(currentAnimation.isCompleted()){//&&counter<COOLDOWN){
                 doStaffAnimation=false;
                 setSpriteAnimation();
             }
@@ -295,11 +295,12 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
         }
 
-        if(keyboard.get(Keyboard.C).isPressed()&& hasBow){
+        if(keyboard.get(Keyboard.C).isPressed()&& hasBow && (counter >= COOLDOWN)){
             spriteName = "zelda/player.bow";
             bowSprite(getOrientation());
             Arrow arrow = new Arrow(getOwnerArea(),getOrientation(),getCurrentMainCellCoordinates(), false);
             arrow.enterArea(getOwnerArea(),getCurrentMainCellCoordinates());
+            counter = 0;
 
         }
         if (hasSword){
@@ -313,6 +314,10 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             dialogueStart=false;
             stopForDialogue=false;
             dialogueCounter=0;//resets the dialogue counter
+            if(keyboard.get(Keyboard.X).isPressed()){
+                healthInteraction=false;
+                damageInteraction=false;
+            }
             //this dialogue counter prevents the player from infinitelly restarting a dialogue since W is the same button used to start a dialogue
             if(merchantInteraction&&!introductionInteraction&&(keyboard.get(Keyboard.W).isPressed())){ //interaction with Tota and Alejandro class (the merchants)
                 if(hp>=10&&healthInteraction){//if the health is maxed, health does not increase and warning message shows
