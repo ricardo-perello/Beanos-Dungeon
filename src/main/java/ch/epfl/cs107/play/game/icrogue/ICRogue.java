@@ -31,6 +31,7 @@ import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Keyboard;
 import ch.epfl.cs107.play.window.Window;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
+import com.sun.tools.javac.Main;
 
 
 public class ICRogue extends AreaGame {
@@ -44,12 +45,13 @@ public class ICRogue extends AreaGame {
 
     private Level level;
     private Shop shop;
-    private int lvl0clears;
-    private int lvl1clears;
-    private int lvl2clears;
+    private static int lvl0clears;
+    private static int lvl1clears;
+    private static int lvl2clears;
     private MainBase base;
     private int lives;
     private DiscreteCoordinates previousCoorInBase;
+
     /**
      * Add all the areas
      */
@@ -281,12 +283,18 @@ public class ICRogue extends AreaGame {
             else if(level.isResolved()){
                 if(level instanceof Level0){
                     ++lvl0clears;
+                    base.printGreenDots(lvl0clears,1);
+
                 }
                 else if(level instanceof Level1){
                     ++lvl1clears;
+                    base.printGreenDots(lvl1clears,2);
+
                 }
                 else if(level instanceof Level2){
                     ++lvl2clears;
+                    base.printGreenDots(lvl2clears,3);
+
                 }
                 setSoundFx("clear",1,true);
                 setSoundtrack("home",1);

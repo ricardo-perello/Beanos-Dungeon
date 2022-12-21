@@ -28,6 +28,7 @@ import ch.epfl.cs107.play.window.Keyboard;
 import ch.epfl.cs107.play.window.Window;
 
 import java.awt.*;
+import java.awt.font.ImageGraphicAttribute;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -44,6 +45,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private Sprite sprite;
     private ImageGraphics fullHearts;
     private ImageGraphics emptyHearts;
+    private ImageGraphics CoinsDisplay;
+    private TextGraphics CoinsNumber;
     private TextGraphics message;
     private Animation currentAnimation;
     private Animation staffAnimationsDOWN,
@@ -87,6 +90,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
             printEmptyHearts();
             printFullHearts();
+            printCoinsDisplay();
+            printCoinsNumber();
 
         //setting sprites based on orientation
         if(orientation.equals(Orientation.DOWN)){
@@ -116,8 +121,10 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     public void draw(Canvas canvas) {
 
         //only draws hearts if player is in the middle of a level, not in the base or the shop
-        if (!(getOwnerArea() instanceof MainBase)&&!(getOwnerArea() instanceof Shop)){
+        if (!(getOwnerArea() instanceof MainBase)){
             printEmptyHearts().draw(canvas);
+            printCoinsDisplay().draw(canvas);
+            printCoinsNumber().draw(canvas);
             if(hp>0){
                 printFullHearts().draw(canvas);
             }
@@ -354,6 +361,16 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         emptyHearts = new ImageGraphics("images/sprites/zelda/5.empty.red.hearts.png", ((2.5f) * ((float)getMaxHp()/10)),.5f,
                 new RegionOfInterest(0,0,(int)(80 * ((double)getMaxHp()/10)),16), new Vector(0.5f,.25f));
         return emptyHearts;
+    }
+    private ImageGraphics printCoinsDisplay(){
+        CoinsDisplay = new ImageGraphics("images/sprites/zelda/coinsDisplay.png", 1.75f,0.875f,
+                new RegionOfInterest(0,0,64,32), new Vector(0.5f,9.1f));
+        return CoinsDisplay;
+    }
+    private TextGraphics printCoinsNumber(){
+        CoinsNumber = new TextGraphics( String.valueOf(CoinCounter), 0.5f, Color.black, Color.black,0.f,
+                true, false, new Vector(CoinsDisplay.getAnchor().x+1, CoinsDisplay.getAnchor().y+0.33f));
+        return CoinsNumber;
     }
 
 

@@ -25,7 +25,11 @@ import java.util.List;
 
 public class MainBase extends Tuto2Area {
 
+
     private ArrayList<Portal> portals=new ArrayList<>();
+    private ImageGraphics RedDots;
+    private ImageGraphics GreenDots;
+
 
     public String getTitle() {
         return "zelda/Village";
@@ -44,8 +48,18 @@ public class MainBase extends Tuto2Area {
         portals.get(i).setState(Portal.PortalState.OPEN);
     }
 
+    public void printGreenDots(int count, int portal){
+        GreenDots = portals.get(portal).printGreenDots(count);
+    }
+    public ImageGraphics printRedDots(int portal) {
+        RedDots = new ImageGraphics("images/sprites/zelda/3.red.dots.png", ((2.5f)), .5f,
+                new RegionOfInterest(0, 64, 96, 32), portals.get(portal).getPosition());
+        return RedDots;
+    }
+
     public void draw(Canvas canvas, List<TextGraphics> dialogue){
         dialogueBox.draw(canvas);
+
         for(TextGraphics d:dialogue){
             d.draw(canvas);
         }

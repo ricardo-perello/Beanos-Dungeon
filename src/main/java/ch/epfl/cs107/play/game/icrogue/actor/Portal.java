@@ -4,13 +4,16 @@ package ch.epfl.cs107.play.game.icrogue.actor;
  *  Date:
  */
 
+import ch.epfl.cs107.play.game.actor.ImageGraphics;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.AreaEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.icrogue.ICRogue;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
@@ -34,6 +37,21 @@ public class Portal extends AreaEntity {
     private Sprite sprite;
     public static final int NO_KEY_ID=0; /*when no key is required to open the door, this will be its identifier*/
     private PortalState state;
+    private int count;
+    private ImageGraphics RedDots;
+    private ImageGraphics GreenDots;
+
+    public ImageGraphics printGreenDots(int count){
+        GreenDots = new ImageGraphics("images/sprites/zelda/3.green.dots.png", ((2.5f) * ((float)count/3)) ,.5f,
+                new RegionOfInterest(0,32,(int)(96 * ((double)count/3)),32), this.getPosition());
+        this.count=count;
+        return GreenDots;
+    }
+    private ImageGraphics printRedDots() {
+        RedDots = new ImageGraphics("images/sprites/zelda/3.red.dots.png", ((2.5f)), .5f,
+                new RegionOfInterest(0, 64, 96, 32), this.getPosition());
+        return RedDots;
+    }
 
     public Portal(Area area, Orientation orientation, DiscreteCoordinates position, String level){
         super(area,orientation,position);
@@ -54,9 +72,17 @@ public class Portal extends AreaEntity {
     public void draw(Canvas canvas) {
         if(!state.equals(PortalState.SHOP)){
             sprite.draw(canvas);
+            if(!levelname.equals("shop")){
+                printRedDots().draw(canvas);
+                if(count>0){
+                    printGreenDots(count).draw(canvas);
+                }
+            }
+
         }
 
     }
+
 
     public void setArrivalcoordinates(DiscreteCoordinates coordinates){
         arrivalcoordinates=coordinates;

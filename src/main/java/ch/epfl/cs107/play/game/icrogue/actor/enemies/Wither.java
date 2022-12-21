@@ -80,10 +80,12 @@ public class Wither extends Enemy{
         if(MoveCounter >= COOLDOWN){
             Integer [] arrays = {0,1,2,3};
             Integer array = arrays[rand.nextInt(arrays.length)];
-            Orientation orientationMovement = Orientation.fromInt(array);
-            orientate(orientationMovement);
-            move(5);
-            MoveCounter = 0;
+            if(!isDisplacementOccurs()){
+                Orientation orientationMovement = Orientation.fromInt(array);
+                orientate(orientationMovement);
+                move(5);
+                MoveCounter = 0;
+            }
         }
         if (hp <= 0){
             die();
