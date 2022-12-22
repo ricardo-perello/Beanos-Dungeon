@@ -237,6 +237,12 @@ public class ICRogue extends AreaGame {
         return "Beanos' Dungeon";
     } /*returns the title of our game */
 
+    /**
+     * Resume method: sets sound effect and plays it
+     * @param name name of file of sound effect to be played
+     * @param vol volume of sound effect to be played
+     * @param stop determines whether it shoud stop others on start or not
+     */
     public void setSoundFx(String name, float vol, boolean stop){//sets momentary sound fx
         SoundAcoustics fx=new SoundAcoustics(ResourcePath.getSound(name), vol,false,false,false,stop);
         fx.shouldBeStarted();

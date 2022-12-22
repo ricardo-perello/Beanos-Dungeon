@@ -36,7 +36,7 @@ public class MainBase extends MainBaseArea {
         return "zelda/Village";
     }
     private final ImageGraphics dialogueBox=new ImageGraphics("images/sprites/dialog.png",8,2,
-            new RegionOfInterest(0,0,235,42), new Vector(1,-2));
+            new RegionOfInterest(0,0,235,42), new Vector(1,-2),1.0f,0.1f);
 
 
 
