@@ -43,8 +43,9 @@ public abstract class Level implements Logic {
     private int[] roomDistribution;
     private int bossRoomKeyID;
 
+
     /**
-     *
+     * Resume methods: returns the ID of the bossRoom key
      * @return  getBossRoomKeyID (int), BossRoomKeyID
      *
      */
@@ -52,7 +53,7 @@ public abstract class Level implements Logic {
         return bossRoomKeyID;
     }
     /**
-     *
+     *Resume methods: checks if its next to a boss room
      * @param coordinates (DiscreteCoordinates),
      * @return isNextToBossRoom (boolean),
      */
@@ -60,14 +61,14 @@ public abstract class Level implements Logic {
         return (map[coordinates.x][coordinates.y] instanceof Level0BossRoom)||(map[coordinates.x][coordinates.y] instanceof Level1BossRoom)||(map[coordinates.x][coordinates.y] instanceof Level2BossRoom);
     }
     /**
-     *
+     *Resume methods: returns the arrival coordinates
      * @param coordinates (DiscreteCoordinates),
      */
     public void setArrivalcoordinates(DiscreteCoordinates coordinates){
         arrivalcoordinates=coordinates;
     }
     /**
-     *
+     *Resume methods: sets a room in the map table
      * @param coords (DiscreteCoordinates)
      * @param room (ICRogueRoom),
      *
@@ -77,7 +78,7 @@ public abstract class Level implements Logic {
         map[coords.x][coords.y]=room;
     }
     /**
-     *
+     *Resume methods: sets the connector of a given room
      * @param coords (int),
      * @param destination (int),
      *@param connector (ConnectorInRoom),
@@ -90,7 +91,7 @@ public abstract class Level implements Logic {
 
     }
     /**
-     *
+     *Resume methods: sets connector of a given room and closes it
      * @param coords (int),
      * @param destination (int),
      *@param connector (ConnectorInRoom),
@@ -102,7 +103,7 @@ public abstract class Level implements Logic {
         map[coords.x][coords.y].setConnectorState(idx,Connector.ConnectorState.CLOSED);
     }
     /**
-     *
+     *Resume methods: locks a given connector
      * @param coords (int),
      * @param keyId (int),
      *@param connector (ConnectorInRoom),
@@ -115,7 +116,7 @@ public abstract class Level implements Logic {
 
     }
     /**
-     *
+     *Resume methods: sets a room name
      * @param coordinates (DiscreteCoordinates),
      *
      */
@@ -123,7 +124,7 @@ public abstract class Level implements Logic {
         roomName=map[coordinates.x][coordinates.y].getTitle();
     }
     /**
-     *
+     *Resume methods: initialises level
      * @param randomMap (boolean),
      * @param startPosition (DiscreteCoordinates),
      *
@@ -149,9 +150,9 @@ public abstract class Level implements Logic {
 
     }
     /**
-     *
+     *Resume methods: initalises player and register it in the starting room
      * @param startingroom (DiscreteCoordinates),
-     *@return ICRoguePlayer (ConnectorInRoom),
+     *@return ICRoguePlayer ,
      *
      */
     public ICRoguePlayer addPlayer(DiscreteCoordinates startingroom){
@@ -161,7 +162,7 @@ public abstract class Level implements Logic {
         return player;
     }
     /**
-     *
+     *Resume methods: makes player enter given area
      * @param transitionCoor (DiscreteCoordinates),
      * @param player (ICRoguePlayer),
      *@param roomName (String),
@@ -180,7 +181,7 @@ public abstract class Level implements Logic {
         }
     }
     /**
-     *
+     * adds area to the game
      * @param game (ICRogue),
      */
     public void addAreas(ICRogue game){
@@ -204,7 +205,7 @@ public abstract class Level implements Logic {
     }
 
     /**
-     *
+     * sets the boss position
      * @param coordinates (DiscreteCoordinates),
      *
      */
@@ -214,7 +215,7 @@ public abstract class Level implements Logic {
 
     /**
      *@return  generateRandomRoomPlacement (apState[][]),
-     *
+     * generates a random table of mapstates which is then used to create random map
      */
     protected MapState[][] generateRandomRoomPlacement(){
         ArrayList<DiscreteCoordinates>placed=new ArrayList<>();//arraylist with the coordinates of all the placed rooms
@@ -344,7 +345,7 @@ public abstract class Level implements Logic {
         return output;
     }
     /**
-     *
+     *finds the farthest room in a given mapstate from a given room. used to create boss room
      * @param placed (List<DiscreteCoordinates>),
      * @param room (int),
      * @return farthestRoom (DiscreteCoordinates),
@@ -367,7 +368,7 @@ public abstract class Level implements Logic {
     }
     /**
      *@return  isOn (boolean),
-     *
+     *checks if bossroom has been cleared
      */
     public boolean isOn() {
         if(map[bossPosition.x][bossPosition.y]==null){
@@ -380,7 +381,7 @@ public abstract class Level implements Logic {
     }
     /**
      *@return  isOff (boolean),
-     *
+     *checks if bossroom has been cleared
      */
     public boolean isOff() {
         if(map[bossPosition.x][bossPosition.y]==null){

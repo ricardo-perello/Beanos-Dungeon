@@ -15,6 +15,9 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 import java.util.ArrayList;
 
+/**
+ * Resume methods: work the same as in level0 but with different room types
+ */
 public class Level2 extends Level {
     public enum Level2RoomType{
         TurretRoom,
