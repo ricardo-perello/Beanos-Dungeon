@@ -43,46 +43,91 @@ public abstract class Level implements Logic {
     private int[] roomDistribution;
     private int bossRoomKeyID;
 
+    /**
+     *
+     * @return  getBossRoomKeyID (int), BossRoomKeyID
+     *
+     */
     public int getBossRoomKeyID(){
         return bossRoomKeyID;
     }
-
+    /**
+     *
+     * @param coordinates (DiscreteCoordinates),
+     * @return isNextToBossRoom (boolean),
+     */
     public boolean isNextToBossRoom(DiscreteCoordinates coordinates){
         return (map[coordinates.x][coordinates.y] instanceof Level0BossRoom)||(map[coordinates.x][coordinates.y] instanceof Level1BossRoom)||(map[coordinates.x][coordinates.y] instanceof Level2BossRoom);
     }
-
+    /**
+     *
+     * @param coordinates (DiscreteCoordinates),
+     */
     public void setArrivalcoordinates(DiscreteCoordinates coordinates){
         arrivalcoordinates=coordinates;
     }
-
+    /**
+     *
+     * @param coords (DiscreteCoordinates)
+     * @param room (ICRogueRoom),
+     *
+     *
+     */
     protected void setRoom(DiscreteCoordinates coords, ICRogueRoom room){
         map[coords.x][coords.y]=room;
     }
-
+    /**
+     *
+     * @param coords (int),
+     * @param destination (int),
+     *@param connector (ConnectorInRoom),
+     *
+     */
     protected void setRoomConnectorDestination(DiscreteCoordinates coords, String destination,
                                                ConnectorInRoom connector){
         int idx=connector.getIndex();
         map[coords.x][coords.y].SetConnectorAreaTitle(idx, destination);
 
-
     }
+    /**
+     *
+     * @param coords (int),
+     * @param destination (int),
+     *@param connector (ConnectorInRoom),
+     *
+     */
     protected void setRoomConnector(DiscreteCoordinates coords, String destination, ConnectorInRoom connector){
         setRoomConnectorDestination(coords,destination,connector);
         int idx=connector.getIndex();
         map[coords.x][coords.y].setConnectorState(idx,Connector.ConnectorState.CLOSED);
-
-
     }
+    /**
+     *
+     * @param coords (int),
+     * @param keyId (int),
+     *@param connector (ConnectorInRoom),
+     *
+     */
     protected void lockRoomConnector(DiscreteCoordinates coords, ConnectorInRoom connector, int keyId){
         int idx=connector.getIndex();
         map[coords.x][coords.y].setConnectorState(idx,Connector.ConnectorState.LOCKED);
         map[coords.x][coords.y].setConnectorKeyID(idx,keyId);
 
     }
+    /**
+     *
+     * @param coordinates (DiscreteCoordinates),
+     *
+     */
     protected void setRoomName(DiscreteCoordinates coordinates){
         roomName=map[coordinates.x][coordinates.y].getTitle();
     }
-
+    /**
+     *
+     * @param randomMap (boolean),
+     * @param startPosition (DiscreteCoordinates),
+     *
+     */
     public Level(boolean randomMap,DiscreteCoordinates startPosition,
                  int[] roomDistribution, int x, int y){
         bossRoomKeyID= RandomHelper.roomGenerator.nextInt(0,50);
@@ -103,14 +148,25 @@ public abstract class Level implements Logic {
         }
 
     }
-
+    /**
+     *
+     * @param startingroom (DiscreteCoordinates),
+     *@return ICRoguePlayer (ConnectorInRoom),
+     *
+     */
     public ICRoguePlayer addPlayer(DiscreteCoordinates startingroom){
         ICRoguePlayer player=new ICRoguePlayer(map[startingroom.x][startingroom.y],Orientation.UP,new DiscreteCoordinates(2,2));
         player.enterArea(map[startingroom.x][startingroom.y],new DiscreteCoordinates(2,2));
         map[startingroom.x][startingroom.y].visit();
         return player;
     }
-
+    /**
+     *
+     * @param transitionCoor (DiscreteCoordinates),
+     * @param player (ICRoguePlayer),
+     *@param roomName (String),
+     *
+     */
     public void enterArea(DiscreteCoordinates transitionCoor, ICRoguePlayer player, String roomName){
         for(int i=0;i<map.length;++i){
             for(int k=0;k<map[i].length;++k){
@@ -123,7 +179,10 @@ public abstract class Level implements Logic {
             }
         }
     }
-
+    /**
+     *
+     * @param game (ICRogue),
+     */
     public void addAreas(ICRogue game){
         for(int i=0;i<map.length;++i){
             for(int k=0;k<map[i].length;++k){
@@ -134,15 +193,29 @@ public abstract class Level implements Logic {
             }
         }
     }
-
+    /**
+     *
+     * @param coordinates (DiscreteCoordinates),
+     * @return  getRoomName (String),
+     *
+     */
     public String getRoomName(DiscreteCoordinates coordinates){
         return map[coordinates.x][coordinates.y].getTitle();
     }
 
+    /**
+     *
+     * @param coordinates (DiscreteCoordinates),
+     *
+     */
     public void setBossPosition(DiscreteCoordinates coordinates){
         bossPosition=coordinates;
     }
 
+    /**
+     *@return  generateRandomRoomPlacement (apState[][]),
+     *
+     */
     protected MapState[][] generateRandomRoomPlacement(){
         ArrayList<DiscreteCoordinates>placed=new ArrayList<>();//arraylist with the coordinates of all the placed rooms
         ArrayList<DiscreteCoordinates>explored=new ArrayList<>();//arraylist with the coordinates of explored rooms
@@ -270,7 +343,13 @@ public abstract class Level implements Logic {
 
         return output;
     }
-
+    /**
+     *
+     * @param placed (List<DiscreteCoordinates>),
+     * @param room (int),
+     * @return farthestRoom (DiscreteCoordinates),
+     *
+     */
     //finds fartherst room from a give coordinate in a given array
     private DiscreteCoordinates farthestRoom(List<DiscreteCoordinates>placed,DiscreteCoordinates room){
         double dist=0;
@@ -286,7 +365,10 @@ public abstract class Level implements Logic {
         }
         return output;
     }
-
+    /**
+     *@return  isOn (boolean),
+     *
+     */
     public boolean isOn() {
         if(map[bossPosition.x][bossPosition.y]==null){
             return false;
@@ -296,7 +378,10 @@ public abstract class Level implements Logic {
         }
 
     }
-
+    /**
+     *@return  isOff (boolean),
+     *
+     */
     public boolean isOff() {
         if(map[bossPosition.x][bossPosition.y]==null){
             return false;
@@ -305,11 +390,17 @@ public abstract class Level implements Logic {
             return map[bossPosition.x][bossPosition.y].isOff();
         }
     }
-
+    /**
+     *@return  getIntensity (float),
+     *
+     */
     public float getIntensity() {
         return 0;
     }
-
+    /**
+     *@return  isResolved (boolean),
+     *
+     */
     public boolean isResolved(){
         return isOff()&&!isOn();
     }

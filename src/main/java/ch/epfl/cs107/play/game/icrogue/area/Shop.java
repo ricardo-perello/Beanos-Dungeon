@@ -32,17 +32,32 @@ public class Shop extends Area {
 
     private final ImageGraphics dialogueBox=new ImageGraphics("images/sprites/dialog.png",8,2,
             new RegionOfInterest(0,0,235,42), new Vector(1,.8f));
-
+    /**
+     *
+     * @return Title (String), icrogue/Shop
+     *
+     */
     public String getTitle() {
         return "icrogue/Shop";
     }
 
 
-
+    /**
+     * @return (4,1) (DiscreteCoordinates), spawn position
+     *
+     */
     public DiscreteCoordinates getPlayerSpawnPosition() {
         return new DiscreteCoordinates(4,1);
     }
 
+
+    /**
+     *
+     * @param dialogues (List<TextGraphics>), list of dialogues
+     * @param name (String), name of dialogue
+     * @param i (int), line on dialogue box
+     *
+     */
     public void setUpDialogue(List<TextGraphics>dialogues,String name,int i){
         String message = XMLTexts.getText(name);
         TextGraphics dialogue=new TextGraphics(message,0.5F, Color.BLACK);
@@ -84,7 +99,12 @@ public class Shop extends Area {
             registerActor(connector);
         }
     }
-
+    /**
+     *
+     * @param canvas (Canvas), Window
+     * @param dialogue (List<TextGraphics>), List of dialogues
+     *
+     */
     public void draw(Canvas canvas, List<TextGraphics> dialogue){
         dialogueBox.draw(canvas);
         for(TextGraphics d:dialogue){

@@ -29,6 +29,14 @@ public abstract class ICRogueRoom extends Area implements Logic {
     private final ImageGraphics dialogueBox=new ImageGraphics("images/sprites/dialog.png",8,2,
             new RegionOfInterest(0,0,235,42), new Vector(1,.8f));
     private ArrayList<Connector>connectors=new ArrayList<>();
+    /**
+
+     *@param   connectorsCoordinates (List<DiscreteCoordinates>),
+     *@param   orientations (List<Orientation>);
+     *@param destinationCoordinates (List<DiscreteCoordinates>),
+     *@param behaviourName  (String),
+     *@param roomCoordinates (DiscreteCoordinates)
+     */
     public ICRogueRoom(List<DiscreteCoordinates> connectorsCoordinates,
                        List<Orientation> orientations,List<DiscreteCoordinates>destinationCoordinates,
                        String behaviourName, DiscreteCoordinates roomCoordinates){
@@ -42,7 +50,11 @@ public abstract class ICRogueRoom extends Area implements Logic {
         wasVisited=false;
 
     }
+    /**
 
+     *@param  canvas (Canvas),
+     *@param  dialogue (List<TextGraphics>),
+     */
     public void draw(Canvas canvas, List<TextGraphics> dialogue){
         dialogueBox.draw(canvas);
         for(TextGraphics d:dialogue){
@@ -50,11 +62,20 @@ public abstract class ICRogueRoom extends Area implements Logic {
         }
     }
 
+    /**
+     *@return  getCoordinatesString (String),
+     *
+     */
     public String getCoordinatesString(){
         return coordinates.x+""+coordinates.y;
     }
-
+    /**
+     *@return  getCoordinates (DiscreteCoordinates),
+     *
+     */
     public DiscreteCoordinates getCoordinates(){return coordinates;}
+
+
 
     public void SetConnectorAreaTitle (int index, String title){
         connectors.get(index).setAreaTitle(title);

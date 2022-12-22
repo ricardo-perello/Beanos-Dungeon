@@ -17,12 +17,19 @@ public class ICRogueBehavior extends AreaBehavior{
 
         final int type;
         final boolean isWalkable;
-
+        /**
+         * Default ICRogueCellType Constructor
+         * @param type (int), not null
+         * @param isWalkable (boolean): isWalkable
+         */
         ICRogueCellType(int type, boolean isWalkable){
             this.type = type;
             this.isWalkable = isWalkable;
         }
-
+        /**
+         * toType
+         * @param type (int)
+         */
         public static ICRogueCellType toType(int type){
             for(ICRogueCellType ict : ICRogueCellType.values()){
                 if(ict.type == type)
@@ -35,9 +42,10 @@ public class ICRogueBehavior extends AreaBehavior{
     }
 
     /**
-     * Default Tuto2Behavior Constructor
+     *
      * @param window (Window), not null
      * @param name (String): Name of the Behavior, not null
+     *
      */
     public ICRogueBehavior(Window window, String name){
         super(window, name);
@@ -59,7 +67,7 @@ public class ICRogueBehavior extends AreaBehavior{
         private final ICRogueCellType type;
 
         /**
-         * Default Tuto2Cell Constructor
+         *
          * @param x (int): x coordinate of the cell
          * @param y (int): y coordinate of the cell
          * @param type (EnigmeCellType), not null
@@ -72,11 +80,19 @@ public class ICRogueBehavior extends AreaBehavior{
         public ICRogueCellType getType(){
             return type;
         }
-
+        /**
+         *
+         * @param entity (Interactable), not null
+         * @return (boolean): canLeave
+         */
         protected boolean canLeave(Interactable entity) {
             return true;
         }
-
+        /**
+         *
+         * @param entity (Interactable), not null
+         * @return (boolean): canEnter
+         */
         protected boolean canEnter(Interactable entity) {
             for(Interactable elements: entities){
                 if(elements.takeCellSpace()){
@@ -89,7 +105,11 @@ public class ICRogueBehavior extends AreaBehavior{
 
             return type.isWalkable;
         }
-
+        /**
+         *
+         * @param v (AreaInteractionVisitor), not null
+         * @param isCellInteraction (boolean): canLeave
+         */
         public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
                 ((ICRogueInteractionHandler)v).interactWith(this, isCellInteraction);
 

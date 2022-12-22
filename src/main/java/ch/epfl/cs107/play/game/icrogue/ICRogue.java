@@ -66,8 +66,6 @@ public class ICRogue extends AreaGame {
         shop=new Shop();
         addArea(shop);
         player.startDialogue();
-
-
     }
     /**
      * Resume method: creates a level zero and transportas player to it to start the level
@@ -79,10 +77,6 @@ public class ICRogue extends AreaGame {
         level.addAreas(this); /*adds current room to the areas*/
 
         setSoundtrack("dungeon",1);
-
-
-
-
 
         setCurrentArea(level.getRoomName(Level0.startingroom),false); /* makes it the current area */
 
@@ -209,7 +203,7 @@ public class ICRogue extends AreaGame {
 
     public void end() {
         /*
-        add win screen
+       todo add win screen
          */
     }
 
@@ -368,6 +362,11 @@ public class ICRogue extends AreaGame {
 
 }
 
+
+
+
+//todo add damage display
+//todo change sprites for connector
 
 
 

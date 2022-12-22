@@ -31,7 +31,10 @@ public class MainBase extends MainBaseArea {
     private ImageGraphics RedDots;
     private ImageGraphics GreenDots;
 
-
+    /**
+     * @return getTitle (String)
+     *
+     */
     public String getTitle() {
         return "zelda/Village";
     }
@@ -50,26 +53,43 @@ public class MainBase extends MainBaseArea {
     public DiscreteCoordinates getPlayerSpawnPosition() {
         return new DiscreteCoordinates(5,15);
     }
-
+    /**
+     *
+     * @param i (int), portal i
+     */
     public void unlockPortal(int i){
         portals.get(i).setState(Portal.PortalState.OPEN);
     }
 
     /**
-     * Resume method: prints dots under portals to indicate progress
+     *Resume method: prints dots under portals to indicate progress
+     *
+     * @param count (int), count of times level beat
+     * @param portal (int), number of portal
+     *
+     *
      */
     public void printGreenDots(int count, int portal){
         GreenDots = portals.get(portal).printGreenDots(count);
     }
     /**
      * Resume method: prints dots under portals to indicate progress
+
+     * @param portal (int), number of portal
+     *
      */
     public ImageGraphics printRedDots(int portal) {
         RedDots = new ImageGraphics("images/sprites/zelda/3.red.dots.png", ((2.5f)), .5f,
                 new RegionOfInterest(0, 64, 96, 32), portals.get(portal).getPosition());
         return RedDots;
     }
-
+    /**
+     *
+     * @param canvas (Canvas), window
+     * @param dialogue (List<TextGraphics>), list of dialogues
+     *
+     *
+     */
     public void draw(Canvas canvas, List<TextGraphics> dialogue){
         dialogueBox.draw(canvas);
 
@@ -78,15 +98,20 @@ public class MainBase extends MainBaseArea {
         }
 
     }
-
     /**
-     * Resume method: makes the parent of the dialogue box the player
+     *Resume method: makes the parent of the dialogue box the player
+     *
+     * @param player (ICRoguePlayer)
      */
     public void setParent(ICRoguePlayer player){
         dialogueBox.setParent(player);
         dialogueBox.setAnchor(new Vector(-3f,-3f));
     }
-
+    /**
+     *
+     * @param player (ICRoguePlayer),
+     * @param dialogue (List<TextGraphics>), list of dialogues
+     */
     public void setDialogue(ICRoguePlayer player, List<TextGraphics> dialogue){
         for(int i=0;i<dialogue.size();++i){
             dialogue.get(i).setParent(player);
@@ -96,7 +121,13 @@ public class MainBase extends MainBaseArea {
         }
 
     }
-
+    /**
+     *
+     * @param dialogues (List<TextGraphics>),list of dialogues
+     * @param name (String), name of dialogue
+     *@param size (float), font size
+     *
+     */
     //sets up the dialogue for each character
     public void setUpDialogue(List<TextGraphics>dialogues,String name,float size){
         String message = XMLTexts.getText(name);

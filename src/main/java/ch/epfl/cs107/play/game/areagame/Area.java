@@ -266,6 +266,11 @@ public abstract class Area implements Playable, PauseMenu.Pausable {
         return true;
     }
 
+    /**
+     * Resume method: Can be overridden
+     * @param deltaTime
+     * @return (boolean) : if the resume succeed, true by default
+     */
     @Override
     public void update(float deltaTime) {    	
     	purgeRegistration();

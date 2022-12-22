@@ -68,7 +68,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     public final static float COOLDOWN = 1.f;
     private float counter = 1.f;
     private float dialogueCounter=2.1f;
-    private static int CoinCounter = 5;
+    private static int CoinCounter = 20;
     private Sprite[] spritesDOWN = new Sprite[4], spritesLEFT = new Sprite[4], spritesUP = new Sprite[4], spritesRIGHT = new Sprite[4];
     private final Animation animationsDOWN = new Animation(ANIMATION_DURATION/2, spritesDOWN);
     private final Animation animationsLEFT = new Animation(ANIMATION_DURATION/2, spritesLEFT);
