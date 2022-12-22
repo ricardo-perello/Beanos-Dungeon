@@ -68,7 +68,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     public final static float COOLDOWN = 1.f;
     private float counter = 1.f;
     private float dialogueCounter=2.1f;
-    private static int CoinCounter = 20;
+    private static int CoinCounter = 5;
     private Sprite[] spritesDOWN = new Sprite[4], spritesLEFT = new Sprite[4], spritesUP = new Sprite[4], spritesRIGHT = new Sprite[4];
     private final Animation animationsDOWN = new Animation(ANIMATION_DURATION/2, spritesDOWN);
     private final Animation animationsLEFT = new Animation(ANIMATION_DURATION/2, spritesLEFT);
@@ -84,7 +84,6 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private boolean damageInteraction; //checks if interaction is with Alejandro
     private boolean introductionInteraction;
     private boolean gameStartDialogue;
-    private boolean gameEndDialogue;
     private int gameStartDialogueStep=1;
     private boolean isPoisoned;
     private float poisonCounter;
@@ -137,29 +136,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         ++gameStartDialogueStep;
     }
 
-    /**
-     * Resume method: initialised the dialogue displayed when level beanos is cleared (the ending)
-     */
-    public void endDialogue(){
 
-        gameEndDialogue=true;
-        stopForDialogue=true;
-        dialogue.clear();
-        String key="Game_End1";
-        String message = XMLTexts.getText(key);
-        TextGraphics dialogue=new TextGraphics(message,0.46F, Color.BLACK,null, 0.0f, false, false, Vector.ZERO, TextAlign.Horizontal.LEFT, TextAlign.Vertical.BOTTOM, 1.0f, 0.0f);
-        dialogue.setAnchor(new Vector(1.5f,2.3f));
-        this.dialogue.add(dialogue);
-        key="Game_End2";
-        message = XMLTexts.getText(key);
-        dialogue=new TextGraphics(message,0.46F, Color.BLACK,null, 0.0f, false, false, Vector.ZERO, TextAlign.Horizontal.LEFT, TextAlign.Vertical.BOTTOM, 1.0f, 0.0f);
-        dialogue.setAnchor(new Vector(1.5f,1.9f));
-        this.dialogue.add(dialogue);
-        ((MainBase)getOwnerArea()).setFinalDialogueBox();
-        setSoundFX("book",1);
-        ((MainBase)getOwnerArea()).setDialogue(this,this.dialogue);
 
-    }
 
     /**
      * Resume method: draws the player and its attributes based on certain conditions like the health and the instance of the current area
@@ -210,13 +188,6 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             }
         }
         if(gameStartDialogue){
-            ((MainBase) getOwnerArea()).setParent(this);
-            //sets the placement and size of the dialogue (text) based on the players position
-            ((MainBase) getOwnerArea()).setDialogue(this,dialogue);
-            //draws the dialogue box and the current player dialogue
-            ((MainBase) getOwnerArea()).draw(canvas, dialogue);
-        }
-        if(gameEndDialogue){
             ((MainBase) getOwnerArea()).setParent(this);
             //sets the placement and size of the dialogue (text) based on the players position
             ((MainBase) getOwnerArea()).setDialogue(this,dialogue);
@@ -489,12 +460,6 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                     stopForDialogue=true;
                 }
             }
-
-        }
-        if((gameEndDialogue&&stopForDialogue&&keyboard.get(Keyboard.W).isPressed())||dialogueCounter==1.f){
-            gameStartDialogue=false;
-            stopForDialogue=false;
-            dialogueCounter=0;
 
         }
 

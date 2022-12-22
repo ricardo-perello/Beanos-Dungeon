@@ -50,7 +50,6 @@ public class ICRogue extends AreaGame {
     private MainBase base;
     private int lives;
     private DiscreteCoordinates previousCoorInBase;
-    private int cleared;
 
     /**
      * Add all the areas and initialises the soundtrack and player
@@ -325,10 +324,6 @@ public class ICRogue extends AreaGame {
                     base.printGreenDots(lvl2clears,3);
 
                 }
-                else if(level instanceof LevelBeanos&&cleared==0){
-                    cleared=1;
-
-                }
                 setSoundFx("clear",1,true);
                 setSoundtrack("home",1);
                 player.strengthen();
@@ -336,9 +331,6 @@ public class ICRogue extends AreaGame {
             setCurrentArea(base.getTitle(),false);
             player.enterArea(base,previousCoorInBase);
             player.centerCamera();
-            if(cleared==1){
-                player.endDialogue();
-            }
 
         }
     }

@@ -13,7 +13,9 @@ import ch.epfl.cs107.play.game.icrogue.area.level1.rooms.*;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 import java.util.ArrayList;
-
+/**
+ * Resume methods: work the same as in level0 but with different room types
+ */
 public class Level1 extends Level {
     public enum Level1RoomType{
         TurretRoom,

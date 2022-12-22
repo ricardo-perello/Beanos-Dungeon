@@ -83,7 +83,9 @@ public class Level0 extends Level {
         System.out.println();
     }
 
-    //generates the map based on MapStates and the roomDistribution table
+    /**
+     * Resume methods: generates the map based on MapStates and the roomDistribution table
+     */
     public void generateRandomMap(){
         MapState[][]mapStates=generateRandomRoomPlacement();
         printMap(mapStates);
@@ -170,9 +172,13 @@ public class Level0 extends Level {
 
     }
 
-
-    //sets the connector destination based on orientation, the connector and the coordinates given as parameter
-    //used in setUpConnector
+    /**
+     * Resume methods: sets the connector destination based on orientation, the connector and the coordinates given as parameter
+     * used in setUpConnector
+     * @param orientation orientation of connector
+     * @param connectors connector in question
+     * @param coordinates coordinates of the room connector is in
+     */
     private void setConnectorsGeneral(Orientation orientation, Level0Room.Level0Connectors connectors, DiscreteCoordinates coordinates){
         DiscreteCoordinates destination=coordinates.jump(orientation.toVector());
         String destinationName= getRoomName(destination);
@@ -183,6 +189,11 @@ public class Level0 extends Level {
         }
     }
 
+    /**
+     * Resume methods: sets up the connectors in a given room based on the mapstate
+     * @param roomsplacement mapstate of the current level
+     * @param room room in which connectors will be set up
+     */
     protected void setUpConnector(MapState[][] roomsplacement,ICRogueRoom room){
         DiscreteCoordinates roomCoordinates=room.getCoordinates();
         int xcor=roomCoordinates.x;
