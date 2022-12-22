@@ -9,6 +9,7 @@ import ch.epfl.cs107.play.game.icrogue.RandomHelper;
 import ch.epfl.cs107.play.game.icrogue.area.ICRogueRoom;
 import ch.epfl.cs107.play.game.icrogue.area.Level;
 import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0Room;
+import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0StaffRoom;
 import ch.epfl.cs107.play.game.icrogue.area.level1.rooms.*;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
@@ -37,7 +38,7 @@ public class Level1 extends Level {
             roomArrangement[3]=1;
             roomArrangement[4]=1;
             roomArrangement[5]=RandomHelper.roomGenerator.nextInt(1,2);
-            roomArrangement[6]=RandomHelper.roomGenerator.nextInt(1,3);
+            roomArrangement[6]=RandomHelper.roomGenerator.nextInt(1,2);
             roomArrangement[7]=1;
             roomArrangement[8]=RandomHelper.roomGenerator.nextInt(1,2);
             return roomArrangement;
@@ -127,20 +128,6 @@ public class Level1 extends Level {
             }
         }
 
-
-
-        for(int i=0;i<roomArrangement[0];++i){
-            int randomcoor=RandomHelper.roomGenerator.nextInt(0, roomsToCreate.size());
-            DiscreteCoordinates coordinates=roomsToCreate.get(randomcoor);
-            int xcor=roomsToCreate.get(randomcoor).x;
-            int ycor=roomsToCreate.get(randomcoor).y;
-            Level1TurretRoom turretRoom=new Level1TurretRoom(roomsToCreate.get(randomcoor));
-            rooms.add(turretRoom);
-            setRoom(coordinates,turretRoom);
-            mapStates[xcor][ycor]=MapState.CREATED;
-            roomsToCreate.remove(randomcoor);
-        }
-
         int randomcoor=RandomHelper.roomGenerator.nextInt(0, roomsToCreate.size());
         DiscreteCoordinates coordinates=roomsToCreate.get(randomcoor);
         int xcor=roomsToCreate.get(randomcoor).x;
@@ -151,12 +138,24 @@ public class Level1 extends Level {
         mapStates[xcor][ycor]=MapState.CREATED;
         roomsToCreate.remove(randomcoor);
 
+        for(int i=0;i<roomArrangement[0];++i){
+            randomcoor=RandomHelper.roomGenerator.nextInt(0, roomsToCreate.size());
+            coordinates=roomsToCreate.get(randomcoor);
+            xcor=roomsToCreate.get(randomcoor).x;
+            ycor=roomsToCreate.get(randomcoor).y;
+            Level1TurretRoom turretRoom=new Level1TurretRoom(roomsToCreate.get(randomcoor));
+            rooms.add(turretRoom);
+            setRoom(coordinates,turretRoom);
+            mapStates[xcor][ycor]=MapState.CREATED;
+            roomsToCreate.remove(randomcoor);
+        }
+
         for(int i=0;i<roomArrangement[5];++i){
             randomcoor=RandomHelper.roomGenerator.nextInt(0, roomsToCreate.size());
             coordinates=roomsToCreate.get(randomcoor);
             xcor=roomsToCreate.get(randomcoor).x;
             ycor=roomsToCreate.get(randomcoor).y;
-            Level1Room Room=new Level1PuzzleRoom(coordinates);
+            Level1PuzzleRoom Room=new Level1PuzzleRoom(coordinates);
             rooms.add(Room);
             setRoom(coordinates,Room);
             mapStates[xcor][ycor]=MapState.CREATED;
@@ -178,9 +177,9 @@ public class Level1 extends Level {
         coordinates=roomsToCreate.get(randomcoor);
         xcor=roomsToCreate.get(randomcoor).x;
         ycor=roomsToCreate.get(randomcoor).y;
-        Level1BowRoom bowRoom=new Level1BowRoom(roomsToCreate.get(randomcoor));
+        Level1BowRoom bowRoom=new Level1BowRoom(coordinates);
         rooms.add(bowRoom);
-        setRoom(coordinates,staffRoom);
+        setRoom(coordinates,bowRoom);
         mapStates[xcor][ycor]=MapState.CREATED;
         roomsToCreate.remove(randomcoor);
 

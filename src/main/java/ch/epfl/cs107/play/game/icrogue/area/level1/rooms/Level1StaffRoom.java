@@ -11,7 +11,7 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 public class Level1StaffRoom extends Level1ItemRoom {
     public Level1StaffRoom(DiscreteCoordinates coordinates) {
         super(coordinates);
-
-        addItem(new Staff(this, Orientation.DOWN,new DiscreteCoordinates(5,5)));
+        Staff staff=new Staff(this, Orientation.DOWN,new DiscreteCoordinates(5,5));
+        addItem(staff);
     }
 }

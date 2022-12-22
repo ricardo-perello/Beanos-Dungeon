@@ -34,16 +34,16 @@ public class Level2 extends Level {
         public static int[] setroomArrangement(){
             int size=Level2RoomType.values().length;
             int[] roomArrangement = new int[size];
-            roomArrangement[0]=RandomHelper.roomGenerator.nextInt(3,4);
+            roomArrangement[0]=RandomHelper.roomGenerator.nextInt(2,3);
             roomArrangement[1]=1;
             roomArrangement[2]=1;
             roomArrangement[3]=1;
             roomArrangement[4]=1;
-            roomArrangement[5]=RandomHelper.roomGenerator.nextInt(1,3);
+            roomArrangement[5]=RandomHelper.roomGenerator.nextInt(1,2);
             roomArrangement[6]=1;
             roomArrangement[7]=1;
             roomArrangement[8]=RandomHelper.roomGenerator.nextInt(1,2);
-            roomArrangement[9]=RandomHelper.roomGenerator.nextInt(1,2);
+            roomArrangement[9]=RandomHelper.roomGenerator.nextInt(2,3);
             return roomArrangement;
         }
     }
@@ -173,7 +173,7 @@ public class Level2 extends Level {
         ycor=roomsToCreate.get(randomcoor).y;
         Level2BowRoom bowRoom=new Level2BowRoom(roomsToCreate.get(randomcoor));
         rooms.add(bowRoom);
-        setRoom(coordinates,staffRoom);
+        setRoom(coordinates,bowRoom);
         mapStates[xcor][ycor]=MapState.CREATED;
         roomsToCreate.remove(randomcoor);
 
@@ -183,7 +183,7 @@ public class Level2 extends Level {
         ycor=roomsToCreate.get(randomcoor).y;
         Level2SwordRoom swordRoom=new Level2SwordRoom(roomsToCreate.get(randomcoor));
         rooms.add(swordRoom);
-        setRoom(coordinates,staffRoom);
+        setRoom(coordinates,swordRoom);
         mapStates[xcor][ycor]=MapState.CREATED;
         roomsToCreate.remove(randomcoor);
 
