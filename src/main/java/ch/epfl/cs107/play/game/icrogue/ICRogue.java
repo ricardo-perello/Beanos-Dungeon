@@ -53,9 +53,8 @@ public class ICRogue extends AreaGame {
     private int cleared;
 
     /**
-     * Add all the areas
+     * Add all the areas and initialises the soundtrack and player
      */
-
     private void initGame(){
         base = new MainBase();
         addArea(base);
@@ -70,6 +69,9 @@ public class ICRogue extends AreaGame {
 
 
     }
+    /**
+     * Resume method: creates a level zero and transportas player to it to start the level
+     */
     private void initLevel0(){
 
 
@@ -89,6 +91,9 @@ public class ICRogue extends AreaGame {
 
     }
 
+    /**
+     * Resume method: creates a level 1 and transportas player to it to start the level
+     */
     private void initLevel1(){
 
 
@@ -106,6 +111,9 @@ public class ICRogue extends AreaGame {
 
     }
 
+    /**
+     * Resume method: creates a level 2 and transportas player to it to start the level
+     */
     private void initLevel2(){
 
 
@@ -125,6 +133,9 @@ public class ICRogue extends AreaGame {
 
     }
 
+    /**
+     * Resume method: creates a level beanos and transportas player to it to start the level
+     */
     private void initLevelBeanos(){
 
 
@@ -155,6 +166,10 @@ public class ICRogue extends AreaGame {
         return false;
     }
 
+    /**
+     * Resume method: updates icrogue
+     * @param deltaTime time by which method is updated
+     */
     @Override
     public void update(float deltaTime) {
         Keyboard keyboard = getWindow().getKeyboard() ;
@@ -198,6 +213,9 @@ public class ICRogue extends AreaGame {
          */
     }
 
+    /**
+     * Resume method: unlocks portals if the previous level was cleared 3 times
+     */
     public void unlockPortals(){//check if the previous level has been cleared enough times and then unlocks the portal to the new level
         MainBase base=(MainBase)getCurrentArea();
         if(lvl0clears==3){
@@ -212,6 +230,9 @@ public class ICRogue extends AreaGame {
 
     }
 
+    /**
+     * Resume method: returns title of game
+     */
     public String getTitle() {
         return "Beanos' Dungeon";
     } /*returns the title of our game */
@@ -297,7 +318,6 @@ public class ICRogue extends AreaGame {
 
                 }
                 else if(level instanceof LevelBeanos&&cleared==0){
-                    player.endDialogue();
                     cleared=1;
 
                 }
@@ -308,6 +328,9 @@ public class ICRogue extends AreaGame {
             setCurrentArea(base.getTitle(),false);
             player.enterArea(base,previousCoorInBase);
             player.centerCamera();
+            if(cleared==1){
+                player.endDialogue();
+            }
 
         }
     }
