@@ -77,6 +77,7 @@ public abstract class ICRogueRoom extends Area implements Logic {
 
 
 
+
     public void SetConnectorAreaTitle (int index, String title){
         connectors.get(index).setAreaTitle(title);
     }
