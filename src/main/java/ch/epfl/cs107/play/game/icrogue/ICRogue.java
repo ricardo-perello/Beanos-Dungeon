@@ -248,13 +248,21 @@ public class ICRogue extends AreaGame {
         fx.shouldBeStarted();
         fx.bip(getWindow());
     }
+    /**
+     * Resume method: sets soundtrack and plays it
+     * @param name name of file of soundtrack to be played
+     * @param vol volume of sound effect to be played
+     */
     private void setSoundtrack(String name,float vol){ //sets the soundtrack (music so it differs from the momentary soundFX)
         soundtrack=new SoundAcoustics(ResourcePath.getSound(name),vol,false,false,true,false);
         soundtrack.shouldBeStarted();
         soundtrack.bip(getWindow());
     }
 
-    protected void switchArea() {//method to alternate between MainBase, Shop and Level
+    /**
+     * Resume method: method to alternate between MainBase, Shop and Level
+     */
+    protected void switchArea() {
         if(player.getisTransporting()&&getCurrentArea() instanceof MainBase){
             previousCoorInBase=player.getCurrentCells().get(0);
             if(!player.getTransportArea().equals("shop")){//if the portal leads to the shop it sounds like a door else it sounds like a portal
@@ -341,6 +349,9 @@ public class ICRogue extends AreaGame {
         }
     }
 
+    /**
+     * Resume method: method to alternate between rooms in a level
+     */
     protected void switchRoom() {
         if(player.getisTransitioning()){
             player.leaveArea();
@@ -357,11 +368,6 @@ public class ICRogue extends AreaGame {
 
 }
 
-
-
-
-//todo add damage display
-//todo change sprites for connector
 
 
 

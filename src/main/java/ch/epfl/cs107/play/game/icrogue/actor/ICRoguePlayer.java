@@ -141,21 +141,23 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
      * Resume method: initialised the dialogue displayed when level beanos is cleared (the ending)
      */
     public void endDialogue(){
+
         gameEndDialogue=true;
         stopForDialogue=true;
         dialogue.clear();
         String key="Game_End1";
         String message = XMLTexts.getText(key);
-        TextGraphics dialogue=new TextGraphics(message,0.46F, Color.BLACK);
+        TextGraphics dialogue=new TextGraphics(message,0.46F, Color.BLACK,null, 0.0f, false, false, Vector.ZERO, TextAlign.Horizontal.LEFT, TextAlign.Vertical.BOTTOM, 1.0f, 0.01f);
         dialogue.setAnchor(new Vector(1.5f,2.3f));
         this.dialogue.add(dialogue);
         key="Game_End2";
         message = XMLTexts.getText(key);
-        dialogue=new TextGraphics(message,0.46F, Color.BLACK,null, 0.0f, false, false, Vector.ZERO, TextAlign.Horizontal.LEFT, TextAlign.Vertical.BOTTOM, 0.01f, 0.0f);
+        dialogue=new TextGraphics(message,0.46F, Color.BLACK,null, 0.0f, false, false, Vector.ZERO, TextAlign.Horizontal.LEFT, TextAlign.Vertical.BOTTOM, 1.0f, 0.01f);
         dialogue.setAnchor(new Vector(1.5f,1.9f));
         this.dialogue.add(dialogue);
         setSoundFX("book",1);
         ((MainBase)getOwnerArea()).setDialogue(this,this.dialogue);
+        ((MainBase)getOwnerArea()).setFinalDialogueBox();
     }
 
     /**
