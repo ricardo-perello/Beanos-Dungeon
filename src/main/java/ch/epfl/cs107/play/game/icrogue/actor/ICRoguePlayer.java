@@ -147,17 +147,18 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         dialogue.clear();
         String key="Game_End1";
         String message = XMLTexts.getText(key);
-        TextGraphics dialogue=new TextGraphics(message,0.46F, Color.BLACK,null, 0.0f, false, false, Vector.ZERO, TextAlign.Horizontal.LEFT, TextAlign.Vertical.BOTTOM, 1.0f, 0.01f);
+        TextGraphics dialogue=new TextGraphics(message,0.46F, Color.BLACK,null, 0.0f, false, false, Vector.ZERO, TextAlign.Horizontal.LEFT, TextAlign.Vertical.BOTTOM, 1.0f, 0.0f);
         dialogue.setAnchor(new Vector(1.5f,2.3f));
         this.dialogue.add(dialogue);
         key="Game_End2";
         message = XMLTexts.getText(key);
-        dialogue=new TextGraphics(message,0.46F, Color.BLACK,null, 0.0f, false, false, Vector.ZERO, TextAlign.Horizontal.LEFT, TextAlign.Vertical.BOTTOM, 1.0f, 0.01f);
+        dialogue=new TextGraphics(message,0.46F, Color.BLACK,null, 0.0f, false, false, Vector.ZERO, TextAlign.Horizontal.LEFT, TextAlign.Vertical.BOTTOM, 1.0f, 0.0f);
         dialogue.setAnchor(new Vector(1.5f,1.9f));
         this.dialogue.add(dialogue);
+        ((MainBase)getOwnerArea()).setFinalDialogueBox();
         setSoundFX("book",1);
         ((MainBase)getOwnerArea()).setDialogue(this,this.dialogue);
-        ((MainBase)getOwnerArea()).setFinalDialogueBox();
+
     }
 
     /**

@@ -38,10 +38,12 @@ public class MainBase extends MainBaseArea {
     private ImageGraphics dialogueBox=new ImageGraphics("images/sprites/dialog.png",8,2,
             new RegionOfInterest(0,0,235,42), new Vector(1,-2));
 
-
+    /**
+     * Resume method: sets dialoguebox for final dialogue (new depth value)
+     */
     public void setFinalDialogueBox(){
         dialogueBox=new ImageGraphics("images/sprites/dialog.png",8,2,
-                new RegionOfInterest(0,0,235,42), new Vector(1,-2),1.0f,0.1f);
+                new RegionOfInterest(0,0,235,42), new Vector(1,-2),1.0f,0.000001f);
     }
 
     @Override
@@ -53,9 +55,15 @@ public class MainBase extends MainBaseArea {
         portals.get(i).setState(Portal.PortalState.OPEN);
     }
 
+    /**
+     * Resume method: prints dots under portals to indicate progress
+     */
     public void printGreenDots(int count, int portal){
         GreenDots = portals.get(portal).printGreenDots(count);
     }
+    /**
+     * Resume method: prints dots under portals to indicate progress
+     */
     public ImageGraphics printRedDots(int portal) {
         RedDots = new ImageGraphics("images/sprites/zelda/3.red.dots.png", ((2.5f)), .5f,
                 new RegionOfInterest(0, 64, 96, 32), portals.get(portal).getPosition());
@@ -71,6 +79,9 @@ public class MainBase extends MainBaseArea {
 
     }
 
+    /**
+     * Resume method: makes the parent of the dialogue box the player
+     */
     public void setParent(ICRoguePlayer player){
         dialogueBox.setParent(player);
         dialogueBox.setAnchor(new Vector(-3f,-3f));
