@@ -1,6 +1,6 @@
 README:
 
-RESOURCES IN THE FOLDER: 357241-356522.
+RESOURCES IN THE FOLDER: 357241-356522 of the drive: https://drive.switch.ch/index.php/s/UXGbPR6qF8HCuKz
 
 CONTROLS FOR GAME:
     -arrow keys for movement
