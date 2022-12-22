@@ -87,10 +87,17 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private boolean damageInteraction; //checks if interaction is with Alejandro
     private boolean introductionInteraction;
     private boolean gameStartDialogue;
+    private boolean gameEndDialogue;
     private int gameStartDialogueStep=1;
     private boolean isPoisoned;
     private float poisonCounter;
 
+    /**
+     * Resume method: constructor for player
+     * @param owner area where player is being registered to, not null
+     * @param orientation orientation of the player, not null
+     * @param coordinates coordinates where the player will spanw, not null
+     */
     public ICRoguePlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates){
         super(owner,orientation,coordinates);
 
@@ -123,6 +130,9 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         resetMotion();
     }
 
+    /**
+     * Resume method: initialised the dialogue displayed when game is started (the introduction)
+     */
     public void startDialogue(){
         gameStartDialogue=true;
         stopForDialogue=true;
@@ -130,6 +140,32 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         ++gameStartDialogueStep;
     }
 
+    /**
+     * Resume method: initialised the dialogue displayed when level beanos is cleared (the ending)
+     */
+    public void endDialogue(){
+        gameEndDialogue=true;
+        stopForDialogue=true;
+        dialogue.clear();
+        String key="Game_End1";
+        String message = XMLTexts.getText(key);
+        TextGraphics dialogue=new TextGraphics(message,0.46F, Color.BLACK);
+        dialogue.setAnchor(new Vector(1.5f,2.3f));
+        this.dialogue.add(dialogue);
+        key="Game_End2";
+        message = XMLTexts.getText(key);
+        dialogue=new TextGraphics(message,0.46F, Color.BLACK);
+        dialogue.setAnchor(new Vector(1.5f,1.9f));
+        this.dialogue.add(dialogue);
+        setSoundFX("book",1);
+        ((MainBase)getOwnerArea()).setDialogue(this,this.dialogue);
+    }
+
+    /**
+     * Resume method: draws the player and its attributes based on certain conditions like the health and the instance of the current area
+     * also draws the current dialogue
+     * @param canvas where the sprite will be drawn, not null
+     */
     public void draw(Canvas canvas) {
 
         //only draws hearts if player is in the middle of a level, not in the base or the shop
@@ -180,42 +216,84 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             //draws the dialogue box and the current player dialogue
             ((MainBase) getOwnerArea()).draw(canvas, dialogue);
         }
+        if(gameEndDialogue){
+            ((MainBase) getOwnerArea()).setParent(this);
+            //sets the placement and size of the dialogue (text) based on the players position
+            ((MainBase) getOwnerArea()).setDialogue(this,dialogue);
+            //draws the dialogue box and the current player dialogue
+            ((MainBase) getOwnerArea()).draw(canvas, dialogue);
+        }
     }
 
+    /**
+     * Resume method: poisons player (used in interaction between player and poisonBall)
+     */
     public void poison(){
         isPoisoned=true;
         poisonCounter=0;
     }
 
+    /**
+     * Resume method: returns the transition area of player, used to transfer between rooms during a level
+     * @return String indicating the name of the room player should be transitioned to in a level
+     */
     public String getTransitionArea(){
         return transitionArea;
     }
 
+    /**
+     * Resume method: returns the transport area of player, used to transfer between areas (MainBase, leve and shop) during the game (used in ICRogue)
+     * @return String indicating the name of the area player should be transported to
+     */
     public String getTransportArea(){
         return transportArea;
     }
 
+    /**
+     * Resume method: indicates whether player should transition from one room to the other in a level
+     * @return boolean indicating whether player should change room or not in a level
+     */
     public boolean getisTransitioning(){
         return isTransitioning;
     }
 
-    //works similarly to transitioning but for transporting between areas (Main Base, Shop and Level)
+    /**
+     * Resume method: works similarly to transitioning but for transporting between areas (Main Base, Shop and Level)
+     * @return boolean indicating whether player should change areas or not
+     */
     public boolean getisTransporting(){
         return isTransporting;
     }
 
+    /**
+     * Resume method: resets isTransporting to indicate the player already transported (should not transport again until he interacts with another portal
+     */
     public void transported(){
         isTransporting=false;
     }
 
+    /**
+     * Resume method: resets player health
+     */
     public void strengthen() {
         hp = maxHp;
     }
 
+    /**
+     * Resume method: returns the coordinates in which player should be added in new area
+     * @return the coordination in whihc player will be added in new area
+     */
     public DiscreteCoordinates getCoordinatesTransition(){
         return coordinatesTransition;
     }
 
+    /**
+     * Resume method: moves if dialogue is not occuring and player can enter the new cell
+     * @param orientation current orientation of player, not null
+     * @param b button that was being pressed when this method was called, not null
+     * @param deltaTime time used for updating the animation, not null
+     * @return boolean indicating whether player moved or not
+     */
     private boolean moveIfPressed(Orientation orientation, Button b,float deltaTime) {
         //the stopForDialogue boolean indicates whether the player is in the middle of interacting through dialogue
         //the player should not move if it is in the middle of a dialogue
@@ -233,6 +311,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     }
 
     private boolean isDoingAnimation=false;
+
+    /**
+     * Resume method: updates the player by checking its movement, dialogue and interactions (such as shooting fireballs and others)
+     * @param deltaTime change in time used for updating the player, not null
+     */
     public void update(float deltaTime) {
         poisonCounter+=deltaTime;
         boolean doStaffAnimation=false;
@@ -408,11 +491,20 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             }
 
         }
+        if((gameEndDialogue&&stopForDialogue&&keyboard.get(Keyboard.W).isPressed())||dialogueCounter==1.f){
+            gameStartDialogue=false;
+            stopForDialogue=false;
+            dialogueCounter=0;
+
+        }
 
         super.update(deltaTime);
 
     }
 
+    /**
+     * Resume method: sets the current part of dialogue of the gameStart dialogue (part that will be displayed for the introduction dialogue) and sets the sound of that animation
+     */
     public void gameStartDialogue(){//sets up the game start dialogue
         dialogue.clear();
         for(int i=1;i<5;++i){
@@ -426,6 +518,9 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         ((MainBase)getOwnerArea()).setDialogue(this,dialogue);
 
     }
+    /**
+     * Resume method: sets walking animation
+     */
     public void setCurrentAnimation(){
         if(getOrientation().equals(Orientation.DOWN)){
             currentAnimation = animationsDOWN;
@@ -437,7 +532,10 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             currentAnimation = animationsRIGHT;
         }
     }
-//todo fix last coin not being able to be picked up
+
+    /**
+     * Resume method: sets staff animation
+     */
     private void setCurrentStaffAnimation() {
         if (spriteName.equals("zelda/player.staff_water")){
             if (getOrientation().equals(Orientation.DOWN)){
@@ -457,12 +555,23 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     }
 
 
+    /**
+     * Resume method: sets new hp for the player
+     * @param newHp new hp to be associated with the player, not null
+     */
     public static void setHp(int newHp){
         hp = newHp;
     }
+    /**
+     * Resume method: sets new max value of hp for the player
+     * @param newMaxHp new max value of hp to be associated with the player, not null
+     */
     public static void setMaxHp(int newMaxHp){
         maxHp = newMaxHp;
     }
+    /**
+     * Resume method: sets new damage for player
+     */
     public static void increaseDamage(){
         ++DEFAULT_MELEE_DAMAGE;
         ++Sword.DEFAULT_DAMAGE;
@@ -470,10 +579,22 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
 
     }
+
+    /**
+     * Resume method: returns current hp associated with the player
+     * @return players Hp
+     */
     public int getHp(){return hp;}
+    /**
+     * Resume method: returns current maxHp associated with the player
+     * @return players maxHp
+     */
     public int getMaxHp(){return maxHp;}
-//displays an image of 5 hearts but changes the roi depending on the current hp so that the hp is displayed in the hearts
-//if player has been hit by poison, hearts turn green
+    /**
+     * Resume method: displays an image of 5 hearts but changes the roi depending on the current hp so that the hp is displayed in the hearts
+     * if player has been hit by poison, hearts turn green
+     * @return heart sprite to be printed
+     */
     private ImageGraphics printFullHearts(){
         if(!isPoisoned){
             fullHearts = new ImageGraphics("images/sprites/zelda/5.full.red.hearts.png", ((2.5f) * ((float)getHp()/10)) ,.5f,
@@ -486,7 +607,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
         return fullHearts;
     }
-    //empty hearts display the maxhp possible
+    /**
+     * Resume method: empty hearts display the maxhp possible
+     * if player has been hit by poison, hearts turn green
+     * @return heart sprite to be printed
+     */
     private ImageGraphics printEmptyHearts(){
         if(!isPoisoned) {
             emptyHearts = new ImageGraphics("images/sprites/zelda/5.empty.red.hearts.png", ((2.5f) * ((float) getMaxHp() / 10)), .5f,
@@ -498,20 +623,30 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         }
         return emptyHearts;
     }
-    //displays a graphic where we will show how many coins we have
+
+    /**
+     * Resume method: displays a graphic where we will show how many coins we have
+     * @return coins diplay sprite to be drawn
+     */
     private ImageGraphics printCoinsDisplay(){
         CoinsDisplay = new ImageGraphics("images/sprites/zelda/coinsDisplay.png", 1.75f,0.875f,
                 new RegionOfInterest(0,0,64,32), new Vector(0.5f,9.1f));
         return CoinsDisplay;
     }
-    //displays a number of coins on the graphic mentioned before
+    /**
+     * Resume method: displays a number of coins on the graphic mentioned before
+     * @return coin number to be drawn
+     */
     private TextGraphics printCoinsNumber(){
         CoinsNumber = new TextGraphics( String.valueOf(CoinCounter), 0.5f, Color.black, Color.black,0.f,
                 true, false, new Vector(CoinsDisplay.getAnchor().x+1, CoinsDisplay.getAnchor().y+0.33f));
         return CoinsNumber;
     }
 
-
+    /**
+     * Resume method: decreases the hp by a given number, sets up the damage sound effect for the player
+     * @param delta amount that hp will be decreased by, not null
+     */
     public void decreaseHp(float delta){
         hp -= delta;
         soundFX=new SoundAcoustics(ResourcePath.getSound("damage"),1,false,false,false,false);
@@ -519,17 +654,27 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         System.out.println(hp);
     }
 
+    /**
+     * Resume method: checks if hp can be increased
+     * @return boolean indicating whether health can be increased or not
+     */
     public boolean canIncreaseHp(){
         return hp < maxHp;
     }
 
+    /**
+     * Resume method: increases hp based on the boolean above and a number delta
+     * @param delta amount that hp will be increased by, not null
+     */
     public void increaseHp(float delta){
         if (canIncreaseHp()){
             hp += delta;
         }
 
     }
-//turns all the carrying booleans to false (i.e. so you cant use fireball in the next level until you find staff)
+    /**
+     * Resume method: turns all the carrying booleans to false (i.e. so you cant use fireball in the next level until you find staff), clears the carrying array
+     */
     public void clearCarrying(){
         carrying.clear();
         hasStaff=false;
@@ -537,43 +682,68 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         hasSword=false;
     }
 
+    /**
+     * Resume method: makes it so the handler handles all the interactions for player
+     * @param v the interaction handler for the player, not null
+     * @param isCellInteraction boolean determining if player wants interaction, not null
+     */
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
         ((ICRogueInteractionHandler)v).interactWith(this, isCellInteraction);
     }
 
-    /*returns the cell that the player occupies, im not sure about this since this method already exists
-    * in ICRogueActor, so we might want to see if this is right or not*/
+    /**
+     * Resume method: returns the cells the player is currently occupying
+     * @return array of coordinates of cells being currently occupied by the player
+     */
     public List<DiscreteCoordinates> getCurrentCells(){
         return Collections.singletonList(getCurrentMainCellCoordinates());
     }
 
-    /*returns the cell that the player sees, AKA the cell in front of the direction he is facing*/
+    /**
+     * Resume method: returns the cell that the player sees, AKA the cell in front of the direction he is facing
+     * @return array of coordinates of cells being currently faced by the player
+     */
     public List<DiscreteCoordinates> getFieldOfViewCells(){
         return Collections.singletonList(getCurrentMainCellCoordinates().jump(getOrientation().toVector()));
     }
 
-    /*interracts with interactable if its in contact with it*/
+    /**
+     * Resume method: returns true indicating that player always wants to cell interact (interact with object if they occupy the same cell)
+     * @return boolean indicating that player always wants to cell interact
+     */
     public boolean wantsCellInteraction() {
         return true;
     }
 
-    /*interacts with intractable in its field of vision (aka in front of whatever direction he is facing)*/
+    /**
+     * Resume method: interacts with intractable in its field of vision (aka in front of whatever direction he is facing) and W or Z is pressed
+     * @return boolean indicating whether player interacted with interactable or not
+     */
     public boolean wantsViewInteraction() {
         Keyboard keyboard= getOwnerArea().getKeyboard();
         /*this means that the player only interacts with an object in front of him if you press W*/
         return (keyboard.get(Keyboard.W).isPressed()) || (keyboard.get(Keyboard.Z).isPressed());
     }
 
+    /**
+     * Resume method: sets transitioning boolean to false indicating that player already transitioned and should not transition again
+     */
     public void transitioned(){
         isTransitioning=false;
     }
 
+    /**
+     * Resume method: centers around player
+     */
     public void centerCamera() {
         getOwnerArea().setViewCandidate(this);
     }
 
 
 
+    /**
+     * Resume method: sets the sprites for the walking animation
+     */
     public void setSpriteAnimation(){
        Vector anchor = new Vector(0.15f, -0.15f);
             for(int i = 0; i<4; i++){
@@ -589,9 +759,9 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         }
     }
 
-    //ANIMATIONS
-    //todo fix animations for staff
-    //todo add animations for sword
+    /**
+     * Resume method: sets the sprites for the staff animation
+     */
     public void setStaffAnimation() {
         String name = "zelda/player.staff_water";
 
@@ -639,7 +809,10 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         staffAnimationsRIGHT = new Animation(ANIMATION_DURATION*8, spritesRIGHT);
     }
 
-
+    /**
+     * Resume method: sets the sprite of the player back to its default based on his orientation
+     * @param orientation orientation of the player, not null
+     */
     public void defaultSprite(Orientation orientation){
         if(orientation.equals(Orientation.DOWN)){
             sprite=new Sprite(spriteName, .75f,1.5f,this,
@@ -659,39 +832,75 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         }
     }
 
-
+    /**
+     * Resume method: sets sound Fx for the player
+     * @param name name (name of file) for the sound effect being set up
+     * @param vol volume of the sound effect
+     */
     private void setSoundFX(String name,float vol){ //sets the sound fx
         soundFX=new SoundAcoustics(ResourcePath.getSound(name),vol,false,false,false,false);
         hasSoundFX=true;
     }
+    /**
+     * Resume method: sets sound Fx for the player
+     * @return  boolean indicating whether the player has a sound effect that should be played or not
+     */
     public boolean HasSoundFX(){
         return hasSoundFX;
     }
-
+    /**
+     * Resume method: plays the sound on the current window
+     * @param window where the sound should be played, not null
+     */
     public void playSound(Window window){ //plays the sound effect stored in the player
         soundFX.shouldBeStarted();//starts the sound and plays it
         soundFX.bip(window);
         hasSoundFX=false;//sets hasSoundFX to false so the sound is not repeated forever
     }
 
+    /**
+     * Resume method: returns boolean indicating whether player received damage or not
+     * @return boolean indicating whether player received damage or not
+     */
     public boolean getReceivedDamage(){return receivedDamage;}
 
+    /**
+     * Resume method: sets receivedDamage boolean
+     * @param rd boolean indicating whether player received damage or not
+     */
     public void setReceivedDamage(boolean rd){receivedDamage = rd;}
 
+    /**
+     * Resume method: makes the interactable accept interaction from player
+     * @param other entity being interacted with
+     * @param isCellInteraction boolean indicating whether interaction will happen or not
+     */
     public void interactWith(Interactable other, boolean isCellInteraction) {
         other.acceptInteraction(handler,isCellInteraction);
     }
 
+    /**
+     * Resume method: makes player transport
+     */
     public void transport() {
         isTransporting=true;
     }
 
+    /**
+     * Resume method: sets the area that player will be transported to
+     * @param base name of area that player should transport to
+     */
     public void setTransportArea(String base) {
         transportArea=base;
     }
 
     private class ICRoguePlayerInteractionHandler implements ICRogueInteractionHandler{
 
+        /**
+         * Resume method: interaction with cherry, sets sound effect and increases hp
+         * @param cherry cherry being interacted with
+         * @param isCellInteraction boolean indicating whether player wants cell interaction or not
+         */
         public void interactWith(Cherry cherry, boolean isCellInteraction) {
             if(wantsCellInteraction()&&canIncreaseHp()){
                 increaseHp(1);
@@ -701,6 +910,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             }
         }
 
+        /**
+         * Resume method: interaction with coin, sets sound effect and increases coin counter
+         * @param coin coin being interacted with
+         * @param isCellInteraction boolean indicating whether player wants cell interaction or not
+         */
         public void interactWith(Coin coin, boolean isCellInteraction) {
             if(wantsCellInteraction()){
                 increaseCoinCounter(1);
@@ -710,6 +924,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             }
         }
 
+        /**
+         * Resume method: interaction with staff, sets sound effect and sets hasStaff to true
+         * @param staff staff being interacted with
+         * @param isCellInteraction boolean indicating whether player wants cell interaction or not
+         */
         public void interactWith(Staff staff, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if(wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())){
@@ -722,6 +941,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
             }
         }
+        /**
+         * Resume method: interaction with sword, sets sound effect and sets hasSword to true
+         * @param sword sword being interacted with
+         * @param isCellInteraction boolean indicating whether player wants cell interaction or not
+         */
         public void interactWith(Sword sword, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if(wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())){
@@ -734,6 +958,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
             }
         }
+        /**
+         * Resume method: interaction with bow, sets sound effect and sets hasBow to true
+         * @param bow bow being interacted with
+         * @param isCellInteraction boolean indicating whether player wants cell interaction or not
+         */
         public void interactWith(Bow bow, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if(wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())){
@@ -746,6 +975,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
             }
         }
+        /**
+         * Resume method: interaction with key, sets sound effect and adds key to carrying array
+         * @param key key being interacted with
+         * @param isCellInteraction boolean indicating whether player wants cell interaction or not
+         */
         public void interactWith(Key key, boolean isCellInteraction){
             if(isCellInteraction){
                 key.collect();
@@ -754,6 +988,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 carrying.add(key); /*adds key to carrying arraylist which represents the items the character is holding*/
             }
         }
+        /**
+         * Resume method: interaction with turret, sets sound effect and damages turret
+         * @param turret turret being interacted with
+         * @param isCellInteraction boolean indicating whether player wants cell interaction or not
+         */
         public void interactWith(Turret turret, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if (wantsViewInteraction() && keyboard.get(Keyboard.Z).isPressed()){
@@ -768,14 +1007,29 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 turret.decreaseHp(meleeDamage);
             }
         }
+        /**
+         * Resume method: same as for turret
+         * @param turret turret being interacted with
+         * @param isCellInteraction boolean indicating whether player wants cell interaction or not
+         */
         public void interactWith(PoisonTurret turret, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if (wantsViewInteraction() && keyboard.get(Keyboard.Z).isPressed()){
                 //sets the sound fx
-                setSoundFX("melee",1);
+                if(hasSword){
+                    setSoundFX("sword",1);
+                }
+                else{
+                    setSoundFX("melee",1);
+                }
                 turret.decreaseHp(meleeDamage);
             }
         }
+        /**
+         * Resume method: same as for turret
+         * @param turret turret being interacted with
+         * @param isCellInteraction boolean indicating whether player wants cell interaction or not
+         */
         public void interactWith(BossTurret turret, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if (wantsViewInteraction() && keyboard.get(Keyboard.Z).isPressed()){
@@ -789,6 +1043,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 turret.decreaseHp(meleeDamage);
             }
         }
+        /**
+         * Resume method: same as for turret
+         * @param wither wither being interacted with
+         * @param isCellInteraction boolean indicating whether player wants cell interaction or not
+         */
         public void interactWith(Wither wither, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if (wantsViewInteraction() && keyboard.get(Keyboard.Z).isPressed()){
@@ -802,6 +1061,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 wither.decreaseHp(meleeDamage);
             }
         }
+        /**
+         * Resume method: same as for turret
+         * @param wither PAWither being interacted with
+         * @param isCellInteraction boolean indicating whether player wants cell interaction or not
+         */
         public void interactWith(PAWither wither, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if (wantsViewInteraction() && keyboard.get(Keyboard.Z).isPressed()){
@@ -810,6 +1074,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 wither.decreaseHp(meleeDamage);
             }
         }
+        /**
+         * Resume method: same as for turret
+         * @param beanos Beanos being interacted with
+         * @param isCellInteraction boolean indicating whether player wants cell interaction or not
+         */
         public void interactWith(Beanos beanos, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if (wantsViewInteraction() && keyboard.get(Keyboard.Z).isPressed()){
@@ -823,6 +1092,12 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 beanos.decreaseHp(meleeDamage);
             }
         }
+        /**
+         * Resume method: sets the new area that the player will be transition to, sets sound effect and sets isTransitioning to true
+         * if the connector is locked and the player has the key, it unlocks the connector
+         * @param connector connector being interacted with
+         * @param isCellInteraction boolean indicating whether player wants cell interaction or not
+         */
         public void interactWith(Connector connector, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if(wantsViewInteraction()&& (keyboard.get(Keyboard.W).isPressed())){
@@ -851,6 +1126,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             }
         }
 
+        /**
+         * Resume method: same as for connector but now it relates to transition between area, also there is no unlocking interaction since the player does not directly unlock the portal
+         * @param portal portal being interacted with
+         * @param isCellInteraction boolean indicating whether player wants cell interaction or not
+         */
         public void interactWith(Portal portal, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if(wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())&&
@@ -863,6 +1143,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             }
         }
 
+        /**
+         * Resume method: sets the dialogue in player based on the npc's dialogue, sets dialogueStart to true and initialises sound effect
+         * @param npc npc being interacted with
+         * @param isCellInteraction boolean indicating whether player wants cell interaction or not
+         */
         public void interactWith(NPC npc, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if(!dialogueStart&&wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())&&dialogueCounter>=1.f){
@@ -876,6 +1161,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             }
 
         }
+        /**
+         * Resume method: same as npc but now with new booleans indicating that its a merchant and a health interaction
+         * @param tota tota being interacted with
+         * @param isCellInteraction boolean indicating whether player wants cell interaction or not
+         */
         public void interactWith(Tota tota, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if(!dialogueStart&&wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())&&dialogueCounter>=1.f){
@@ -899,6 +1189,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             }
 
         }
+        /**
+         * Resume method: same as npc but now with new booleans indicating that its a merchant and a damage interaction
+         * @param alejandro alejandro being interacted with
+         * @param isCellInteraction boolean indicating whether player wants cell interaction or not
+         */
         public void interactWith(Alejandro alejandro, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if(!dialogueStart&&wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())&&dialogueCounter>=1.f){
@@ -921,6 +1216,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             }
 
         }
+        /**
+         * Resume method: interacts with the lever which unlocks the room the lever is in
+         * @param lever lever being interacted with
+         * @param isCellInteraction boolean indicating whether player wants cell interaction or not
+         */
         public void interactWith(Lever lever, boolean isCellInteraction){
             Keyboard keyboard= getOwnerArea().getKeyboard();
             if(wantsViewInteraction() && (keyboard.get(Keyboard.W).isPressed())){
@@ -930,7 +1230,10 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
         }
     }
-
+    /**
+     * Resume method: increases number of coins player has
+     * @param i number of coins to increase by
+     */
     private void increaseCoinCounter(int i) {
         ++CoinCounter;
         System.out.println("coins: "+CoinCounter);

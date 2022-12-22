@@ -50,6 +50,7 @@ public class ICRogue extends AreaGame {
     private MainBase base;
     private int lives;
     private DiscreteCoordinates previousCoorInBase;
+    private int cleared;
 
     /**
      * Add all the areas
@@ -293,6 +294,11 @@ public class ICRogue extends AreaGame {
                 else if(level instanceof Level2){
                     ++lvl2clears;
                     base.printGreenDots(lvl2clears,3);
+
+                }
+                else if(level instanceof LevelBeanos&&cleared==0){
+                    player.endDialogue();
+                    cleared=1;
 
                 }
                 setSoundFx("clear",1,true);
