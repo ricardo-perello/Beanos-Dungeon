@@ -2,6 +2,8 @@ README:
 
 RESOURCES IN THE FOLDER: 357241-356522 of the drive: https://drive.switch.ch/index.php/s/UXGbPR6qF8HCuKz
 
+WE MADE A CHANGE IN Area.java SO PLEASE LOOK AT THAT AS WELL.
+
 CONTROLS FOR GAME:
     -arrow keys for movement
     -W key for interaction with objects, connectors (doors), portals, NPCs, etc…
